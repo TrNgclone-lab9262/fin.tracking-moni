@@ -1,0 +1,16 @@
+{
+  "name": "HOME MONI - Quản Lý Tài Chính Gia Đình",
+  "short_name": "HOME MONI",
+  "description": "Nền tảng quản lý tài chính tổ ấm thông minh, bảo mật LocalStorage cho 2 vợ chồng",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1E3A8A",
+  "theme_color": "#2563EB",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}
