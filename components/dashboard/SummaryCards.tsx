@@ -7,7 +7,6 @@ import {
   ArrowUpRight,
   PiggyBank,
   Sparkles,
-  CreditCard,
 } from "lucide-react";
 import { useFinance } from "@/context/FinanceContext";
 import { formatVND, getMonthDisplayLabel } from "@/lib/formatters";
@@ -25,101 +24,105 @@ export function SummaryCards() {
       : "Bé Mèo";
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-      {/* 1. THẺ TÀI SẢN RÒNG (Blue Gradient) */}
-      <div className="relative overflow-hidden rounded-3xl p-5 sm:p-6 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white shadow-lg shadow-blue-600/15">
-        <div className="absolute -right-4 -bottom-4 w-28 h-28 bg-white/10 rounded-full blur-xl pointer-events-none" />
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* 1. THẺ HERO TÀI SẢN RÒNG (Navy Gradient) */}
+      <div className="relative overflow-hidden rounded-xl p-5 bg-gradient-to-br from-[#172B4D] via-[#1E3A8A] to-[#1E40AF] text-white shadow-xs">
+        <div className="absolute -right-3 -bottom-3 w-24 h-24 bg-white/10 rounded-full blur-lg pointer-events-none" />
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-blue-100 flex items-center gap-1.5">
-            <Wallet className="w-4 h-4 text-blue-200" />
+          <span className="text-xs font-bold uppercase tracking-wider text-blue-200 flex items-center gap-1.5">
+            <Wallet className="w-4 h-4 text-blue-300" />
             Tài sản ròng ({perspectiveLabel})
           </span>
-          <span className="p-2 rounded-2xl bg-white/15 text-white backdrop-blur-xs">
-            <Sparkles className="w-4 h-4" />
+          <span className="p-1.5 rounded-lg bg-white/15 text-white backdrop-blur-xs">
+            <Sparkles className="w-3.5 h-3.5" />
           </span>
         </div>
         <div className="mt-3">
-          <h3 className="text-2xl sm:text-3xl font-black tracking-tight">
+          <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
             {formatVND(summary.netWorth)}
           </h3>
-          <p className="text-xs text-blue-200 mt-1 font-medium">
-            Ví: {formatVND(summary.currentBalance)} · Dư nợ thẻ: {formatVND(summary.totalCreditDebt)}
+          <p className="text-[11px] text-blue-200/90 mt-1.5 font-medium">
+            Ví: {formatVND(summary.currentBalance)} · Nợ thẻ: {formatVND(summary.totalCreditDebt)}
           </p>
         </div>
       </div>
 
-      {/* 2. THẺ THU NHẬP (Emerald Gradient) */}
-      <div className="relative overflow-hidden rounded-3xl p-5 sm:p-6 bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-700 text-white shadow-lg shadow-emerald-500/15">
-        <div className="absolute -right-4 -bottom-4 w-28 h-28 bg-white/10 rounded-full blur-xl pointer-events-none" />
+      {/* 2. THẺ THU NHẬP (Flat White Card + Emerald Accent) */}
+      <div className="relative rounded-xl p-5 bg-white border border-[#DCE4EE] shadow-xs">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-emerald-100 flex items-center gap-1.5">
-            <ArrowDownLeft className="w-4 h-4 text-emerald-200" />
+          <span className="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
+            <div className="w-6 h-6 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <ArrowDownLeft className="w-3.5 h-3.5" />
+            </div>
             Thu nhập ({perspectiveLabel})
           </span>
-          <span className="p-2 rounded-2xl bg-white/15 text-white backdrop-blur-xs">
-            <ArrowDownLeft className="w-4 h-4" />
+          <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100">
+            {periodLabel}
           </span>
         </div>
         <div className="mt-3">
-          <h3 className="text-2xl sm:text-3xl font-black tracking-tight">
+          <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#172B4D]">
             {formatVND(summary.monthlyIncome)}
           </h3>
-          <div className="flex items-center gap-2 mt-1">
-            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-white/20 text-white">
+          <div className="flex items-center gap-2 mt-1.5">
+            <span className="text-[11px] text-slate-500 font-medium truncate">
               {activePerspective === "ALL"
                 ? `Chồng: ${formatVND(summary.husbandIncome)} · Vợ: ${formatVND(summary.wifeIncome)}`
-                : "Lương tháng nhận đủ"}
+                : "Thu nhập ghi nhận theo kỳ"}
             </span>
           </div>
         </div>
       </div>
 
-      {/* 3. THẺ CHI TIÊU (Rose Gradient) */}
-      <div className="relative overflow-hidden rounded-3xl p-5 sm:p-6 bg-gradient-to-br from-rose-500 via-rose-600 to-pink-700 text-white shadow-lg shadow-rose-500/15">
-        <div className="absolute -right-4 -bottom-4 w-28 h-28 bg-white/10 rounded-full blur-xl pointer-events-none" />
+      {/* 3. THẺ CHI TIÊU (Flat White Card + Rose Accent) */}
+      <div className="relative rounded-xl p-5 bg-white border border-[#DCE4EE] shadow-xs">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-rose-100 flex items-center gap-1.5">
-            <ArrowUpRight className="w-4 h-4 text-rose-200" />
+          <span className="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
+            <div className="w-6 h-6 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </div>
             Chi tiêu ({perspectiveLabel})
           </span>
-          <span className="p-2 rounded-2xl bg-white/15 text-white backdrop-blur-xs">
-            <ArrowUpRight className="w-4 h-4" />
+          <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 border border-rose-100">
+            {periodLabel}
           </span>
         </div>
         <div className="mt-3">
-          <h3 className="text-2xl sm:text-3xl font-black tracking-tight">
+          <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#172B4D]">
             {formatVND(summary.monthlyExpense)}
           </h3>
-          <div className="flex items-center gap-2 mt-1">
-            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-white/20 text-white">
+          <div className="flex items-center gap-2 mt-1.5">
+            <span className="text-[11px] text-slate-500 font-medium truncate">
               {activePerspective === "ALL"
-                ? `Việc chung nhà: ${formatVND(summary.familySharedExpense)}`
-                : `${periodLabel}`}
+                ? `Sinh hoạt chung: ${formatVND(summary.familySharedExpense)}`
+                : `Tổng chi trong ${periodLabel}`}
             </span>
           </div>
         </div>
       </div>
 
-      {/* 4. THẺ TIẾT KIỆM (Amber Gradient) */}
-      <div className="relative overflow-hidden rounded-3xl p-5 sm:p-6 bg-gradient-to-br from-amber-500 via-amber-600 to-orange-600 text-white shadow-lg shadow-amber-500/15">
-        <div className="absolute -right-4 -bottom-4 w-28 h-28 bg-white/10 rounded-full blur-xl pointer-events-none" />
+      {/* 4. THẺ TIẾT KIỆM (Flat White Card + Amber/Brand Accent) */}
+      <div className="relative rounded-xl p-5 bg-white border border-[#DCE4EE] shadow-xs">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-amber-100 flex items-center gap-1.5">
-            <PiggyBank className="w-4 h-4 text-amber-200" />
+          <span className="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
+            <div className="w-6 h-6 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+              <PiggyBank className="w-3.5 h-3.5" />
+            </div>
             Tiết kiệm tích lũy
           </span>
-          <span className="p-2 rounded-2xl bg-white/15 text-white backdrop-blur-xs">
-            <PiggyBank className="w-4 h-4" />
+          <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-100">
+            {summary.savingsRate}% tích lũy
           </span>
         </div>
         <div className="mt-3">
-          <h3 className="text-2xl sm:text-3xl font-black tracking-tight">
+          <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#172B4D]">
             {formatVND(summary.savingsAmount)}
           </h3>
-          <div className="flex items-center gap-2 mt-1">
-            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-white/20 text-white">
-              {summary.savingsRate}% tỷ lệ tích lũy
-            </span>
+          <div className="mt-2 w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+            <div
+              className="bg-amber-500 h-full rounded-full transition-all"
+              style={{ width: `${Math.min(Math.max(summary.savingsRate, 0), 100)}%` }}
+            />
           </div>
         </div>
       </div>

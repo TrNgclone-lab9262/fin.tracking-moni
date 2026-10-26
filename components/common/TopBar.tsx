@@ -60,14 +60,14 @@ export function TopBar({
   };
 
   return (
-    <header className="bg-white border-b border-slate-200/80 sticky top-0 z-20 shadow-xs">
+    <header className="bg-white border-b border-[#DCE4EE] sticky top-0 z-20 shadow-xs">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-18 sm:h-20 gap-4">
           {/* Bên Trái: Nút Mobile Menu + Tiêu đề Phân hệ */}
           <div className="flex items-center gap-3">
             <button
               onClick={onToggleMobileMenu}
-              className="md:hidden p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors"
+              className="md:hidden p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors"
               aria-label="Mở menu"
             >
               <Menu className="w-6 h-6" />
@@ -75,7 +75,7 @@ export function TopBar({
 
             <div>
               <div className="flex items-center gap-2.5">
-                <h1 className="text-base sm:text-xl font-black text-slate-900 tracking-tight">
+                <h1 className="text-base sm:text-xl font-black text-[#172B4D] tracking-tight">
                   {tabTitles[activeTab]}
                 </h1>
                 {isCloudConnected ? (
@@ -87,20 +87,20 @@ export function TopBar({
                         ? `Supabase Realtime • Bấm để đồng bộ (Lần cuối: ${lastSyncedAt.toLocaleTimeString("vi-VN")})`
                         : "Supabase Realtime • Bấm để đồng bộ lại"
                     }
-                    className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100/80 px-2.5 py-0.5 rounded-full border border-emerald-200/80 transition-all cursor-pointer shadow-2xs"
+                    className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100/80 px-2 py-0.5 rounded-md border border-emerald-200 transition-all cursor-pointer shadow-2xs"
                   >
                     <RefreshCw
                       className={`w-3 h-3 text-emerald-600 ${isSyncing ? "animate-spin" : ""}`}
                     />
-                    <span>{isSyncing ? "Đang đồng bộ..." : "Supabase Cloud"}</span>
+                    <span>{isSyncing ? "Đang đồng bộ..." : "🟢 Cloud Realtime"}</span>
                   </button>
                 ) : (
                   <span
                     title="Đang hoạt động chế độ lưu máy (Offline-first)"
-                    className="hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200"
+                    className="hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200"
                   >
                     <CloudOff className="w-3.5 h-3.5 text-slate-500" />
-                    Lưu máy
+                    🟡 Lưu máy
                   </span>
                 )}
               </div>
@@ -108,13 +108,13 @@ export function TopBar({
           </div>
 
           {/* Giữa: Bộ Chuyển Đổi Góc Nhìn Thành Viên (My Home / Anh Chuột / Bé Mèo) */}
-          <div className="flex items-center bg-slate-100 p-1 rounded-2xl shadow-inner border border-slate-200/60">
+          <div className="flex items-center bg-slate-100 p-1 rounded-lg border border-[#E9EEF5]">
             <button
               type="button"
               onClick={() => setActivePerspective("ALL")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${
                 activePerspective === "ALL"
-                  ? "bg-white text-blue-700 shadow-sm"
+                  ? "bg-white text-blue-700 shadow-xs"
                   : "text-slate-500 hover:text-slate-800"
               }`}
             >
@@ -124,9 +124,9 @@ export function TopBar({
             <button
               type="button"
               onClick={() => setActivePerspective("HUSBAND")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${
                 activePerspective === "HUSBAND"
-                  ? "bg-blue-600 text-white shadow-sm"
+                  ? "bg-blue-600 text-white shadow-xs"
                   : "text-slate-500 hover:text-slate-800"
               }`}
             >
@@ -136,9 +136,9 @@ export function TopBar({
             <button
               type="button"
               onClick={() => setActivePerspective("WIFE")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${
                 activePerspective === "WIFE"
-                  ? "bg-emerald-600 text-white shadow-sm"
+                  ? "bg-emerald-600 text-white shadow-xs"
                   : "text-slate-500 hover:text-slate-800"
               }`}
             >
@@ -148,10 +148,10 @@ export function TopBar({
           </div>
 
           {/* Bên Phải: Bộ chọn kỳ + Chuông thông báo + Nút Thao tác */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-2.5">
             {/* Bộ chọn tháng */}
-            <div className="flex items-center bg-slate-100/90 text-slate-700 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold border border-slate-200/60">
-              <Calendar className="w-4 h-4 text-blue-600 mr-1.5 shrink-0" />
+            <div className="flex items-center bg-slate-100 text-slate-700 px-2.5 py-1.5 rounded-md text-xs sm:text-sm font-semibold border border-[#E9EEF5]">
+              <Calendar className="w-3.5 h-3.5 text-blue-600 mr-1.5 shrink-0" />
               <select
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(e.target.value)}
@@ -170,12 +170,12 @@ export function TopBar({
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2.5 rounded-xl bg-slate-100/90 hover:bg-slate-200 text-slate-600 transition-colors"
+                className="relative p-2 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
                 title="Cảnh báo & Nhắc nhở"
               >
-                <Bell className="w-5 h-5" />
+                <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
                 {notifications.length > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 text-white rounded-full text-[10px] font-bold flex items-center justify-center border-2 border-white shadow-xs">
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white rounded-full text-[10px] font-bold flex items-center justify-center border-2 border-white shadow-xs">
                     {notifications.length}
                   </span>
                 )}
@@ -184,11 +184,11 @@ export function TopBar({
               {/* Popup Cảnh báo & Nhắc nhở */}
               {showNotifications && (
                 <div
-                  className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-100 py-3 z-50 animate-in fade-in slide-in-from-top-2"
+                  className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-xl border border-[#DCE4EE] py-3 z-50 animate-in fade-in slide-in-from-top-2"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="px-4 py-2 border-b border-slate-100 flex items-center justify-between">
-                    <span className="text-sm font-bold text-slate-800 flex items-center gap-2">
+                  <div className="px-4 py-2 border-b border-[#E9EEF5] flex items-center justify-between">
+                    <span className="text-sm font-bold text-[#172B4D] flex items-center gap-2">
                       <AlertTriangle className="w-4 h-4 text-amber-500" />
                       Cảnh báo gia đình
                     </span>
@@ -200,11 +200,11 @@ export function TopBar({
                     </button>
                   </div>
 
-                  <div className="max-h-72 overflow-y-auto divide-y divide-slate-100 p-2">
+                  <div className="max-h-72 overflow-y-auto divide-y divide-[#E9EEF5] p-2">
                     {notifications.map((notif) => (
                       <div
                         key={notif.id}
-                        className="p-3 hover:bg-slate-50 rounded-xl transition-colors flex items-start gap-2.5"
+                        className="p-3 hover:bg-slate-50 rounded-lg transition-colors flex items-start gap-2.5"
                       >
                         <span
                           className={`w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 ${
@@ -234,9 +234,9 @@ export function TopBar({
             <button
               onClick={onOpenBackupModal}
               title="Sao lưu / Khôi phục dữ liệu JSON"
-              className="hidden lg:flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium text-slate-600 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-all shadow-xs"
+              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium text-slate-600 bg-white hover:bg-slate-50 border border-[#DCE4EE] rounded-md transition-all shadow-xs"
             >
-              <Download className="w-4 h-4 text-slate-500" />
+              <Download className="w-3.5 h-3.5 text-slate-500" />
               <span>Sao lưu</span>
             </button>
 
@@ -244,18 +244,18 @@ export function TopBar({
             <button
               onClick={onOpenResetConfirm}
               title="Nạp lại bộ dữ liệu mẫu gia đình chuẩn"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium text-slate-600 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-all shadow-xs"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium text-slate-600 bg-white hover:bg-slate-50 border border-[#DCE4EE] rounded-md transition-all shadow-xs"
             >
-              <RotateCcw className="w-4 h-4 text-slate-500" />
+              <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
               <span>Mẫu demo</span>
             </button>
 
             {/* Nút Thêm giao dịch */}
             <button
               onClick={onOpenAddModal}
-              className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-xl transition-all shadow-md shadow-blue-600/25 active:scale-95"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 sm:py-2 text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-md transition-all shadow-xs active:scale-95"
             >
-              <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
+              <Plus className="w-4 h-4" />
               <span className="hidden sm:inline">Thêm giao dịch</span>
               <span className="sm:hidden">Thêm</span>
             </button>

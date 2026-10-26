@@ -13,7 +13,7 @@
 > 1. **Kiến trúc Hybrid Local-First & Supabase Cloud:** Toàn bộ dữ liệu nằm trong `localStorage` trên trình duyệt người dùng và tự động đồng bộ 2 chiều với Supabase Cloud Database (PostgreSQL) qua Supabase Realtime Replication. Đảm bảo trải nghiệm 0ms và đồng bộ tức thì giữa 2 điện thoại của 2 vợ chồng.
 > 2. **Chủ thể Gia đình:** Chính xác 2 thành viên: **👨 Anh Chuột** (Chồng) & **👩 Bé Mèo** (Vợ). Tổ ấm chung: **🏡 My Home**.
 > 3. **Cơ chế Thẻ tín dụng (BIDV Credit):** `currentBalance` đại diện cho **DƯ NỢ ĐANG DÙNG** (chi tiêu thẻ làm TĂNG dư nợ, chuyển tiền thanh toán thẻ làm GIẢM dư nợ). Tài sản ròng = Tổng ví khả dụng + Đầu tư - Nợ vay - Dư nợ thẻ.
-> 4. **Ngôn ngữ & Thẩm mỹ:** Giao diện 100% Tiếng Việt chuẩn Fintech. Bo góc `rounded-3xl` cho thẻ/modal, `rounded-xl` cho controls. Font Inter. Responsive hoàn hảo Desktop & Mobile (PWA Ready).
+> 4. **Ngôn ngữ & Thẩm mỹ:** Giao diện 100% Tiếng Việt chuẩn Fintech. Bo góc `rounded-xl` (12px) cho thẻ/modal, `rounded-md` (6px) cho buttons, `rounded-lg` (8px) cho controls/inputs. Font Inter. Nền ứng dụng Canvas `#F6F8FB`. Responsive hoàn hảo Desktop & Mobile (PWA Ready).
 
 ---
 
@@ -32,7 +32,7 @@ fi.tracking-moni/
 │   │   ├── 02_in_vibe.md              # Cổng 2: Chuẩn sinh mã Clean Code & UI/UX Tokens
 │   │   └── 03_post_vibe.md            # Cổng 3: Build verification & cập nhật State Ledger
 │   ├── skills/
-│   │   └── lovely-money-uiux/         # Skill UI/UX: Design Tokens, Recharts specs, Mobile guidelines
+│   │   └── home-moni-uiux/            # Skill UI/UX: Design Tokens, Recharts specs, Mobile guidelines
 │   └── standards/
 │       ├── 01_ci_cd_automation.md     # Tiêu chuẩn GitHub Actions CI & quy tắc kiểm thử
 │       ├── 02_deployment_vercel.md    # Tiêu chuẩn triển khai CD Vercel & PWA Mobile
@@ -96,7 +96,7 @@ fi.tracking-moni/
 | **👨 Anh Chuột** | `acc_husband_bidv_credit` | Credit Card | **Hạn mức 50.000.000 ₫** (Sao kê 20, Trả 25) | `#1E3A8A` |
 | **👩 Bé Mèo** | `acc_wife_vcb` | Bank | Chính - Nhận lương Bé Mèo | `#008542` |
 | **👩 Bé Mèo** | `acc_wife_acb` | Bank | Phụ - Chi tiêu cá nhân, đi chợ | `#0060AF` |
-| **👩 Bé Mèo** | `acc_wife_bidv_credit` | Credit Card | **Hạn mức 20.000.000 ₫** (Sao kê 22, Trả 28) | `#D97706` |
+| **👩 Bé Mèo** | `acc_wife_bidv_credit` | Credit Card | **Hạn mức 20.000.000 ₫** (Sao kê 20, Trả 25) | `#D97706` |
 | **🏡 My Home** | `acc_family_cash` | Cash | Quỹ tiền mặt chi tiêu lặt vặt trong nhà | `#10B981` |
 
 ---
@@ -125,6 +125,8 @@ flowchart LR
 
 | Phiên (Vibe ID) | Ngày Giờ | Mục Tiêu & Thay Đổi Cốt Lõi | Files Tác Động | Trạng Thái |
 | :--- | :--- | :--- | :--- | :--- |
+| **VIBE-11** | 2026-10-26 | Chuẩn hóa toàn diện ngôn ngữ thiết kế Calm Slate Fintech & Hệ phân cấp bo góc 3 tầng: Chuẩn hóa triệt để bo góc (`rounded-xl` card/modal/table, `rounded-md` button/pill/action, `rounded-lg` input/select/badge/sub-panel), xóa sạch 100% `rounded-3xl` và `rounded-2xl` trên toàn bộ components; Cố định nền Canvas `#F6F8FB`, Hero Navy Gradient Card cho Tài sản ròng và 3 Flat White Card viền `#DCE4EE`; Đồng bộ chu kỳ sao kê 2 thẻ BIDV Credit của cả Anh Chuột và Bé Mèo vào ngày 20 hàng tháng (hạn thanh toán ngày 25 hàng tháng) trên toàn bộ hệ thống (`DualCreditCardsWidget.tsx`, `GuideView.tsx`, `constants/mockData.ts`, `README.md`, `PROJECT_STATE.md`); Tinh gọn `SettingsView.tsx` (loại bỏ switcher 5 theme, tối ưu Cloud Sync). | `app/globals.css`, `app/page.tsx`, `tailwind.config.ts`, `components/dashboard/*`, `components/views/*`, `components/transactions/*`, `components/common/*`, `constants/mockData.ts`, `README.md`, `PROJECT_STATE.md` | 🟢 Verified |
+| **VIBE-10** | 2026-10-26 | Đồng bộ hóa toàn diện sau khi đổi tên thư mục skill sang `home-moni-uiux`: Cập nhật đồng bộ các file quy tắc (`AGENTS.md`, `.agents/rules/01_pre_vibe.md`, `.agents/rules/02_in_vibe.md`), sổ cái `PROJECT_STATE.md`, nâng cấp toàn diện tài liệu tham chiếu `references/ux-guidelines.md` và `SKILL.md` theo chuẩn HOME MONI v4.0 (Góc nhìn gia đình, Dual BIDV Credit, Cloud Realtime), sửa chuỗi nhận diện tại `ExportImportModal.tsx`. Kiểm thử `npm run build` pass 100%. | `AGENTS.md`, `.agents/rules/*`, `.agents/skills/home-moni-uiux/*`, `ExportImportModal.tsx`, `PROJECT_STATE.md` | 🟢 Verified |
 | **VIBE-09** | 2026-10-26 | Thiết lập hệ thống CI tự động hóa với GitHub Actions (`.github/workflows/ci.yml`), xây dựng bộ tiêu chuẩn kỹ thuật `.agents/standards/` (CI/CD, Vercel, Supabase Sync, Git Collaboration), cập nhật `AGENTS.md` và tài liệu hướng dẫn CD Vercel. | `.github/workflows/ci.yml`, `.agents/standards/*`, `AGENTS.md`, `PROJECT_STATE.md` | 🟢 Verified |
 | **VIBE-08** | 2026-10-26 | Hoàn tất tích hợp toàn diện Supabase Cloud BaaS & Realtime Replication: Cài đặt `@supabase/supabase-js`, xây dựng `lib/supabaseClient.ts`, bộ mappers chuyển đổi 2 chiều `lib/supabaseMappers.ts`, tầng nghiệp vụ Cloud `lib/supabaseService.ts`, nâng cấp `FinanceContext.tsx` với kiến trúc Hybrid Local-First Sync, bổ sung Cloud Sync Status Badge trên `TopBar.tsx` và widget quản lý Cloud trên `SettingsView.tsx`. Kiểm thử `npm run build` pass 100%. | `lib/supabaseClient.ts`, `lib/supabaseMappers.ts`, `lib/supabaseService.ts`, `FinanceContext.tsx`, `TopBar.tsx`, `SettingsView.tsx`, `package.json`, `PROJECT_STATE.md` | 🟢 Verified |
 | **VIBE-07** | 2026-10-26 | Khởi tạo cấu hình biến môi trường Supabase (`.env.local`), giải mã trạng thái SQL DDL ("Success. No rows returned") và thiết lập lộ trình tích hợp Cloud Database/Sync cho 2 vợ chồng. | `.env.local`, `PROJECT_STATE.md` | 🟢 Verified |

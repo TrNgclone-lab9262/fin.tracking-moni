@@ -34,14 +34,14 @@ export function RecentActivitySection() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* CỘT 1 & 2: GIAO DỊCH GẦN ĐÂY (2 COLUMNS) */}
-        <div className="lg:col-span-2 bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-            <h3 className="text-sm sm:text-base font-bold text-slate-800">
+        <div className="lg:col-span-2 bg-white rounded-xl p-5 sm:p-6 border border-[#DCE4EE] shadow-xs flex flex-col justify-between">
+          <div className="flex items-center justify-between pb-4 border-b border-[#E9EEF5]">
+            <h3 className="text-sm sm:text-base font-bold text-[#172B4D]">
               Giao dịch gần đây
             </h3>
             <button
               onClick={() => setActiveTab("transactions")}
-              className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 transition-colors"
+              className="text-xs font-semibold px-2 py-1 rounded-md text-blue-600 hover:text-blue-700 hover:bg-blue-50/50 flex items-center gap-1 transition-colors"
             >
               <span>Xem tất cả</span>
               <ChevronRight className="w-4 h-4" />
@@ -59,11 +59,11 @@ export function RecentActivitySection() {
               return (
                 <div
                   key={tx.id}
-                  className="flex items-center justify-between gap-3 p-3 rounded-2xl bg-slate-50/80 hover:bg-slate-100/80 transition-colors"
+                  className="flex items-center justify-between gap-3 p-3 rounded-lg bg-slate-50/80 hover:bg-slate-100/80 transition-colors border border-[#E9EEF5]"
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     <div
-                      className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-white ${
+                      className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 text-white ${
                         isTransfer
                           ? "bg-blue-500"
                           : isExpense
@@ -81,7 +81,7 @@ export function RecentActivitySection() {
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold text-slate-800 truncate">
+                        <span className="text-xs font-bold text-[#172B4D] truncate">
                           {isTransfer ? "Chuyển khoản" : cat?.name || "Khác"}
                         </span>
                         {tx.tag === "RECURRING" && (
@@ -119,7 +119,7 @@ export function RecentActivitySection() {
         </div>
 
         {/* CỘT 3: NGÂN SÁCH THÁNG NÀY (PROGRESS BARS) */}
-        <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between">
+        <div className="bg-white rounded-xl p-5 sm:p-6 border border-[#DCE4EE] shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between pb-4 border-b border-slate-100">
             <h3 className="text-sm sm:text-base font-bold text-slate-800">
               Ngân sách tháng này

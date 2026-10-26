@@ -245,9 +245,9 @@ export const DEFAULT_NOTIFICATIONS: AppNotification[] = [
   {
     id: "notif_bidv_statement_wife",
     title: "Kỳ sao kê thẻ BIDV Credit (Bé Mèo)",
-    message: "Hạn thanh toán thẻ BIDV Credit (Bé Mèo - 20tr) là ngày 28/10. Dư nợ: 4.200.000 ₫",
+    message: "Hạn thanh toán thẻ BIDV Credit (Bé Mèo - 20tr) là ngày 25/10. Dư nợ: 4.200.000 ₫",
     type: "warning",
-    date: "2026-10-22",
+    date: "2026-10-20",
     read: false,
   },
   {

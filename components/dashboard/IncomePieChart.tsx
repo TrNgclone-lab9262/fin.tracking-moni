@@ -76,15 +76,15 @@ export function IncomePieChart() {
   }, [transactions, selectedMonth, getCategoryById]);
 
   return (
-    <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-xs flex flex-col h-full">
-      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+    <div className="bg-white rounded-xl p-5 sm:p-6 border border-[#DCE4EE] shadow-xs flex flex-col h-full">
+      <div className="flex items-center justify-between pb-4 border-b border-[#E9EEF5]">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
             <ArrowDownLeft className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-slate-800">Thu nhập theo nguồn</h3>
-            <p className="text-xs text-slate-400 font-medium">Tỷ trọng các nguồn thu</p>
+            <h3 className="text-base font-bold text-[#172B4D]">Thu nhập theo nguồn</h3>
+            <p className="text-xs text-slate-500 font-medium">Tỷ trọng các nguồn thu</p>
           </div>
         </div>
       </div>

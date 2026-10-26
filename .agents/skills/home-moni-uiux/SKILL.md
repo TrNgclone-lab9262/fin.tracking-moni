@@ -218,4 +218,4 @@ For implementation, produce:
 
 For substantial changes to shared architecture, business logic, data persistence, or integrations, obtain approval before implementation.
 
-**Final standard:** LOVELY MONEY should feel calm, premium, coherent, responsive, and trustworthy. Every visual decision must improve comprehension, usability, accessibility, or feedback without sacrificing financial correctness.
+**Final standard:** HOME MONI should feel calm, premium, coherent, responsive, and trustworthy. Every visual decision must improve comprehension, usability, accessibility, or feedback without sacrificing financial correctness.

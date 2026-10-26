@@ -55,21 +55,21 @@ export function ExpensePieChart() {
     selectedMonth === "ALL" ? "Toàn thời gian" : getMonthDisplayLabel(selectedMonth);
 
   return (
-    <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-sm flex flex-col h-full">
+    <div className="bg-white rounded-xl p-5 sm:p-6 border border-[#DCE4EE] shadow-xs flex flex-col h-full">
       {/* Tiêu đề Box */}
-      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+      <div className="flex items-center justify-between pb-4 border-b border-[#E9EEF5]">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
             <PieIcon className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-slate-800">Chi tiêu theo danh mục</h3>
-            <p className="text-xs text-slate-400 font-medium">
+            <h3 className="text-base font-bold text-[#172B4D]">Chi tiêu theo danh mục</h3>
+            <p className="text-xs text-slate-500 font-medium">
               Tỷ trọng phân bổ ngân sách ({periodLabel.toLowerCase()})
             </p>
           </div>
         </div>
-        <span className="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-600 rounded-lg">
+        <span className="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md">
           {categoryExpenseStats.length} danh mục
         </span>
       </div>
@@ -78,7 +78,7 @@ export function ExpensePieChart() {
       <div className="flex-1 flex flex-col justify-center items-center py-4">
         {categoryExpenseStats.length === 0 ? (
           <div className="text-center py-12 px-4">
-            <div className="w-14 h-14 bg-slate-100 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-3">
+            <div className="w-14 h-14 bg-slate-100 text-slate-400 rounded-lg flex items-center justify-center mx-auto mb-3">
               <Info className="w-7 h-7" />
             </div>
             <p className="text-sm font-semibold text-slate-700">Chưa có dữ liệu chi tiêu</p>

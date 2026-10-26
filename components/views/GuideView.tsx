@@ -37,7 +37,7 @@ export function GuideView() {
       icon: Users,
       content: (
         <div className="space-y-3 text-xs sm:text-sm text-slate-600 leading-relaxed">
-          <div className="p-4 rounded-2xl bg-blue-50/80 border border-blue-200/60 flex items-start gap-3 text-blue-900">
+          <div className="p-4 rounded-lg bg-blue-50/80 border border-blue-200/60 flex items-start gap-3 text-blue-900">
             <Lightbulb className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
             <div>
               <strong>Nguyên tắc đồng thuận:</strong> HOME MONI giúp Anh Chuột và Bé Mèo nắm rõ thu nhập, chi tiêu và nợ thẻ tín dụng của nhau nhưng vẫn tôn trọng các khoản chi tiêu cá nhân hợp lý.
@@ -71,7 +71,7 @@ export function GuideView() {
               <strong>Ngưỡng an toàn 70%:</strong> Không nên quẹt vượt quá 70% hạn mức thẻ để giữ điểm tín dụng tốt và tránh áp lực trả nợ cuối kỳ.
             </li>
             <li>
-              <strong>Nhắc ngày sao kê:</strong> Hệ thống tự động cảnh báo ngày sao kê thẻ Anh Chuột (20 hàng tháng, hạn trả 25) và thẻ Bé Mèo (22 hàng tháng, hạn trả 28) trên chuông thông báo.
+              <strong>Nhắc ngày sao kê:</strong> Hệ thống tự động cảnh báo ngày sao kê thẻ tín dụng của cả 2 vợ chồng (ngày 20 hàng tháng, hạn trả ngày 25 hàng tháng) trên chuông thông báo.
             </li>
           </ul>
         </div>
@@ -120,7 +120,7 @@ export function GuideView() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 animate-in fade-in duration-200">
-      <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs">
+      <div className="bg-white rounded-xl p-6 border border-[#DCE4EE] shadow-xs">
         <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
           <HelpCircle className="w-5 h-5 text-blue-600" />
           Cẩm nang sử dụng HOME MONI
@@ -138,14 +138,14 @@ export function GuideView() {
           return (
             <div
               key={sec.id}
-              className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden transition-all"
+              className="bg-white rounded-xl border border-[#DCE4EE] shadow-xs overflow-hidden transition-all"
             >
               <button
                 onClick={() => toggleSection(sec.id)}
                 className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-slate-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
                     <Icon className="w-4 h-4" />
                   </div>
                   <span className="font-bold text-sm text-slate-800">{sec.title}</span>

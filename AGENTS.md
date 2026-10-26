@@ -38,14 +38,14 @@ flowchart LR
 ---
 
 ### CỔNG 2: IN-VIBE GATE (Kiểm Soát Thực Thi & Chuẩn Mực Code)
-1. **Tuân Thủ Tuyệt Đối Skill UI/UX (`.agents/skills/lovely-money-uiux/`):**
+1. **Tuân Thủ Tuyệt Đối Skill UI/UX (`.agents/skills/home-moni-uiux/`):**
    - Bảng màu Fintech Tokens:
      - Primary Navy: `#1E3A8A` / `#1D4ED8` (Sidebar gradient)
      - Active Blue: `#2563EB` (Primary buttons, active highlight)
      - Income Emerald: `#10B981` / `#059669` (Khoản thu, đạt mục tiêu)
      - Expense Rose: `#F43F5E` / `#E11D48` (Khoản chi, nợ thẻ)
      - Warning Amber: `#F59E0B` / `#D97706` (Hạn mức thẻ > 70%, nợ đến hạn)
-   - Hình khối: `rounded-3xl` cho card/modal, `rounded-xl` cho buttons/inputs.
+   - Hình khối & Bo góc: `rounded-xl` (12px) cho card/widget/modal, `rounded-md` (6px) cho buttons, `rounded-lg` (8px) cho inputs/controls/badges.
    - Thao tác di động: Bàn phím số Numpad (+000, 50k, 100k, 200k, 500k), Floating Action Button góc dưới phải.
 2. **Chuẩn Mực TypeScript & Clean Code:**
    - Tuyệt đối cấm sử dụng `any`. Mọi props, state, event phải có type rõ ràng.

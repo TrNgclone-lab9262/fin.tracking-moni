@@ -81,13 +81,13 @@ export function TransactionsView({
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
       {/* 1. Thanh Lọc & Tìm kiếm Toàn diện */}
-      <div className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs space-y-4">
+      <div className="bg-white rounded-xl p-5 border border-[#DCE4EE] shadow-xs space-y-4">
         {/* Quick Month Filter Bar */}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
             <button
               onClick={() => setSelectedMonth("ALL")}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+              className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all whitespace-nowrap ${
                 selectedMonth === "ALL"
                   ? "bg-blue-600 text-white shadow-xs"
                   : "bg-slate-100 hover:bg-slate-200 text-slate-600"
@@ -99,7 +99,7 @@ export function TransactionsView({
               <button
                 key={m}
                 onClick={() => setSelectedMonth(m)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all whitespace-nowrap ${
                   selectedMonth === m
                     ? "bg-blue-600 text-white shadow-xs"
                     : "bg-slate-100 hover:bg-slate-200 text-slate-600"
@@ -113,14 +113,14 @@ export function TransactionsView({
           <div className="flex items-center gap-2">
             <button
               onClick={onOpenBackupModal}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-md transition-colors"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Xuất dữ liệu</span>
             </button>
             <button
               onClick={onOpenAddModal}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-md shadow-xs"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Thêm giao dịch</span>
@@ -129,12 +129,12 @@ export function TransactionsView({
         </div>
 
         {/* Dòng Dropdowns: Loại, Tài khoản, Danh mục, Search */}
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 pt-2 border-t border-slate-100">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 pt-2 border-t border-[#E9EEF5]">
           <div>
             <select
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value as any)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-blue-500"
+              className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-blue-500"
             >
               <option value="ALL">Tất cả loại giao dịch</option>
               <option value="INCOME">Thu nhập</option>
@@ -147,7 +147,7 @@ export function TransactionsView({
             <select
               value={selectedAccount}
               onChange={(e) => setSelectedAccount(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-blue-500"
+              className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-blue-500"
             >
               <option value="ALL">Tất cả tài khoản (Ví)</option>
               {accounts.map((a) => (
@@ -162,7 +162,7 @@ export function TransactionsView({
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-blue-500"
+              className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-blue-500"
             >
               <option value="ALL">Tất cả danh mục</option>
               {categories.map((c) => (
@@ -181,7 +181,7 @@ export function TransactionsView({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Tìm theo ghi chú..."
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-8 py-2 text-xs text-slate-800 outline-none focus:border-blue-500 placeholder:text-slate-400 font-medium"
+              className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg pl-9 pr-8 py-2 text-xs text-slate-800 outline-none focus:border-blue-500 placeholder:text-slate-400 font-medium"
             />
             {searchQuery && (
               <button
@@ -212,7 +212,7 @@ export function TransactionsView({
       </div>
 
       {/* 3. Bảng Giao Dịch Chi Tiết */}
-      <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
+      <div className="bg-white rounded-xl border border-[#DCE4EE] shadow-xs overflow-hidden">
         {filteredTransactions.length === 0 ? (
           <div className="p-12 text-center">
             <AlertCircle className="w-10 h-10 text-slate-300 mx-auto mb-2" />

@@ -81,10 +81,10 @@ export function TrendLineCharts() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Biểu đồ 1: Số dư theo thời gian */}
-        <div className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs flex flex-col">
+        <div className="bg-white rounded-xl p-5 border border-[#DCE4EE] shadow-xs flex flex-col">
           <div className="flex items-center justify-between mb-2">
             <h4 className="text-xs font-bold text-slate-700">Số dư theo thời gian</h4>
-            <span className="text-[10px] font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
+            <span className="text-[10px] font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">
               T5 - T10
             </span>
           </div>
@@ -118,10 +118,10 @@ export function TrendLineCharts() {
         </div>
 
         {/* Biểu đồ 2: Chi tiêu lũy kế trong tháng */}
-        <div className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs flex flex-col">
+        <div className="bg-white rounded-xl p-5 border border-[#DCE4EE] shadow-xs flex flex-col">
           <div className="flex items-center justify-between mb-2">
             <h4 className="text-xs font-bold text-slate-700">Chi tiêu lũy kế trong tháng</h4>
-            <span className="text-[10px] font-semibold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full">
+            <span className="text-[10px] font-semibold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-md">
               Mốc {formatShortVND(budgetSummary.totalBudget)}
             </span>
           </div>
@@ -160,10 +160,10 @@ export function TrendLineCharts() {
         </div>
 
         {/* Biểu đồ 3: Thu lũy kế trong tháng */}
-        <div className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs flex flex-col">
+        <div className="bg-white rounded-xl p-5 border border-[#DCE4EE] shadow-xs flex flex-col">
           <div className="flex items-center justify-between mb-2">
             <h4 className="text-xs font-bold text-slate-700">Thu lũy kế trong tháng</h4>
-            <span className="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+            <span className="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
               Tháng 10
             </span>
           </div>

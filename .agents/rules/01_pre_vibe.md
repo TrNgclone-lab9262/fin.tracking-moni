@@ -31,4 +31,4 @@ Khi tiếp nhận một tính năng lớn, hãy phác thảo nhanh phạm vi:
 | **Data Layer** | `types/finance.ts`, `lib/validations.ts` | Gãy kiểu dữ liệu của các view cũ | Khớp nối chặt chẽ Zod schema & TypeScript interface |
 | **Storage Layer** | `constants/mockData.ts`, `lib/storage.ts` | LocalStorage không tự nạp schema mới | Nâng cấp storage key nếu cấu trúc dữ liệu cốt lõi thay đổi |
 | **State Layer** | `context/FinanceContext.tsx` | Quên cung cấp hàm dispatch hoặc selector | Export đầy đủ qua `FinanceContext.Provider` |
-| **UI Layer** | `components/*`, `app/*` | Lỗi vỡ giao diện trên mobile hoặc SSR hydration | Tuân thủ Skill `.agents/skills/lovely-money-uiux/` |
+| **UI Layer** | `components/*`, `app/*` | Lỗi vỡ giao diện trên mobile hoặc SSR hydration | Tuân thủ Skill `.agents/skills/home-moni-uiux/` |
