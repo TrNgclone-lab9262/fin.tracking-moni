@@ -32,7 +32,7 @@ fi.tracking-moni/
 │   │   ├── 02_in_vibe.md              # Cổng 2: Chuẩn sinh mã Clean Code & UI/UX Tokens
 │   │   └── 03_post_vibe.md            # Cổng 3: Build verification & cập nhật State Ledger
 │   ├── skills/
-│   │   └── lovely-money-uiux/         # Skill UI/UX: Design Tokens, Recharts specs, Mobile guidelines
+│   │   └── home-moni-uiux/            # Skill UI/UX: Design Tokens, Recharts specs, Mobile guidelines
 │   └── standards/
 │       ├── 01_ci_cd_automation.md     # Tiêu chuẩn GitHub Actions CI & quy tắc kiểm thử
 │       ├── 02_deployment_vercel.md    # Tiêu chuẩn triển khai CD Vercel & PWA Mobile
@@ -125,6 +125,7 @@ flowchart LR
 
 | Phiên (Vibe ID) | Ngày Giờ | Mục Tiêu & Thay Đổi Cốt Lõi | Files Tác Động | Trạng Thái |
 | :--- | :--- | :--- | :--- | :--- |
+| **VIBE-10** | 2026-10-26 | Đồng bộ hóa toàn diện sau khi đổi tên thư mục skill sang `home-moni-uiux`: Cập nhật đồng bộ các file quy tắc (`AGENTS.md`, `.agents/rules/01_pre_vibe.md`, `.agents/rules/02_in_vibe.md`), sổ cái `PROJECT_STATE.md`, nâng cấp toàn diện tài liệu tham chiếu `references/ux-guidelines.md` và `SKILL.md` theo chuẩn HOME MONI v4.0 (Góc nhìn gia đình, Dual BIDV Credit, Cloud Realtime), sửa chuỗi nhận diện tại `ExportImportModal.tsx`. Kiểm thử `npm run build` pass 100%. | `AGENTS.md`, `.agents/rules/*`, `.agents/skills/home-moni-uiux/*`, `ExportImportModal.tsx`, `PROJECT_STATE.md` | 🟢 Verified |
 | **VIBE-09** | 2026-10-26 | Thiết lập hệ thống CI tự động hóa với GitHub Actions (`.github/workflows/ci.yml`), xây dựng bộ tiêu chuẩn kỹ thuật `.agents/standards/` (CI/CD, Vercel, Supabase Sync, Git Collaboration), cập nhật `AGENTS.md` và tài liệu hướng dẫn CD Vercel. | `.github/workflows/ci.yml`, `.agents/standards/*`, `AGENTS.md`, `PROJECT_STATE.md` | 🟢 Verified |
 | **VIBE-08** | 2026-10-26 | Hoàn tất tích hợp toàn diện Supabase Cloud BaaS & Realtime Replication: Cài đặt `@supabase/supabase-js`, xây dựng `lib/supabaseClient.ts`, bộ mappers chuyển đổi 2 chiều `lib/supabaseMappers.ts`, tầng nghiệp vụ Cloud `lib/supabaseService.ts`, nâng cấp `FinanceContext.tsx` với kiến trúc Hybrid Local-First Sync, bổ sung Cloud Sync Status Badge trên `TopBar.tsx` và widget quản lý Cloud trên `SettingsView.tsx`. Kiểm thử `npm run build` pass 100%. | `lib/supabaseClient.ts`, `lib/supabaseMappers.ts`, `lib/supabaseService.ts`, `FinanceContext.tsx`, `TopBar.tsx`, `SettingsView.tsx`, `package.json`, `PROJECT_STATE.md` | 🟢 Verified |
 | **VIBE-07** | 2026-10-26 | Khởi tạo cấu hình biến môi trường Supabase (`.env.local`), giải mã trạng thái SQL DDL ("Success. No rows returned") và thiết lập lộ trình tích hợp Cloud Database/Sync cho 2 vợ chồng. | `.env.local`, `PROJECT_STATE.md` | 🟢 Verified |

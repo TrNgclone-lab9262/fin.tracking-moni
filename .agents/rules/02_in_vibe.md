@@ -19,7 +19,7 @@
 
 ## 2. Tiêu Chuẩn Giao Diện (UI/UX Design Tokens)
 
-Được kế thừa từ `.agents/skills/lovely-money-uiux/SKILL.md`:
+Được kế thừa từ `.agents/skills/home-moni-uiux/SKILL.md`:
 
 1. **Bảng màu Fintech:**
    - `bg-[#1E3A8A]` hoặc `bg-gradient-to-b from-[#1E3A8A] via-[#1D4ED8] to-[#172554]`: Nền Sidebar chính.

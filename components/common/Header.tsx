@@ -37,7 +37,7 @@ export function Header({
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-extrabold text-base sm:text-xl tracking-tight bg-gradient-to-r from-blue-700 via-indigo-700 to-sky-600 bg-clip-text text-transparent">
-                  LOVELY MONEY
+                  HOME MONI
                 </span>
                 <span className="hidden md:inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
                   <CheckCircle2 className="w-3 h-3 text-emerald-600" />

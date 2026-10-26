@@ -170,7 +170,7 @@ export function ExportImportModal({
                   Chọn tệp JSON sao lưu từ máy tính
                 </p>
                 <p className="text-[11px] text-slate-400 mt-1">
-                  Định dạng chuẩn do ứng dụng Lovely Money tạo ra
+                  Định dạng chuẩn do ứng dụng HOME MONI tạo ra
                 </p>
                 <input
                   type="file"

@@ -38,7 +38,7 @@ flowchart LR
 ---
 
 ### CỔNG 2: IN-VIBE GATE (Kiểm Soát Thực Thi & Chuẩn Mực Code)
-1. **Tuân Thủ Tuyệt Đối Skill UI/UX (`.agents/skills/lovely-money-uiux/`):**
+1. **Tuân Thủ Tuyệt Đối Skill UI/UX (`.agents/skills/home-moni-uiux/`):**
    - Bảng màu Fintech Tokens:
      - Primary Navy: `#1E3A8A` / `#1D4ED8` (Sidebar gradient)
      - Active Blue: `#2563EB` (Primary buttons, active highlight)
