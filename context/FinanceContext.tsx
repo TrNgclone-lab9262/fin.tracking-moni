@@ -44,6 +44,8 @@ import {
   DEFAULT_SETTINGS,
   DEFAULT_NOTIFICATIONS,
 } from "@/constants/mockData";
+import { supabase, isSupabaseConfigured } from "@/lib/supabaseClient";
+import { supabaseService } from "@/lib/supabaseService";
 
 export type NavTab =
   | "overview"
@@ -107,6 +109,12 @@ interface FinanceContextType {
   isLoaded: boolean;
   activeTab: NavTab;
   setActiveTab: (tab: NavTab) => void;
+
+  // Trạng thái Cloud Database & Realtime
+  isCloudConnected: boolean;
+  isSyncing: boolean;
+  lastSyncedAt: Date | null;
+  syncWithCloud: () => Promise<void>;
 
   // Góc nhìn thành viên (Cả nhà / Chồng / Vợ)
   activePerspective: PerspectiveMode;
@@ -190,6 +198,11 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
   const [activeTab, setActiveTab] = useState<NavTab>("overview");
   const [activePerspective, setActivePerspective] = useState<PerspectiveMode>("ALL");
 
+  // Supabase Cloud State
+  const [isCloudConnected, setIsCloudConnected] = useState<boolean>(isSupabaseConfigured);
+  const [isSyncing, setIsSyncing] = useState<boolean>(false);
+  const [lastSyncedAt, setLastSyncedAt] = useState<Date | null>(null);
+
   const [categories, setCategories] = useState<Category[]>(DEFAULT_CATEGORIES);
   const [accounts, setAccounts] = useState<Account[]>(DEFAULT_ACCOUNTS);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -206,7 +219,57 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
   const [selectedAccount, setSelectedAccount] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  // Khởi tạo từ LocalStorage khi mount
+  // Hàm đồng bộ dữ liệu từ Supabase Cloud về Local State
+  const syncWithCloud = useCallback(async () => {
+    if (!isSupabaseConfigured) {
+      setIsCloudConnected(false);
+      return;
+    }
+
+    setIsSyncing(true);
+    try {
+      const cloudData = await supabaseService.fetchAllData();
+      if (cloudData) {
+        setIsCloudConnected(true);
+        setLastSyncedAt(new Date());
+
+        // Nếu trên Cloud đã có dữ liệu, hợp nhất vào State
+        if (cloudData.accounts.length > 0 || cloudData.transactions.length > 0) {
+          if (cloudData.categories.length > 0) setCategories(cloudData.categories);
+          if (cloudData.budgets.length > 0) setBudgets(cloudData.budgets);
+          if (cloudData.goals.length > 0) setGoals(cloudData.goals);
+          if (cloudData.debts.length > 0) setDebts(cloudData.debts);
+          if (cloudData.investments.length > 0) setInvestments(cloudData.investments);
+          if (cloudData.settings) setSettings(cloudData.settings);
+
+          const recalcAccounts = recalculateAccountBalances(cloudData.accounts, cloudData.transactions);
+          setTransactions(cloudData.transactions);
+          setAccounts(recalcAccounts);
+
+          // Cập nhật lại cache LocalStorage để lần tải sau nhanh 0ms
+          saveStoredDataV3({
+            categories: cloudData.categories.length > 0 ? cloudData.categories : categories,
+            accounts: recalcAccounts,
+            transactions: cloudData.transactions,
+            budgets: cloudData.budgets.length > 0 ? cloudData.budgets : budgets,
+            goals: cloudData.goals.length > 0 ? cloudData.goals : goals,
+            debts: cloudData.debts.length > 0 ? cloudData.debts : debts,
+            investments: cloudData.investments.length > 0 ? cloudData.investments : investments,
+            settings: cloudData.settings || settings,
+          });
+        }
+      } else {
+        setIsCloudConnected(false);
+      }
+    } catch (err) {
+      console.error("Cloud sync error:", err);
+      setIsCloudConnected(false);
+    } finally {
+      setIsSyncing(false);
+    }
+  }, [categories, budgets, goals, debts, investments, settings]);
+
+  // Khởi tạo từ LocalStorage khi mount (0ms) sau đó đồng bộ Cloud
   useEffect(() => {
     const data = loadStoredDataV3();
     setCategories(data.categories);
@@ -221,9 +284,53 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     setAccounts(updatedAccounts);
 
     setIsLoaded(true);
-  }, []);
 
-  // Tự động đồng bộ vào LocalStorage V3
+    // Kích hoạt đồng bộ Cloud nếu đã cấu hình
+    if (isSupabaseConfigured) {
+      syncWithCloud();
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Lắng nghe Supabase Realtime Replication: khi vợ/chồng thêm giao dịch, máy kia tự động cập nhật
+  useEffect(() => {
+    if (!supabase || !isSupabaseConfigured) return;
+
+    const channel = supabase
+      .channel("home_moni_realtime")
+      .on("postgres_changes", { event: "*", schema: "public", table: "transactions" }, () => {
+        syncWithCloud();
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "accounts" }, () => {
+        syncWithCloud();
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "category_budgets" }, () => {
+        syncWithCloud();
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "savings_goals" }, () => {
+        syncWithCloud();
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "debts" }, () => {
+        syncWithCloud();
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "investments" }, () => {
+        syncWithCloud();
+      })
+      .subscribe((status) => {
+        if (status === "SUBSCRIBED") {
+          setIsCloudConnected(true);
+        } else if (status === "CLOSED" || status === "CHANNEL_ERROR") {
+          setIsCloudConnected(false);
+        }
+      });
+
+    return () => {
+      if (supabase) {
+        supabase.removeChannel(channel);
+      }
+    };
+  }, [syncWithCloud]);
+
+  // Tự động lưu vào LocalStorage V3 để đảm bảo offline
   useEffect(() => {
     if (!isLoaded) return;
     saveStoredDataV3({
@@ -264,7 +371,7 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     [accounts]
   );
 
-  // CRUD Giao dịch
+  // CRUD Giao dịch (Optimistic UI + Background Cloud Sync)
   const addTransaction = useCallback(
     (input: TransactionInput): Transaction => {
       const now = new Date().toISOString();
@@ -286,21 +393,29 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
 
       setTransactions((prev) => {
         const next = [newTx, ...prev];
-        syncAccountBalances(next);
+        setAccounts((prevAccs) => {
+          const recalc = recalculateAccountBalances(prevAccs, next);
+          if (isSupabaseConfigured) {
+            supabaseService.upsertTransaction(newTx);
+            supabaseService.updateAccounts(recalc);
+          }
+          return recalc;
+        });
         return next;
       });
 
       return newTx;
     },
-    [syncAccountBalances]
+    []
   );
 
   const updateTransaction = useCallback(
     (id: string, input: Partial<TransactionInput>) => {
+      let updatedTx: Transaction | undefined;
       setTransactions((prev) => {
         const next = prev.map((tx) => {
           if (tx.id !== id) return tx;
-          return {
+          updatedTx = {
             ...tx,
             amount: input.amount !== undefined ? Math.abs(input.amount) : tx.amount,
             date: input.date !== undefined ? input.date : tx.date,
@@ -314,23 +429,40 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
             tag: input.tag !== undefined ? input.tag : tx.tag,
             updatedAt: new Date().toISOString(),
           };
+          return updatedTx;
         });
-        syncAccountBalances(next);
+
+        setAccounts((prevAccs) => {
+          const recalc = recalculateAccountBalances(prevAccs, next);
+          if (isSupabaseConfigured && updatedTx) {
+            supabaseService.upsertTransaction(updatedTx);
+            supabaseService.updateAccounts(recalc);
+          }
+          return recalc;
+        });
+
         return next;
       });
     },
-    [syncAccountBalances]
+    []
   );
 
   const deleteTransaction = useCallback(
     (id: string) => {
       setTransactions((prev) => {
         const next = prev.filter((tx) => tx.id !== id);
-        syncAccountBalances(next);
+        setAccounts((prevAccs) => {
+          const recalc = recalculateAccountBalances(prevAccs, next);
+          if (isSupabaseConfigured) {
+            supabaseService.deleteTransaction(id);
+            supabaseService.updateAccounts(recalc);
+          }
+          return recalc;
+        });
         return next;
       });
     },
-    [syncAccountBalances]
+    []
   );
 
   // Quản lý Tài khoản (Ví)
@@ -341,23 +473,48 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
       id: newId,
       currentBalance: acc.initialBalance,
     };
-    setAccounts((prev) => [...prev, newAccount]);
+    setAccounts((prev) => {
+      const next = [...prev, newAccount];
+      if (isSupabaseConfigured) {
+        supabaseService.upsertAccount(newAccount);
+      }
+      return next;
+    });
   }, []);
 
   const updateAccount = useCallback((id: string, acc: Partial<Account>) => {
-    setAccounts((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, ...acc } : a))
-    );
+    setAccounts((prev) => {
+      let target: Account | undefined;
+      const next = prev.map((a) => {
+        if (a.id === id) {
+          target = { ...a, ...acc };
+          return target;
+        }
+        return a;
+      });
+      if (isSupabaseConfigured && target) {
+        supabaseService.upsertAccount(target);
+      }
+      return next;
+    });
   }, []);
 
   const deleteAccount = useCallback((id: string) => {
-    setAccounts((prev) => prev.filter((a) => a.id !== id));
+    setAccounts((prev) => {
+      const next = prev.filter((a) => a.id !== id);
+      if (isSupabaseConfigured) {
+        supabaseService.updateAccounts(next);
+      }
+      return next;
+    });
   }, []);
 
   // Ngân sách
   const setCategoryBudget = useCallback(
     (categoryId: string, limitAmount: number, month?: string) => {
       const targetMonth = month || selectedMonth || "2026-10";
+      const targetBudget: CategoryBudget = { categoryId, limitAmount, month: targetMonth };
+
       setBudgets((prev) => {
         const exists = prev.some(
           (b) => b.categoryId === categoryId && b.month === targetMonth
@@ -369,8 +526,12 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
               : b
           );
         }
-        return [...prev, { categoryId, limitAmount, month: targetMonth }];
+        return [...prev, targetBudget];
       });
+
+      if (isSupabaseConfigured) {
+        supabaseService.upsertBudget(targetBudget);
+      }
     },
     [selectedMonth]
   );
@@ -383,76 +544,130 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
       isCompleted: goal.currentAmount >= goal.targetAmount,
     };
     setGoals((prev) => [...prev, newGoal]);
+    if (isSupabaseConfigured) {
+      supabaseService.upsertGoal(newGoal);
+    }
   }, []);
 
   const updateGoal = useCallback((id: string, goal: Partial<SavingsGoal>) => {
-    setGoals((prev) =>
-      prev.map((g) => {
+    setGoals((prev) => {
+      let target: SavingsGoal | undefined;
+      const next = prev.map((g) => {
         if (g.id !== id) return g;
-        const updated = { ...g, ...goal };
-        updated.isCompleted = updated.currentAmount >= updated.targetAmount;
-        return updated;
-      })
-    );
+        target = { ...g, ...goal };
+        target.isCompleted = target.currentAmount >= target.targetAmount;
+        return target;
+      });
+      if (isSupabaseConfigured && target) {
+        supabaseService.upsertGoal(target);
+      }
+      return next;
+    });
   }, []);
 
   const deleteGoal = useCallback((id: string) => {
     setGoals((prev) => prev.filter((g) => g.id !== id));
+    if (isSupabaseConfigured) {
+      supabaseService.deleteGoal(id);
+    }
   }, []);
 
   const depositGoal = useCallback((id: string, amount: number) => {
-    setGoals((prev) =>
-      prev.map((g) => {
+    setGoals((prev) => {
+      let target: SavingsGoal | undefined;
+      const next = prev.map((g) => {
         if (g.id !== id) return g;
         const newCurrent = g.currentAmount + amount;
-        return {
+        target = {
           ...g,
           currentAmount: newCurrent,
           isCompleted: newCurrent >= g.targetAmount,
         };
-      })
-    );
+        return target;
+      });
+      if (isSupabaseConfigured && target) {
+        supabaseService.upsertGoal(target);
+      }
+      return next;
+    });
   }, []);
 
   // Nợ & Đầu tư
   const addDebt = useCallback((debt: Omit<DebtItem, "id">) => {
-    setDebts((prev) => [...prev, { ...debt, id: `debt_${Date.now()}` }]);
+    const newDebt: DebtItem = { ...debt, id: `debt_${Date.now()}` };
+    setDebts((prev) => [...prev, newDebt]);
+    if (isSupabaseConfigured) {
+      supabaseService.upsertDebt(newDebt);
+    }
   }, []);
 
   const payDebt = useCallback((id: string, amount: number) => {
-    setDebts((prev) =>
-      prev.map((d) => {
+    setDebts((prev) => {
+      let target: DebtItem | undefined;
+      const next = prev.map((d) => {
         if (d.id !== id) return d;
         const newPaid = d.paidAmount + amount;
-        return {
+        target = {
           ...d,
           paidAmount: newPaid,
           status: newPaid >= d.totalAmount ? "PAID" : "ACTIVE",
         };
-      })
-    );
+        return target;
+      });
+      if (isSupabaseConfigured && target) {
+        supabaseService.upsertDebt(target);
+      }
+      return next;
+    });
   }, []);
 
   const deleteDebt = useCallback((id: string) => {
     setDebts((prev) => prev.filter((d) => d.id !== id));
+    if (isSupabaseConfigured) {
+      supabaseService.deleteDebt(id);
+    }
   }, []);
 
   const addInvestment = useCallback((inv: Omit<InvestmentItem, "id">) => {
-    setInvestments((prev) => [...prev, { ...inv, id: `inv_${Date.now()}` }]);
+    const newInv: InvestmentItem = { ...inv, id: `inv_${Date.now()}` };
+    setInvestments((prev) => [...prev, newInv]);
+    if (isSupabaseConfigured) {
+      supabaseService.upsertInvestment(newInv);
+    }
   }, []);
 
   const updateInvestment = useCallback((id: string, inv: Partial<InvestmentItem>) => {
-    setInvestments((prev) =>
-      prev.map((i) => (i.id === id ? { ...i, ...inv } : i))
-    );
+    setInvestments((prev) => {
+      let target: InvestmentItem | undefined;
+      const next = prev.map((i) => {
+        if (i.id === id) {
+          target = { ...i, ...inv };
+          return target;
+        }
+        return i;
+      });
+      if (isSupabaseConfigured && target) {
+        supabaseService.upsertInvestment(target);
+      }
+      return next;
+    });
   }, []);
 
   const deleteInvestment = useCallback((id: string) => {
     setInvestments((prev) => prev.filter((i) => i.id !== id));
+    if (isSupabaseConfigured) {
+      supabaseService.deleteInvestment(id);
+    }
   }, []);
 
   const updateSettings = useCallback((newSettings: Partial<AppSettings>) => {
-    setSettings((prev) => ({ ...prev, ...newSettings }));
+    setSettings((prev) => {
+      const next = { ...prev, ...newSettings };
+      if (isSupabaseConfigured) {
+        supabaseService.updateSettings(next);
+      }
+      return next;
+    });
   }, []);
 
   // Reset to Mock
@@ -497,6 +712,18 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
         setInvestments(res.data.investments);
         setSettings(res.data.settings);
         saveStoredDataV3(res.data);
+
+        // Đẩy lên cloud nếu đã cấu hình
+        if (isSupabaseConfigured) {
+          res.data.accounts.forEach((a) => supabaseService.upsertAccount(a));
+          res.data.transactions.forEach((t) => supabaseService.upsertTransaction(t));
+          res.data.budgets.forEach((b) => supabaseService.upsertBudget(b));
+          res.data.goals.forEach((g) => supabaseService.upsertGoal(g));
+          res.data.debts.forEach((d) => supabaseService.upsertDebt(d));
+          res.data.investments.forEach((i) => supabaseService.upsertInvestment(i));
+          supabaseService.updateSettings(res.data.settings);
+        }
+
         return { success: true };
       }
       return { success: false, error: res.error || "Nhập file thất bại" };
@@ -539,7 +766,6 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
 
   // Tính toán Tổng hợp Tài chính (theo góc nhìn activePerspective)
   const summary = useMemo<FinancialSummary>(() => {
-    // 1. Phân loại tài khoản theo góc nhìn
     const filteredAccounts = accounts.filter((a) => {
       if (activePerspective === "ALL") return true;
       if (activePerspective === "HUSBAND") return a.owner === "HUSBAND" || a.owner === "SHARED";
@@ -547,17 +773,14 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
       return true;
     });
 
-    // Số dư khả dụng (chỉ tính ví tiền mặt và ngân hàng thường, không tính thẻ tín dụng)
     const currentBalance = filteredAccounts
       .filter((a) => a.type !== "CREDIT_CARD")
       .reduce((sum, a) => sum + Math.max(0, a.currentBalance), 0);
 
-    // Tổng dư nợ thẻ tín dụng
     const totalCreditDebt = filteredAccounts
       .filter((a) => a.type === "CREDIT_CARD")
       .reduce((sum, a) => sum + Math.max(0, a.currentBalance), 0);
 
-    // Nợ ngoài
     const totalDebt = debts
       .filter((d) => d.status === "ACTIVE")
       .filter((d) => {
@@ -568,7 +791,6 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
       })
       .reduce((sum, d) => sum + (d.totalAmount - d.paidAmount), 0);
 
-    // Đầu tư
     const totalInvested = investments
       .filter((i) => i.status === "ACTIVE")
       .filter((i) => {
@@ -579,10 +801,8 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
       })
       .reduce((sum, i) => sum + (i.currentValue || i.amount), 0);
 
-    // Tài sản ròng
     const netWorth = currentBalance + totalInvested - totalDebt - totalCreditDebt;
 
-    // Thu - Chi theo kỳ và theo góc nhìn
     let monthlyIncome = 0;
     let monthlyExpense = 0;
     let husbandIncome = 0;
@@ -698,7 +918,6 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
         if (selectedAccount !== "ALL" && tx.accountId !== selectedAccount && tx.toAccountId !== selectedAccount)
           return false;
 
-        // Lọc theo góc nhìn thành viên
         if (activePerspective === "HUSBAND" && tx.memberId !== "HUSBAND") return false;
         if (activePerspective === "WIFE" && tx.memberId !== "WIFE") return false;
 
@@ -754,7 +973,7 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     return stats.sort((a, b) => b.totalAmount - a.totalAmount);
   }, [transactions, selectedMonth, activePerspective, getCategoryById]);
 
-  // Monthly Trend
+  // Xu hướng thu chi
   const monthlyTrendData = useMemo<MonthlyTrendItem[]>(() => {
     const months = ["2026-05", "2026-06", "2026-07", "2026-08", "2026-09", "2026-10"];
     const map = new Map<string, { income: number; expense: number }>();
@@ -789,7 +1008,6 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
   const notifications = useMemo<AppNotification[]>(() => {
     const list: AppNotification[] = [...DEFAULT_NOTIFICATIONS];
 
-    // Cảnh báo hạn mức thẻ tín dụng nếu dùng > 70%
     if (husbandCreditCard && husbandCreditCard.usagePercentage >= 70) {
       list.push({
         id: "warn_husband_credit_high",
@@ -801,15 +1019,34 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
       });
     }
 
-    return list;
-  }, [husbandCreditCard]);
+    if (wifeCreditCard && wifeCreditCard.usagePercentage >= 70) {
+      list.push({
+        id: "warn_wife_credit_high",
+        title: "Cảnh báo hạn mức thẻ Vợ",
+        message: `Thẻ BIDV Credit Vợ đã dùng ${wifeCreditCard.usagePercentage}% hạn mức (vượt ngưỡng 70%)`,
+        type: "warning",
+        date: "2026-10-22",
+        read: false,
+      });
+    }
 
-  const markNotificationRead = useCallback((id: string) => {}, []);
+    return list;
+  }, [husbandCreditCard, wifeCreditCard]);
+
+  const markNotificationRead = useCallback((id: string) => {
+    if (isSupabaseConfigured) {
+      supabaseService.markNotificationRead(id);
+    }
+  }, []);
 
   const value = {
     isLoaded,
     activeTab,
     setActiveTab,
+    isCloudConnected,
+    isSyncing,
+    lastSyncedAt,
+    syncWithCloud,
     activePerspective,
     setActivePerspective,
     categories,

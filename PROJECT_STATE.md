@@ -1,16 +1,16 @@
 # 🏛️ HOME MONI - LIVING PROJECT STATE LEDGER
-> **Last Synchronized:** 2026-10-26T08:44:00+07:00  
-> **App Version:** v3.3 (Streamlined Sidebar UX Edition)  
-> **Active Storage Key:** `HOME_MONI_DATA_V4`  
+> **Last Synchronized:** 2026-10-26T09:08:00+07:00  
+> **App Version:** v4.0 (Supabase Cloud BaaS & Realtime Edition)  
+> **Active Storage Key:** `HOME_MONI_DATA_V4` + Supabase PostgreSQL Cloud BaaS (`ymcxdzxdbhivopxyyhph`)  
 > **Build Status:** 🟢 PASSING (`npm run build` verified: 0 errors, 4/4 static pages)  
-> **Runtime Environment:** Next.js 14.2.35 (App Router) · React 18 · TypeScript 5 · Tailwind CSS · Recharts
+> **Runtime Environment:** Next.js 14.2.35 (App Router) · React 18 · TypeScript 5 · Tailwind CSS · Recharts · Supabase JS v2
 
 ---
 
 ## 📌 QUY TẮC BẤT BIẾN CHO MỌI LẦN VIBE CODE (CRITICAL CONSTRAINTS)
 > [!IMPORTANT]
 > **AI Agent BẮT BUỘC đọc và tuân thủ các điều khoản sau trước khi viết bất kỳ dòng mã nào:**
-> 1. **Kiến trúc Local-First:** Toàn bộ dữ liệu nằm trong `localStorage` trên trình duyệt người dùng. Tuyệt đối KHÔNG cài đặt backend database server (Prisma, PostgreSQL, MongoDB, v.v.).
+> 1. **Kiến trúc Hybrid Local-First & Supabase Cloud:** Toàn bộ dữ liệu nằm trong `localStorage` trên trình duyệt người dùng và tự động đồng bộ 2 chiều với Supabase Cloud Database (PostgreSQL) qua Supabase Realtime Replication. Đảm bảo trải nghiệm 0ms và đồng bộ tức thì giữa 2 điện thoại của 2 vợ chồng.
 > 2. **Chủ thể Gia đình:** Chính xác 2 thành viên: **👨 Anh Chuột** (Chồng) & **👩 Bé Mèo** (Vợ). Tổ ấm chung: **🏡 My Home**.
 > 3. **Cơ chế Thẻ tín dụng (BIDV Credit):** `currentBalance` đại diện cho **DƯ NỢ ĐANG DÙNG** (chi tiêu thẻ làm TĂNG dư nợ, chuyển tiền thanh toán thẻ làm GIẢM dư nợ). Tài sản ròng = Tổng ví khả dụng + Đầu tư - Nợ vay - Dư nợ thẻ.
 > 4. **Ngôn ngữ & Thẩm mỹ:** Giao diện 100% Tiếng Việt chuẩn Fintech. Bo góc `rounded-3xl` cho thẻ/modal, `rounded-xl` cho controls. Font Inter. Responsive hoàn hảo Desktop & Mobile (PWA Ready).
@@ -21,6 +21,9 @@
 
 ```
 fi.tracking-moni/
+├── .github/
+│   └── workflows/
+│       └── ci.yml                     # GitHub Actions CI: Tự động test build & type check trên GitHub
 ├── AGENTS.md                          # Master Rule: Quy trình 3 bước bắt buộc cho AI Agent
 ├── PROJECT_STATE.md                   # File này: Single Source of Truth cho toàn dự án
 ├── .agents/
@@ -28,8 +31,13 @@ fi.tracking-moni/
 │   │   ├── 01_pre_vibe.md             # Cổng 1: Chuẩn bị, đọc context, phân tích tác động
 │   │   ├── 02_in_vibe.md              # Cổng 2: Chuẩn sinh mã Clean Code & UI/UX Tokens
 │   │   └── 03_post_vibe.md            # Cổng 3: Build verification & cập nhật State Ledger
-│   └── skills/
-│       └── lovely-money-uiux/         # Skill UI/UX: Design Tokens, Recharts specs, Mobile guidelines
+│   ├── skills/
+│   │   └── lovely-money-uiux/         # Skill UI/UX: Design Tokens, Recharts specs, Mobile guidelines
+│   └── standards/
+│       ├── 01_ci_cd_automation.md     # Tiêu chuẩn GitHub Actions CI & quy tắc kiểm thử
+│       ├── 02_deployment_vercel.md    # Tiêu chuẩn triển khai CD Vercel & PWA Mobile
+│       ├── 03_supabase_cloud_sync.md  # Tiêu chuẩn đồng bộ Cloud Supabase & Local-First
+│       └── 04_git_collaboration.md    # Tiêu chuẩn phân nhánh, commit convention, release tags
 ├── app/
 │   ├── globals.css                    # Tailwind directives & theme styles
 │   ├── layout.tsx                     # Root layout, PWA metadata, Inter font
@@ -67,6 +75,9 @@ fi.tracking-moni/
 ├── lib/
 │   ├── formatters.ts                  # formatVND, formatDateVN, getMonthDisplayLabel
 │   ├── storage.ts                     # Engine lưu trữ LocalStorage, recalculate balances
+│   ├── supabaseClient.ts              # Khởi tạo Supabase client dùng chung
+│   ├── supabaseMappers.ts             # Bộ chuyển đổi 2 chiều snake_case <-> camelCase
+│   ├── supabaseService.ts             # Dịch vụ CRUD & Realtime với Supabase Cloud
 │   └── validations.ts                 # Zod Schemas kiểm thực dữ liệu backup & models
 ├── public/
 │   └── manifest.json                  # Cấu hình PWA (Add to Home Screen)
@@ -114,6 +125,8 @@ flowchart LR
 
 | Phiên (Vibe ID) | Ngày Giờ | Mục Tiêu & Thay Đổi Cốt Lõi | Files Tác Động | Trạng Thái |
 | :--- | :--- | :--- | :--- | :--- |
+| **VIBE-09** | 2026-10-26 | Thiết lập hệ thống CI tự động hóa với GitHub Actions (`.github/workflows/ci.yml`), xây dựng bộ tiêu chuẩn kỹ thuật `.agents/standards/` (CI/CD, Vercel, Supabase Sync, Git Collaboration), cập nhật `AGENTS.md` và tài liệu hướng dẫn CD Vercel. | `.github/workflows/ci.yml`, `.agents/standards/*`, `AGENTS.md`, `PROJECT_STATE.md` | 🟢 Verified |
+| **VIBE-08** | 2026-10-26 | Hoàn tất tích hợp toàn diện Supabase Cloud BaaS & Realtime Replication: Cài đặt `@supabase/supabase-js`, xây dựng `lib/supabaseClient.ts`, bộ mappers chuyển đổi 2 chiều `lib/supabaseMappers.ts`, tầng nghiệp vụ Cloud `lib/supabaseService.ts`, nâng cấp `FinanceContext.tsx` với kiến trúc Hybrid Local-First Sync, bổ sung Cloud Sync Status Badge trên `TopBar.tsx` và widget quản lý Cloud trên `SettingsView.tsx`. Kiểm thử `npm run build` pass 100%. | `lib/supabaseClient.ts`, `lib/supabaseMappers.ts`, `lib/supabaseService.ts`, `FinanceContext.tsx`, `TopBar.tsx`, `SettingsView.tsx`, `package.json`, `PROJECT_STATE.md` | 🟢 Verified |
 | **VIBE-07** | 2026-10-26 | Khởi tạo cấu hình biến môi trường Supabase (`.env.local`), giải mã trạng thái SQL DDL ("Success. No rows returned") và thiết lập lộ trình tích hợp Cloud Database/Sync cho 2 vợ chồng. | `.env.local`, `PROJECT_STATE.md` | 🟢 Verified |
 | **VIBE-06** | 2026-10-26 | Dọn dẹp triệt để Git repository: gỡ bỏ commit chứa `node_modules` (17.671 files) và file 135.8MB vi phạm giới hạn GitHub, thiết lập `.gitignore` chuẩn Next.js, tối ưu database `.git` từ 382MB xuống 667KB, build pass 100%. | `.gitignore`, `PROJECT_STATE.md` | 🟢 Verified |
 | **VIBE-05** | 2026-10-24 | Tinh gọn UI/UX Sidebar: Xóa bỏ hoàn toàn khối nút lọc góc nhìn dư thừa trên Sidebar & MobileDrawer (dùng thống nhất trên TopBar Header), tối ưu breathing room, hover micro-interactions (`hover:translate-x-1`). | `Sidebar.tsx`, `MobileDrawer.tsx` | 🟢 Verified |

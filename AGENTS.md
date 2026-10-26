@@ -28,6 +28,12 @@ flowchart LR
      - Tầng giao diện: `components/*`, `app/*`
 3. **Cảnh Báo Xung Đột:**
    - Nếu yêu cầu người dùng vi phạm các ràng buộc bất biến (đòi xóa LocalStorage, đổi sang SQL server, xóa thẻ tín dụng, v.v.), AI Agent phải cảnh báo và làm rõ ngay với người dùng trước khi tiến hành.
+4. **Tra Cứu Bộ Tiêu Chuẩn Kỹ Thuật (`.agents/standards/`):**
+   - Đọc và tuân thủ các tiêu chuẩn tương ứng trước khi triển khai:
+     - CI/CD & GitHub Actions: `.agents/standards/01_ci_cd_automation.md`
+     - Triển khai Vercel & PWA: `.agents/standards/02_deployment_vercel.md`
+     - Đồng bộ Supabase Cloud Sync: `.agents/standards/03_supabase_cloud_sync.md`
+     - Quản trị Git & Phân nhánh: `.agents/standards/04_git_collaboration.md`
 
 ---
 

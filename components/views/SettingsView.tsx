@@ -9,7 +9,10 @@ import {
   Check,
   CheckCircle2,
   HardDrive,
-  Info,
+  Cloud,
+  RefreshCw,
+  Database,
+  Radio,
 } from "lucide-react";
 import { useFinance } from "@/context/FinanceContext";
 import { ThemeColor } from "@/types/finance";
@@ -31,7 +34,14 @@ export function SettingsView({
   onOpenBackupModal,
   onOpenResetConfirm,
 }: SettingsViewProps) {
-  const { settings, updateSettings } = useFinance();
+  const {
+    settings,
+    updateSettings,
+    isCloudConnected,
+    isSyncing,
+    lastSyncedAt,
+    syncWithCloud,
+  } = useFinance();
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   const handleSelectTheme = (color: ThemeColor) => {
@@ -80,7 +90,64 @@ export function SettingsView({
         </div>
       </div>
 
-      {/* 2. Bảo mật (Khớp hình setting.JPG) */}
+      {/* 2. Cơ sở Dữ liệu Đám mây (Supabase Cloud BaaS) */}
+      <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+          <div className="flex items-center gap-2">
+            <Database className="w-5 h-5 text-emerald-600" />
+            <h3 className="text-base font-bold text-slate-800">Cơ sở dữ liệu Đám mây (Supabase Cloud)</h3>
+          </div>
+          <span
+            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${
+              isCloudConnected
+                ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                : "bg-amber-50 text-amber-700 border-amber-200"
+            }`}
+          >
+            <span
+              className={`w-2 h-2 rounded-full ${
+                isCloudConnected ? "bg-emerald-500 animate-pulse" : "bg-amber-500"
+              }`}
+            />
+            {isCloudConnected ? "Realtime Cloud Active" : "Ngoại tuyến (Offline)"}
+          </span>
+        </div>
+
+        <div className="space-y-3">
+          <div className="p-3.5 bg-slate-50 border border-slate-200/70 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <p className="text-xs font-semibold text-slate-700">Supabase Project Endpoint</p>
+              <code className="text-[11px] text-blue-600 font-mono">
+                {process.env.NEXT_PUBLIC_SUPABASE_URL || "Chưa cấu hình NEXT_PUBLIC_SUPABASE_URL"}
+              </code>
+            </div>
+            {lastSyncedAt && (
+              <span className="text-[11px] text-slate-400">
+                Đồng bộ lần cuối: {lastSyncedAt.toLocaleTimeString("vi-VN")}
+              </span>
+            )}
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              type="button"
+              onClick={() => syncWithCloud()}
+              disabled={isSyncing}
+              className="flex-1 py-3 px-4 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 disabled:opacity-60 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-sm shadow-emerald-600/25"
+            >
+              <RefreshCw className={`w-4 h-4 ${isSyncing ? "animate-spin" : ""}`} />
+              <span>{isSyncing ? "Đang đồng bộ dữ liệu..." : "Đồng bộ thủ công ngay"}</span>
+            </button>
+          </div>
+
+          <p className="text-[11px] text-slate-500 leading-relaxed">
+            ⚡ <strong>Cơ chế Realtime Replication:</strong> Khi Anh Chuột hoặc Bé Mèo nhập giao dịch trên điện thoại,
+            dữ liệu sẽ được tự động đồng bộ sang máy của người còn lại trong tích tắc mà không cần tải lại trang.
+          </p>
+        </div>
+      </div>
+
+      {/* 3. Bảo mật */}
       <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
         <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
           <Shield className="w-5 h-5 text-blue-600" />
@@ -111,16 +178,16 @@ export function SettingsView({
             Đổi mật khẩu
           </button>
           <p className="text-[11px] text-slate-400 mt-1">
-            Ứng dụng hoạt động cục bộ (Local-First). Khóa mã bảo vệ được xác thực trực tiếp trên trình duyệt của bạn.
+            Ứng dụng hoạt động với mô hình Hybrid Local-First & Supabase RLS. Dữ liệu được bảo vệ an toàn trên thiết bị và Cloud.
           </p>
         </div>
       </div>
 
-      {/* 3. Dữ liệu & Sao lưu */}
+      {/* 4. Dữ liệu & Sao lưu */}
       <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
         <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
           <HardDrive className="w-5 h-5 text-blue-600" />
-          <h3 className="text-base font-bold text-slate-800">Quản lý Dữ liệu LocalStorage</h3>
+          <h3 className="text-base font-bold text-slate-800">Quản lý Dữ liệu LocalStorage & Sao lưu</h3>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3">
