@@ -36,15 +36,15 @@ export function FilterBar() {
   });
 
   return (
-    <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-sm space-y-4">
+    <div className="bg-white rounded-xl p-4 sm:p-5 border border-[#DCE4EE] shadow-xs space-y-4">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         {/* Quick Tabs lọc theo tháng */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
           <button
             onClick={() => setSelectedMonth("ALL")}
-            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
+            className={`px-3 py-1.5 rounded-md text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
               selectedMonth === "ALL"
-                ? "bg-blue-600 text-white shadow-sm shadow-blue-500/20"
+                ? "bg-blue-600 text-white shadow-xs"
                 : "bg-slate-100 hover:bg-slate-200 text-slate-600"
             }`}
           >
@@ -56,9 +56,9 @@ export function FilterBar() {
               <button
                 key={m}
                 onClick={() => setSelectedMonth(m)}
-                className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
+                className={`px-3 py-1.5 rounded-md text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
                   isSelected
-                    ? "bg-blue-600 text-white shadow-sm shadow-blue-500/20"
+                    ? "bg-blue-600 text-white shadow-xs"
                     : "bg-slate-100 hover:bg-slate-200 text-slate-600"
                 }`}
               >
@@ -72,7 +72,7 @@ export function FilterBar() {
         {hasActiveFilters && (
           <button
             onClick={handleClearFilters}
-            className="flex items-center gap-1.5 text-xs text-rose-600 hover:text-rose-700 font-semibold self-start md:self-auto bg-rose-50 px-2.5 py-1.5 rounded-lg border border-rose-200/50 transition-colors"
+            className="flex items-center gap-1.5 text-xs text-rose-600 hover:text-rose-700 font-semibold self-start md:self-auto bg-rose-50 px-2.5 py-1.5 rounded-md border border-rose-200/50 transition-colors"
           >
             <X className="w-3.5 h-3.5" />
             <span>Xóa bộ lọc</span>
@@ -87,13 +87,13 @@ export function FilterBar() {
           <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">
             Loại giao dịch
           </label>
-          <div className="flex bg-slate-100 p-1 rounded-xl">
+          <div className="flex bg-slate-100 p-1 rounded-lg">
             <button
               type="button"
               onClick={() => setSelectedType("ALL")}
-              className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+              className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all ${
                 selectedType === "ALL"
-                  ? "bg-white text-slate-800 shadow-sm"
+                  ? "bg-white text-slate-800 shadow-xs"
                   : "text-slate-500 hover:text-slate-700"
               }`}
             >
@@ -102,9 +102,9 @@ export function FilterBar() {
             <button
               type="button"
               onClick={() => setSelectedType("INCOME")}
-              className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+              className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all ${
                 selectedType === "INCOME"
-                  ? "bg-emerald-600 text-white shadow-sm"
+                  ? "bg-emerald-600 text-white shadow-xs"
                   : "text-slate-500 hover:text-emerald-700"
               }`}
             >
@@ -113,9 +113,9 @@ export function FilterBar() {
             <button
               type="button"
               onClick={() => setSelectedType("EXPENSE")}
-              className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+              className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all ${
                 selectedType === "EXPENSE"
-                  ? "bg-rose-600 text-white shadow-sm"
+                  ? "bg-rose-600 text-white shadow-xs"
                   : "text-slate-500 hover:text-rose-700"
               }`}
             >
@@ -133,7 +133,7 @@ export function FilterBar() {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs sm:text-sm font-medium rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all cursor-pointer"
+              className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs sm:text-sm font-medium rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all cursor-pointer"
             >
               <option value="ALL">Tất cả danh mục</option>
               {filteredCategoryOptions.map((cat) => (
@@ -158,7 +158,7 @@ export function FilterBar() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Tìm theo ghi chú hoặc số tiền..."
-              className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs sm:text-sm rounded-xl pl-9 pr-8 py-2 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-400"
+              className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs sm:text-sm rounded-lg pl-9 pr-8 py-2 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-400"
             />
             {searchQuery && (
               <button

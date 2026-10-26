@@ -30,7 +30,7 @@ export function TransactionList() {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col">
+    <div className="bg-white rounded-xl border border-[#DCE4EE] shadow-xs overflow-hidden flex flex-col">
       {/* Header Danh sách */}
       <div className="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -44,7 +44,7 @@ export function TransactionList() {
             </p>
           </div>
         </div>
-        <div className="text-xs font-semibold px-3 py-1 bg-slate-100 text-slate-700 rounded-full">
+        <div className="text-xs font-semibold px-3 py-1 bg-slate-100 text-slate-700 rounded-md">
           {filteredTransactions.length} giao dịch
         </div>
       </div>
@@ -52,7 +52,7 @@ export function TransactionList() {
       {/* Nội dung danh sách */}
       {filteredTransactions.length === 0 ? (
         <div className="p-12 text-center">
-          <div className="w-16 h-16 bg-slate-100 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-3">
+          <div className="w-16 h-16 bg-slate-100 text-slate-400 rounded-xl flex items-center justify-center mx-auto mb-3">
             <AlertCircle className="w-8 h-8" />
           </div>
           <p className="text-sm font-bold text-slate-700">Không tìm thấy giao dịch nào</p>
@@ -153,7 +153,7 @@ export function TransactionList() {
                         <button
                           onClick={() => setDeleteTargetId(tx.id)}
                           title="Xóa giao dịch này"
-                          className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                          className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -179,7 +179,7 @@ export function TransactionList() {
                   <div className="flex items-center gap-3 min-w-0">
                     {/* Icon Category */}
                     <div
-                      className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 text-white shadow-sm"
+                      className="w-11 h-11 rounded-lg flex items-center justify-center shrink-0 text-white shadow-xs"
                       style={{ backgroundColor: category?.color || "#94A3B8" }}
                     >
                       <CategoryIcon name={category?.icon} className="w-5 h-5" />
@@ -218,7 +218,7 @@ export function TransactionList() {
 
                     <button
                       onClick={() => setDeleteTargetId(tx.id)}
-                      className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
+                      className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>

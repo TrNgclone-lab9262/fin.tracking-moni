@@ -67,7 +67,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
         {/* Brand Header */}
         <div className="flex items-center justify-between pb-3 border-b border-blue-800/40">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-400 via-rose-500 to-indigo-600 flex items-center justify-center text-white shadow-md">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-tr from-amber-400 via-rose-500 to-indigo-600 flex items-center justify-center text-white shadow-md">
               <Home className="w-5 h-5" />
             </div>
             <div>
@@ -81,7 +81,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-xl bg-blue-900/80 text-blue-200 hover:text-white"
+            className="p-1.5 rounded-md bg-blue-900/80 text-blue-200 hover:text-white"
           >
             <X className="w-5 h-5" />
           </button>
@@ -104,7 +104,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
                       setActiveTab(item.id);
                       onClose();
                     }}
-                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-xs sm:text-sm font-semibold transition-all ${
                       isActive
                         ? "bg-white text-blue-900 font-black shadow-md"
                         : "text-blue-100 hover:bg-white/10"
@@ -126,7 +126,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             <Heart className="w-3 h-3 text-rose-400 fill-rose-400" />
             Bé Mèo <span>👩</span>
           </p>
-          <p className="text-[10px] text-blue-400 mt-0.5">HOME MONI v3.2 · My Home</p>
+          <p className="text-[10px] text-blue-400 mt-0.5">HOME MONI v4.0 · My Home</p>
         </div>
       </div>
     </div>

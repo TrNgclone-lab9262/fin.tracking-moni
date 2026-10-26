@@ -78,25 +78,32 @@
 
 ## 5. Borders, Radii & Shadows
 
+### Quy chuẩn Bo góc Nhất quán Toàn Hệ thống (Standard Border Radii)
+- **Cards, Widgets & Modals:** `rounded-xl` (12px / 0.75rem) kèm `border border-[#DCE4EE] bg-white shadow-xs`.
+- **Buttons (Primary, Secondary, Filter, Toggle):** `rounded-md` (6px / 0.375rem) kèm `transition-all duration-150`.
+- **Controls & Còn lại (Inputs, Selects, Dropdowns, Badges, Sub-panels):** `rounded-lg` (8px / 0.5rem).
+
 ### Cards and Widgets
+`rounded-xl border border-[#DCE4EE] bg-white shadow-xs`
 
-`rounded-2xl border border-[#E9EEF5] bg-white shadow-sm`
-
-- Standard card radius: 12–16px.
+- Standard card radius: 12px (`rounded-xl`).
 - Use consistent padding and alignment across equivalent cards.
-- Avoid large decorative shadows.
-- Use a subtle border as the primary separation mechanism.
-- Apply stronger elevation only to overlays or elements that genuinely float above the page.
+- Avoid large decorative shadows; prefer subtle hairline borders `border-[#DCE4EE]` or `border-[#E9EEF5]`.
+- Modals and overlay dialogs: `rounded-xl border border-[#DCE4EE] shadow-xl`.
 
 ### Buttons
+`rounded-md font-semibold transition-all duration-150`
 
-`rounded-xl font-semibold transition-colors duration-150`
-
-- Minimum recommended height: 40px for standard desktop controls.
-- Prefer 44–48px for prominent mobile actions.
+- Standard button radius: 6px (`rounded-md`).
+- Minimum recommended height: 38-40px for standard controls.
+- Prefer 44px for primary mobile actions.
 - Use clear hover, active, disabled, loading, and focus-visible states.
-- Avoid excessive scaling or movement on press.
-- Keep primary and secondary button styles consistent.
+
+### Form Inputs, Dropdowns & Badges
+`rounded-lg border border-[#DCE4EE] bg-slate-50/50`
+
+- Input & Select radius: 8px (`rounded-lg`).
+- Status badges and pills: `rounded-lg` (hoặc `rounded-full` cho chấm trạng thái tròn).
 
 ### Inputs and Dropdowns
 

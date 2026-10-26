@@ -132,7 +132,7 @@ export function DebtsInvestView() {
           PHẦN 1: QUẢN LÝ KHOẢN NỢ (Khớp 100% debt-invest-management.JPG)
           ======================================================== */}
       <section className="space-y-4">
-        <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="bg-white rounded-xl p-6 border border-[#DCE4EE] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-6 sm:gap-10">
             <div>
               <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
@@ -162,7 +162,7 @@ export function DebtsInvestView() {
 
           <button
             onClick={() => setIsDebtModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-md shadow-blue-600/25 active:scale-95 transition-all self-start sm:self-auto"
+            className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs sm:text-sm font-bold shadow-xs active:scale-95 transition-all self-start sm:self-auto"
           >
             <Plus className="w-4 h-4" />
             <span>Thêm khoản nợ</span>
@@ -170,7 +170,7 @@ export function DebtsInvestView() {
         </div>
 
         {/* Bảng Khoản Nợ */}
-        <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
+        <div className="bg-white rounded-xl border border-[#DCE4EE] shadow-xs overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50 text-slate-500 font-bold uppercase tracking-wider border-b border-slate-100">
@@ -272,7 +272,7 @@ export function DebtsInvestView() {
           PHẦN 2: QUẢN LÝ ĐẦU TƯ (Khớp 100% debt-invest-management.JPG)
           ======================================================== */}
       <section className="space-y-4">
-        <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="bg-white rounded-xl p-6 border border-[#DCE4EE] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-6 sm:gap-10">
             <div>
               <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
@@ -294,7 +294,7 @@ export function DebtsInvestView() {
 
           <button
             onClick={() => setIsInvestModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-md shadow-blue-600/25 active:scale-95 transition-all self-start sm:self-auto"
+            className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs sm:text-sm font-bold shadow-xs active:scale-95 transition-all self-start sm:self-auto"
           >
             <Plus className="w-4 h-4" />
             <span>Thêm khoản đầu tư</span>
@@ -302,7 +302,7 @@ export function DebtsInvestView() {
         </div>
 
         {/* Bảng Đầu tư */}
-        <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
+        <div className="bg-white rounded-xl border border-[#DCE4EE] shadow-xs overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50 text-slate-500 font-bold uppercase tracking-wider border-b border-slate-100">
@@ -392,7 +392,7 @@ export function DebtsInvestView() {
       {payTargetDebt && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
           <div
-            className="w-full max-w-sm bg-white rounded-3xl shadow-2xl p-6 border border-slate-100"
+            className="w-full max-w-sm bg-white rounded-xl shadow-2xl p-6 border border-[#DCE4EE]"
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="text-sm font-bold text-slate-800 mb-1">
@@ -417,7 +417,7 @@ export function DebtsInvestView() {
                     setPayAmount(raw ? new Intl.NumberFormat("vi-VN").format(parseInt(raw, 10)) : "");
                   }}
                   placeholder="0"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm font-bold outline-none focus:border-blue-500"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3.5 py-2 text-sm font-bold outline-none focus:border-blue-500"
                 />
               </div>
 
@@ -425,13 +425,13 @@ export function DebtsInvestView() {
                 <button
                   type="button"
                   onClick={() => setPayTargetDebt(null)}
-                  className="flex-1 py-2.5 text-xs font-semibold bg-slate-100 rounded-xl"
+                  className="flex-1 py-2.5 text-xs font-semibold bg-slate-100 rounded-md hover:bg-slate-200 transition-colors"
                 >
                   Hủy
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 text-xs font-bold bg-emerald-600 text-white rounded-xl shadow-md"
+                  className="flex-1 py-2.5 text-xs font-bold bg-emerald-600 text-white rounded-md shadow-md hover:bg-emerald-700 transition-colors"
                 >
                   Xác nhận trả
                 </button>
@@ -445,7 +445,7 @@ export function DebtsInvestView() {
       {isDebtModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
           <div
-            className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 border border-slate-100"
+            className="w-full max-w-md bg-white rounded-xl shadow-2xl p-6 border border-[#DCE4EE]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
@@ -464,7 +464,7 @@ export function DebtsInvestView() {
                   value={debtName}
                   onChange={(e) => setDebtName(e.target.value)}
                   placeholder="VD: Vay mua xe, Mượn bạn..."
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold"
                 />
               </div>
 
@@ -479,7 +479,7 @@ export function DebtsInvestView() {
                     setDebtTotal(raw ? new Intl.NumberFormat("vi-VN").format(parseInt(raw, 10)) : "");
                   }}
                   placeholder="0"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-bold"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-bold"
                 />
               </div>
 
@@ -491,7 +491,7 @@ export function DebtsInvestView() {
                     required
                     value={debtStartDate}
                     onChange={(e) => setDebtStartDate(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 outline-none focus:border-blue-500 font-semibold"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-800 outline-none focus:border-blue-500 font-semibold"
                   />
                 </div>
                 <div>
@@ -501,7 +501,7 @@ export function DebtsInvestView() {
                     required
                     value={debtDueDate}
                     onChange={(e) => setDebtDueDate(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 outline-none focus:border-blue-500 font-semibold"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-800 outline-none focus:border-blue-500 font-semibold"
                   />
                 </div>
               </div>
@@ -514,7 +514,7 @@ export function DebtsInvestView() {
                   value={debtInterest}
                   onChange={(e) => setDebtInterest(e.target.value)}
                   placeholder="0"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold"
                 />
               </div>
 
@@ -522,13 +522,13 @@ export function DebtsInvestView() {
                 <button
                   type="button"
                   onClick={() => setIsDebtModalOpen(false)}
-                  className="flex-1 py-2.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  className="flex-1 py-2.5 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
                 >
                   Hủy
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 rounded-xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 shadow-md shadow-blue-600/25"
+                  className="flex-1 py-2.5 rounded-md text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 shadow-md shadow-blue-600/25 transition-colors"
                 >
                   Lưu khoản nợ
                 </button>
@@ -542,7 +542,7 @@ export function DebtsInvestView() {
       {isInvestModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
           <div
-            className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 border border-slate-100"
+            className="w-full max-w-md bg-white rounded-xl shadow-2xl p-6 border border-[#DCE4EE]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
@@ -561,7 +561,7 @@ export function DebtsInvestView() {
                   value={invName}
                   onChange={(e) => setInvName(e.target.value)}
                   placeholder="VD: Vàng SJC, Cổ phiếu FPT..."
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold"
                 />
               </div>
 
@@ -570,7 +570,7 @@ export function DebtsInvestView() {
                 <select
                   value={invType}
                   onChange={(e) => setInvType(e.target.value as InvestmentType)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold"
                 >
                   <option value="GOLD">Vàng</option>
                   <option value="SAVINGS">Tiết kiệm ngân hàng</option>
@@ -590,7 +590,7 @@ export function DebtsInvestView() {
                     setInvAmount(raw ? new Intl.NumberFormat("vi-VN").format(parseInt(raw, 10)) : "");
                   }}
                   placeholder="0"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-bold"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-bold"
                 />
               </div>
 
@@ -603,7 +603,7 @@ export function DebtsInvestView() {
                     value={invProfit}
                     onChange={(e) => setInvProfit(e.target.value)}
                     placeholder="6.5"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold"
                   />
                 </div>
                 <div>
@@ -613,7 +613,7 @@ export function DebtsInvestView() {
                     required
                     value={invStartDate}
                     onChange={(e) => setInvStartDate(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 outline-none focus:border-blue-500 font-semibold"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-800 outline-none focus:border-blue-500 font-semibold"
                   />
                 </div>
               </div>
@@ -622,13 +622,13 @@ export function DebtsInvestView() {
                 <button
                   type="button"
                   onClick={() => setIsInvestModalOpen(false)}
-                  className="flex-1 py-2.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  className="flex-1 py-2.5 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
                 >
                   Hủy
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 rounded-xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 shadow-md shadow-blue-600/25"
+                  className="flex-1 py-2.5 rounded-md text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 shadow-md shadow-blue-600/25 transition-colors"
                 >
                   Lưu đầu tư
                 </button>

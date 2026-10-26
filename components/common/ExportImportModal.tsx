@@ -74,11 +74,11 @@ export function ExportImportModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
       <div
-        className="w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100 flex flex-col"
+        className="w-full max-w-lg bg-white rounded-xl shadow-2xl overflow-hidden border border-[#DCE4EE] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+        <div className="px-6 py-4 border-b border-[#E9EEF5] flex items-center justify-between bg-slate-50/50">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
               <FileJson className="w-4 h-4" />
@@ -89,22 +89,22 @@ export function ExportImportModal({
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors"
+            className="w-8 h-8 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Tab switch */}
-        <div className="p-4 border-b border-slate-100 bg-slate-50/30 flex gap-2">
+        <div className="p-3 border-b border-[#E9EEF5] bg-slate-50/30 flex gap-2">
           <button
             onClick={() => {
               setActiveTab("EXPORT");
               setImportStatus({ type: "idle" });
             }}
-            className={`flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 ${
+            className={`flex-1 py-2 text-xs sm:text-sm font-bold rounded-md transition-all flex items-center justify-center gap-2 ${
               activeTab === "EXPORT"
-                ? "bg-white text-blue-600 shadow-sm border border-slate-200/80"
+                ? "bg-white text-blue-600 shadow-xs border border-[#DCE4EE]"
                 : "text-slate-500 hover:text-slate-800"
             }`}
           >
@@ -116,9 +116,9 @@ export function ExportImportModal({
               setActiveTab("IMPORT");
               setImportStatus({ type: "idle" });
             }}
-            className={`flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 ${
+            className={`flex-1 py-2 text-xs sm:text-sm font-bold rounded-md transition-all flex items-center justify-center gap-2 ${
               activeTab === "IMPORT"
-                ? "bg-white text-blue-600 shadow-sm border border-slate-200/80"
+                ? "bg-white text-blue-600 shadow-xs border border-[#DCE4EE]"
                 : "text-slate-500 hover:text-slate-800"
             }`}
           >
@@ -131,7 +131,7 @@ export function ExportImportModal({
         <div className="p-6">
           {activeTab === "EXPORT" ? (
             <div className="space-y-4">
-              <div className="p-4 rounded-2xl bg-blue-50/60 border border-blue-100 flex items-start gap-3">
+              <div className="p-4 rounded-lg bg-blue-50/60 border border-blue-100 flex items-start gap-3">
                 <ShieldCheck className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
                 <div className="text-xs text-blue-900 leading-relaxed">
                   Toàn bộ dữ liệu của bạn chỉ lưu trong LocalStorage trình duyệt này. Hãy xuất file sao lưu định kỳ để không bị mất dữ liệu khi dọn dẹp cache.
@@ -139,7 +139,7 @@ export function ExportImportModal({
               </div>
 
               {/* Tóm tắt data */}
-              <div className="grid grid-cols-2 gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-100 text-xs">
+              <div className="grid grid-cols-2 gap-3 p-4 rounded-lg bg-slate-50 border border-[#E9EEF5] text-xs">
                 <div>
                   <span className="text-slate-400 font-medium">Tổng giao dịch:</span>
                   <p className="text-sm font-bold text-slate-800 mt-0.5">
@@ -156,7 +156,7 @@ export function ExportImportModal({
 
               <button
                 onClick={handleExport}
-                className="w-full py-3.5 px-4 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm rounded-xl transition-all shadow-md shadow-blue-600/25 flex items-center justify-center gap-2 active:scale-95"
+                className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm rounded-md transition-all shadow-xs flex items-center justify-center gap-2 active:scale-95"
               >
                 <Download className="w-4 h-4" />
                 Tải file sao lưu JSON về máy (.json)
@@ -164,7 +164,7 @@ export function ExportImportModal({
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="border-2 border-dashed border-slate-200 hover:border-blue-400 rounded-2xl p-6 text-center transition-colors bg-slate-50/50">
+              <div className="border-2 border-dashed border-[#DCE4EE] hover:border-blue-400 rounded-lg p-6 text-center transition-colors bg-slate-50/50">
                 <Upload className="w-8 h-8 text-slate-400 mx-auto mb-2" />
                 <p className="text-xs sm:text-sm font-bold text-slate-700">
                   Chọn tệp JSON sao lưu từ máy tính
@@ -182,7 +182,7 @@ export function ExportImportModal({
                 />
                 <label
                   htmlFor="json-file-input"
-                  className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-semibold text-xs rounded-xl shadow-sm cursor-pointer transition-colors"
+                  className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-white hover:bg-slate-100 border border-[#DCE4EE] text-slate-700 font-semibold text-xs rounded-md shadow-xs cursor-pointer transition-colors"
                 >
                   Duyệt file...
                 </label>
@@ -190,14 +190,14 @@ export function ExportImportModal({
 
               {/* Status feedback */}
               {importStatus.type === "success" && (
-                <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-xl flex items-center gap-2">
+                <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-lg flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>{importStatus.message}</span>
                 </div>
               )}
 
               {importStatus.type === "error" && (
-                <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold rounded-xl flex items-center gap-2">
+                <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold rounded-lg flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
                   <span>{importStatus.message}</span>
                 </div>

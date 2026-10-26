@@ -15,7 +15,7 @@
 | **👨 Anh Chuột** | **BIDV Credit (Anh Chuột)** | Thẻ tín dụng | Hạn mức **50.000.000 ₫** (Sao kê 20, Thanh toán 25 hàng tháng) |
 | **👩 Bé Mèo** | **Vietcombank** | Tài khoản Chính | Nhận lương hàng tháng của Bé Mèo |
 | **👩 Bé Mèo** | **ACB** | Tài khoản Phụ | Chi tiêu thường ngày, mua sắm |
-| **👩 Bé Mèo** | **BIDV Credit (Bé Mèo)** | Thẻ tín dụng | Hạn mức **20.000.000 ₫** (Sao kê 22, Thanh toán 28 hàng tháng) |
+| **👩 Bé Mèo** | **BIDV Credit (Bé Mèo)** | Thẻ tín dụng | Hạn mức **20.000.000 ₫** (Sao kê 20, Thanh toán 25 hàng tháng) |
 | **🏡 My Home** | **Tiền mặt Gia đình** | Quỹ chung | Chi tiêu chợ búa, tiền gửi xe, ăn vặt lặt vặt |
 
 ---

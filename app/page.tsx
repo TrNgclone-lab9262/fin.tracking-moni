@@ -28,17 +28,17 @@ export default function HomePage() {
   // Skeleton Loader khi chờ hydrate từ LocalStorage
   if (!isLoaded) {
     return (
-      <div className="min-h-screen bg-slate-50 flex">
+      <div className="min-h-screen bg-[#F6F8FB] flex">
         <aside className="w-64 bg-[#1E3A8A] hidden md:block animate-pulse" />
         <div className="flex-1 flex flex-col">
           <header className="h-20 bg-white border-b border-slate-200 animate-pulse" />
           <main className="p-8 space-y-6">
             <div className="grid grid-cols-4 gap-4">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="h-32 bg-slate-200/80 rounded-3xl animate-pulse" />
+                <div key={i} className="h-32 bg-slate-200/80 rounded-xl animate-pulse" />
               ))}
             </div>
-            <div className="h-80 bg-slate-200/80 rounded-3xl animate-pulse" />
+            <div className="h-80 bg-slate-200/80 rounded-xl animate-pulse" />
           </main>
         </div>
       </div>
@@ -77,7 +77,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex text-slate-900 font-sans antialiased">
+    <div className="min-h-screen bg-[#F6F8FB] flex text-slate-900 font-sans antialiased">
       {/* 1. Sidebar cố định bên trái (Khớp 100% hình ảnh tham khảo) */}
       <Sidebar />
 

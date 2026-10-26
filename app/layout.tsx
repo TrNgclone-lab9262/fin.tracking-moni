@@ -1,9 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { FinanceProvider } from "@/context/FinanceContext";
-
-const inter = Inter({ subsets: ["latin", "vietnamese"] });
 
 export const metadata: Metadata = {
   title: "HOME MONI - Quản Lý Tài Chính Gia Đình",
@@ -31,7 +28,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="vi">
-      <body className={inter.className}>
+      <body className="font-sans antialiased">
         <FinanceProvider>{children}</FinanceProvider>
       </body>
     </html>

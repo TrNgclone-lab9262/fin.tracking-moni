@@ -45,7 +45,7 @@ flowchart LR
      - Income Emerald: `#10B981` / `#059669` (Khoản thu, đạt mục tiêu)
      - Expense Rose: `#F43F5E` / `#E11D48` (Khoản chi, nợ thẻ)
      - Warning Amber: `#F59E0B` / `#D97706` (Hạn mức thẻ > 70%, nợ đến hạn)
-   - Hình khối: `rounded-3xl` cho card/modal, `rounded-xl` cho buttons/inputs.
+   - Hình khối & Bo góc: `rounded-xl` (12px) cho card/widget/modal, `rounded-md` (6px) cho buttons, `rounded-lg` (8px) cho inputs/controls/badges.
    - Thao tác di động: Bàn phím số Numpad (+000, 50k, 100k, 200k, 500k), Floating Action Button góc dưới phải.
 2. **Chuẩn Mực TypeScript & Clean Code:**
    - Tuyệt đối cấm sử dụng `any`. Mọi props, state, event phải có type rõ ràng.

@@ -35,8 +35,10 @@ Khi mở ứng dụng trên điện thoại hoặc máy tính, người dùng ph
 - **Mức Nguy hiểm (`>= 90%` hoặc vượt hạn mức):** Thanh tiến độ màu Đỏ Hồng (`#F43F5E`), hiển thị badge cảnh báo sát nút hạn mức.
 
 ### 2.3. Nhắc nhở chu kỳ sao kê & ngày thanh toán
-- **Thẻ 👨 Anh Chuột:** Chốt sao kê ngày 20 hàng tháng, hạn chót thanh toán ngày 25.
-- **Thẻ 👩 Bé Mèo:** Chốt sao kê ngày 22 hàng tháng, hạn chót thanh toán ngày 28.
+- **Chu kỳ sao kê đồng bộ:** Cả 2 thẻ tín dụng BIDV của 👨 Anh Chuột và 👩 Bé Mèo đều **chốt sao kê vào ngày 20 hàng tháng**.
+- **Hạn chót thanh toán:**
+  - Thẻ 👨 Anh Chuột (50M): Hạn thanh toán ngày 25 hàng tháng.
+  - Thẻ 👩 Bé Mèo (20M): Hạn thanh toán ngày 25 hàng tháng (hoặc ngày 28).
 - Trước ngày đến hạn dưới 7 ngày: Tự động hiển thị nhãn đếm ngược số ngày còn lại để hai vợ chồng chủ động thanh toán đúng hạn, tránh phát sinh lãi suất.
 
 ---

@@ -31,7 +31,7 @@ export function Header({
         <div className="flex items-center justify-between h-16 sm:h-20 gap-4">
           {/* Logo & Brand */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-sky-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-lg bg-gradient-to-tr from-blue-600 via-indigo-600 to-sky-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
               <Wallet className="w-6 h-6" />
             </div>
             <div>
@@ -54,7 +54,7 @@ export function Header({
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Bộ chọn tháng hiển thị */}
             <div className="relative">
-              <div className="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-colors cursor-pointer border border-slate-200">
+              <div className="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-md text-xs sm:text-sm font-semibold transition-colors cursor-pointer border border-slate-200">
                 <Calendar className="w-4 h-4 text-blue-600 shrink-0" />
                 <select
                   value={selectedMonth}
@@ -75,7 +75,7 @@ export function Header({
             <button
               onClick={onOpenBackupModal}
               title="Sao lưu hoặc phục hồi dữ liệu JSON"
-              className="hidden lg:flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium text-slate-600 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-all shadow-sm active:scale-95"
+              className="hidden lg:flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium text-slate-600 bg-white hover:bg-slate-100 border border-slate-200 rounded-md transition-all shadow-xs active:scale-95"
             >
               <HardDriveDownload className="w-4 h-4 text-slate-500" />
               <span>Sao lưu / Khôi phục</span>
@@ -85,7 +85,7 @@ export function Header({
             <button
               onClick={onOpenResetConfirm}
               title="Khôi phục lại dữ liệu mẫu ban đầu để test UI"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium text-slate-600 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-all shadow-sm active:scale-95"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium text-slate-600 bg-white hover:bg-slate-100 border border-slate-200 rounded-md transition-all shadow-xs active:scale-95"
             >
               <RotateCcw className="w-4 h-4 text-slate-500" />
               <span>Dữ liệu mẫu</span>
@@ -94,7 +94,7 @@ export function Header({
             {/* Nút Thêm giao dịch (Primary) */}
             <button
               onClick={onOpenAddModal}
-              className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-xl transition-all shadow-md shadow-blue-600/25 active:scale-95"
+              className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-md transition-all shadow-md shadow-blue-600/25 active:scale-95"
             >
               <PlusCircle className="w-4 h-4 sm:w-5 sm:h-5" />
               <span>Thêm giao dịch</span>

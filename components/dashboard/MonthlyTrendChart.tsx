@@ -54,15 +54,15 @@ export function MonthlyTrendChart() {
   }, []);
 
   return (
-    <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-sm flex flex-col h-full">
-      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+    <div className="bg-white rounded-xl p-5 sm:p-6 border border-[#DCE4EE] shadow-xs flex flex-col h-full">
+      <div className="flex items-center justify-between pb-4 border-b border-[#E9EEF5]">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
             <BarChart3 className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-slate-800">Thu - Chi các tháng</h3>
-            <p className="text-xs text-slate-400 font-medium">Xu hướng thu nhập & chi tiêu</p>
+            <h3 className="text-base font-bold text-[#172B4D]">Thu - Chi các tháng</h3>
+            <p className="text-xs text-slate-500 font-medium">Xu hướng thu nhập & chi tiêu</p>
           </div>
         </div>
         <div className="flex items-center gap-3 text-xs font-semibold">
