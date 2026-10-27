@@ -1,4 +1,5 @@
-## Chính thức chuyển hướng sang sử dụng ✨**Reqwise Figma** từ bây giờ (27/10/2026) - đếm ngày 🎯**#1 đầu tiên**
+✨## Chính thức ✨
+## Chuyển hướng sang sử dụng **Reqwise Figma** cho UI design trên Figma từ hôm nay (27/10/2026) - ngày 🎯**1 đầu tiên**
 
 
 # 🏠 HOME MONI - WebApp Quản lý Tài chính Gia đình (Tổ Ấm 2 Vợ Chồng)
