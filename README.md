@@ -1,3 +1,6 @@
+## Chính thức chuyển hướng sang sử dụng Reqwise Figma từ bây giờ (27/10/2026) - đếm ngày #1 đầu tiên
+
+
 # 🏠 HOME MONI - WebApp Quản lý Tài chính Gia đình (Tổ Ấm 2 Vợ Chồng)
 
 **HOME MONI** (Home Moni) là ứng dụng WebApp Quản lý Tài chính & Chi tiêu Gia đình chuyên sâu, chuẩn Fintech, bảo mật tuyệt đối và tốc độ cao theo kiến trúc **Local-First**, chạy trực tiếp trên trình duyệt bằng **Next.js 14 (App Router)**, **TypeScript**, **Tailwind CSS**, và **Recharts**.
