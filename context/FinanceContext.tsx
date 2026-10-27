@@ -162,6 +162,7 @@ interface FinanceContextType {
 
   // Quản lý Nợ & Đầu tư
   addDebt: (debt: Omit<DebtItem, "id">) => void;
+  updateDebt: (id: string, debt: Partial<DebtItem>) => void;
   payDebt: (id: string, amount: number) => void;
   deleteDebt: (id: string) => void;
 
@@ -599,6 +600,21 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     if (isSupabaseConfigured) {
       supabaseService.upsertDebt(newDebt);
     }
+  }, []);
+
+  const updateDebt = useCallback((id: string, debt: Partial<DebtItem>) => {
+    setDebts((prev) => {
+      let target: DebtItem | undefined;
+      const next = prev.map((d) => {
+        if (d.id !== id) return d;
+        target = { ...d, ...debt };
+        return target;
+      });
+      if (isSupabaseConfigured && target) {
+        supabaseService.upsertDebt(target);
+      }
+      return next;
+    });
   }, []);
 
   const payDebt = useCallback((id: string, amount: number) => {
@@ -1080,6 +1096,7 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     deleteGoal,
     depositGoal,
     addDebt,
+    updateDebt,
     payDebt,
     deleteDebt,
     addInvestment,

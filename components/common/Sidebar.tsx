@@ -43,13 +43,25 @@ export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  // Khôi phục trạng thái thu gọn từ LocalStorage
+  // Khôi phục trạng thái thu gọn từ LocalStorage hoặc tự động thu gọn trên Tablet (768px - 1023px)
   useEffect(() => {
     setMounted(true);
     const saved = localStorage.getItem("HOME_MONI_SIDEBAR_COLLAPSED");
     if (saved !== null) {
       setIsCollapsed(saved === "true");
+    } else if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      setIsCollapsed(true);
     }
+
+    const handleResize = () => {
+      const savedPref = localStorage.getItem("HOME_MONI_SIDEBAR_COLLAPSED");
+      if (savedPref === null && window.innerWidth >= 768 && window.innerWidth < 1024) {
+        setIsCollapsed(true);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const toggleCollapse = () => {

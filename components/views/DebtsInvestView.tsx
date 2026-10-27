@@ -5,6 +5,7 @@ import {
   Coins,
   Plus,
   Trash2,
+  Pencil,
   CheckCircle2,
   AlertTriangle,
   TrendingUp,
@@ -22,6 +23,7 @@ export function DebtsInvestView() {
     debts,
     investments,
     addDebt,
+    updateDebt,
     payDebt,
     deleteDebt,
     addInvestment,
@@ -31,7 +33,9 @@ export function DebtsInvestView() {
 
   // Modals state
   const [isDebtModalOpen, setIsDebtModalOpen] = useState(false);
+  const [editingDebt, setEditingDebt] = useState<DebtItem | null>(null);
   const [isInvestModalOpen, setIsInvestModalOpen] = useState(false);
+  const [editingInvest, setEditingInvest] = useState<InvestmentItem | null>(null);
   const [payTargetDebt, setPayTargetDebt] = useState<DebtItem | null>(null);
   const [payAmount, setPayAmount] = useState("");
   const [deleteDebtId, setDeleteDebtId] = useState<string | null>(null);
@@ -68,21 +72,53 @@ export function DebtsInvestView() {
     return { totalInvested, activeInvested };
   }, [investments]);
 
-  const handleCreateDebt = (e: React.FormEvent) => {
+  const handleOpenAddDebt = () => {
+    setEditingDebt(null);
+    setDebtName("");
+    setDebtTotal("");
+    setDebtInterest("0");
+    setDebtStartDate(new Date().toISOString().split("T")[0]);
+    setDebtDueDate("");
+    setIsDebtModalOpen(true);
+  };
+
+  const handleOpenEditDebt = (d: DebtItem) => {
+    setEditingDebt(d);
+    setDebtName(d.name);
+    setDebtTotal(new Intl.NumberFormat("vi-VN").format(d.totalAmount));
+    setDebtInterest(String(d.interestRate || 0));
+    setDebtStartDate(d.startDate || "");
+    setDebtDueDate(d.dueDate || "");
+    setIsDebtModalOpen(true);
+  };
+
+  const handleSaveDebt = (e: React.FormEvent) => {
     e.preventDefault();
     if (!debtName.trim()) return;
 
     const total = parseFloat(debtTotal.replace(/[^0-9]/g, "")) || 0;
-    addDebt({
-      name: debtName.trim(),
-      type: "BORROW",
-      totalAmount: total,
-      paidAmount: 0,
-      interestRate: parseFloat(debtInterest) || 0,
-      startDate: debtStartDate || new Date().toISOString().split("T")[0],
-      dueDate: debtDueDate || new Date().toISOString().split("T")[0],
-      status: "ACTIVE",
-    });
+    const interest = parseFloat(debtInterest) || 0;
+
+    if (editingDebt) {
+      updateDebt(editingDebt.id, {
+        name: debtName.trim(),
+        totalAmount: total,
+        interestRate: interest,
+        startDate: debtStartDate,
+        dueDate: debtDueDate,
+      });
+    } else {
+      addDebt({
+        name: debtName.trim(),
+        type: "BORROW",
+        totalAmount: total,
+        paidAmount: 0,
+        interestRate: interest,
+        startDate: debtStartDate || new Date().toISOString().split("T")[0],
+        dueDate: debtDueDate || new Date().toISOString().split("T")[0],
+        status: "ACTIVE",
+      });
+    }
 
     setDebtName("");
     setDebtTotal("");
@@ -90,6 +126,7 @@ export function DebtsInvestView() {
     setDebtStartDate("");
     setDebtDueDate("");
     setIsDebtModalOpen(false);
+    setEditingDebt(null);
   };
 
   const handlePayDebtSubmit = (e: React.FormEvent) => {
@@ -104,26 +141,59 @@ export function DebtsInvestView() {
     setPayAmount("");
   };
 
-  const handleCreateInvest = (e: React.FormEvent) => {
+  const handleOpenAddInvest = () => {
+    setEditingInvest(null);
+    setInvName("");
+    setInvType("SAVINGS");
+    setInvAmount("");
+    setInvProfit("6.5");
+    setInvStartDate(new Date().toISOString().split("T")[0]);
+    setIsInvestModalOpen(true);
+  };
+
+  const handleOpenEditInvest = (inv: InvestmentItem) => {
+    setEditingInvest(inv);
+    setInvName(inv.name);
+    setInvType(inv.type);
+    setInvAmount(new Intl.NumberFormat("vi-VN").format(inv.amount));
+    setInvProfit(String(inv.expectedProfitRate || 0));
+    setInvStartDate(inv.startDate || "");
+    setIsInvestModalOpen(true);
+  };
+
+  const handleSaveInvest = (e: React.FormEvent) => {
     e.preventDefault();
     if (!invName.trim()) return;
 
     const amt = parseFloat(invAmount.replace(/[^0-9]/g, "")) || 0;
-    addInvestment({
-      name: invName.trim(),
-      type: invType,
-      amount: amt,
-      currentValue: Math.round(amt * (1 + (parseFloat(invProfit) || 0) / 100)),
-      expectedProfitRate: parseFloat(invProfit) || 0,
-      startDate: invStartDate || new Date().toISOString().split("T")[0],
-      status: "ACTIVE",
-    });
+    const profit = parseFloat(invProfit) || 0;
+
+    if (editingInvest) {
+      updateInvestment(editingInvest.id, {
+        name: invName.trim(),
+        type: invType,
+        amount: amt,
+        expectedProfitRate: profit,
+        startDate: invStartDate,
+      });
+    } else {
+      addInvestment({
+        name: invName.trim(),
+        type: invType,
+        amount: amt,
+        currentValue: Math.round(amt * (1 + profit / 100)),
+        expectedProfitRate: profit,
+        startDate: invStartDate || new Date().toISOString().split("T")[0],
+        status: "ACTIVE",
+      });
+    }
 
     setInvName("");
     setInvAmount("");
     setInvProfit("6.5");
     setInvStartDate("");
     setIsInvestModalOpen(false);
+    setEditingInvest(null);
   };
 
   return (
@@ -161,7 +231,7 @@ export function DebtsInvestView() {
           </div>
 
           <button
-            onClick={() => setIsDebtModalOpen(true)}
+            onClick={handleOpenAddDebt}
             className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs sm:text-sm font-bold shadow-xs active:scale-95 transition-all self-start sm:self-auto"
           >
             <Plus className="w-4 h-4" />
@@ -246,14 +316,22 @@ export function DebtsInvestView() {
                                 setPayTargetDebt(d);
                                 setPayAmount("");
                               }}
-                              className="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-[11px] font-bold rounded-lg transition-colors"
+                              className="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-[11px] font-bold rounded-md transition-colors"
                             >
                               Trả nợ
                             </button>
                           )}
                           <button
+                            onClick={() => handleOpenEditDebt(d)}
+                            title="Chỉnh sửa khoản nợ"
+                            className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                          >
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+                          <button
                             onClick={() => setDeleteDebtId(d.id)}
-                            className="p-1.5 text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                            title="Xóa khoản nợ"
+                            className="p-1.5 text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -293,7 +371,7 @@ export function DebtsInvestView() {
           </div>
 
           <button
-            onClick={() => setIsInvestModalOpen(true)}
+            onClick={handleOpenAddInvest}
             className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs sm:text-sm font-bold shadow-xs active:scale-95 transition-all self-start sm:self-auto"
           >
             <Plus className="w-4 h-4" />
@@ -372,8 +450,16 @@ export function DebtsInvestView() {
                             </button>
                           )}
                           <button
+                            onClick={() => handleOpenEditInvest(i)}
+                            title="Chỉnh sửa khoản đầu tư"
+                            className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                          >
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+                          <button
                             onClick={() => setDeleteInvestId(i.id)}
-                            className="p-1.5 text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                            title="Xóa khoản đầu tư"
+                            className="p-1.5 text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -441,7 +527,7 @@ export function DebtsInvestView() {
         </div>
       )}
 
-      {/* Modal Thêm Khoản Nợ */}
+      {/* Modal Thêm hoặc Chỉnh sửa Khoản Nợ */}
       {isDebtModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
           <div
@@ -449,13 +535,21 @@ export function DebtsInvestView() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="text-base font-bold text-slate-800">Thêm khoản nợ mới</h3>
-              <button onClick={() => setIsDebtModalOpen(false)} className="text-slate-400 p-1">
+              <h3 className="text-base font-bold text-slate-800">
+                {editingDebt ? "Chỉnh sửa khoản nợ" : "Thêm khoản nợ mới"}
+              </h3>
+              <button
+                onClick={() => {
+                  setIsDebtModalOpen(false);
+                  setEditingDebt(null);
+                }}
+                className="text-slate-400 p-1"
+              >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleCreateDebt} className="space-y-3.5 pt-4">
+            <form onSubmit={handleSaveDebt} className="space-y-3.5 pt-4">
               <div>
                 <label className="block text-xs font-bold text-slate-600 mb-1">Tên khoản nợ</label>
                 <input
@@ -521,7 +615,10 @@ export function DebtsInvestView() {
               <div className="pt-2 flex gap-3">
                 <button
                   type="button"
-                  onClick={() => setIsDebtModalOpen(false)}
+                  onClick={() => {
+                    setIsDebtModalOpen(false);
+                    setEditingDebt(null);
+                  }}
                   className="flex-1 py-2.5 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
                 >
                   Hủy
@@ -530,7 +627,7 @@ export function DebtsInvestView() {
                   type="submit"
                   className="flex-1 py-2.5 rounded-md text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 shadow-md shadow-blue-600/25 transition-colors"
                 >
-                  Lưu khoản nợ
+                  {editingDebt ? "Lưu thay đổi" : "Lưu khoản nợ"}
                 </button>
               </div>
             </form>
@@ -538,7 +635,7 @@ export function DebtsInvestView() {
         </div>
       )}
 
-      {/* Modal Thêm Đầu tư */}
+      {/* Modal Thêm hoặc Chỉnh sửa Đầu tư */}
       {isInvestModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
           <div
@@ -546,13 +643,21 @@ export function DebtsInvestView() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="text-base font-bold text-slate-800">Thêm khoản đầu tư</h3>
-              <button onClick={() => setIsInvestModalOpen(false)} className="text-slate-400 p-1">
+              <h3 className="text-base font-bold text-slate-800">
+                {editingInvest ? "Chỉnh sửa khoản đầu tư" : "Thêm khoản đầu tư"}
+              </h3>
+              <button
+                onClick={() => {
+                  setIsInvestModalOpen(false);
+                  setEditingInvest(null);
+                }}
+                className="text-slate-400 p-1"
+              >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleCreateInvest} className="space-y-3.5 pt-4">
+            <form onSubmit={handleSaveInvest} className="space-y-3.5 pt-4">
               <div>
                 <label className="block text-xs font-bold text-slate-600 mb-1">Tên khoản đầu tư</label>
                 <input
@@ -621,7 +726,10 @@ export function DebtsInvestView() {
               <div className="pt-2 flex gap-3">
                 <button
                   type="button"
-                  onClick={() => setIsInvestModalOpen(false)}
+                  onClick={() => {
+                    setIsInvestModalOpen(false);
+                    setEditingInvest(null);
+                  }}
                   className="flex-1 py-2.5 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
                 >
                   Hủy
@@ -630,7 +738,7 @@ export function DebtsInvestView() {
                   type="submit"
                   className="flex-1 py-2.5 rounded-md text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 shadow-md shadow-blue-600/25 transition-colors"
                 >
-                  Lưu đầu tư
+                  {editingInvest ? "Lưu thay đổi" : "Lưu đầu tư"}
                 </button>
               </div>
             </form>

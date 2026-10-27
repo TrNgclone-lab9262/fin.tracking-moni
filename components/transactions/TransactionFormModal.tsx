@@ -16,20 +16,22 @@ import {
 } from "lucide-react";
 import { useFinance } from "@/context/FinanceContext";
 import { formatVND } from "@/lib/formatters";
-import { FamilyMember, ExpenseScope, TransactionType } from "@/types/finance";
+import { FamilyMember, ExpenseScope, TransactionType, Transaction } from "@/types/finance";
 
 interface TransactionFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   defaultType?: TransactionType;
+  editTransaction?: Transaction | null;
 }
 
 export function TransactionFormModal({
   isOpen,
   onClose,
   defaultType = "EXPENSE",
+  editTransaction = null,
 }: TransactionFormModalProps) {
-  const { accounts, categories, addTransaction, activePerspective } = useFinance();
+  const { accounts, categories, addTransaction, updateTransaction, activePerspective } = useFinance();
 
   const [type, setType] = useState<TransactionType>(defaultType);
   const [amountInput, setAmountInput] = useState("");
@@ -43,44 +45,58 @@ export function TransactionFormModal({
   const [scope, setScope] = useState<ExpenseScope>("FAMILY");
   const [error, setError] = useState<string | null>(null);
 
-  // Khởi tạo giá trị mặc định theo góc nhìn hiện tại
+  // Khởi tạo giá trị mặc định theo góc nhìn hiện tại hoặc nạp dữ liệu chỉnh sửa
   useEffect(() => {
     if (isOpen) {
-      setType(defaultType);
-      setAmountInput("");
-      setNumericAmount(0);
-      setDate(new Date().toISOString().split("T")[0]);
-      setNote("");
-      setError(null);
-
-      // Gán thành viên theo activePerspective
-      if (activePerspective === "WIFE") {
-        setMemberId("WIFE");
+      if (editTransaction) {
+        setType(editTransaction.type);
+        setAmountInput(new Intl.NumberFormat("vi-VN").format(editTransaction.amount));
+        setNumericAmount(editTransaction.amount);
+        setDate(editTransaction.date);
+        setCategoryId(editTransaction.categoryId);
+        setAccountId(editTransaction.accountId);
+        if (editTransaction.toAccountId) setToAccountId(editTransaction.toAccountId);
+        setNote(editTransaction.note || "");
+        setMemberId(editTransaction.memberId || "HUSBAND");
+        setScope(editTransaction.scope || "FAMILY");
+        setError(null);
       } else {
-        setMemberId("HUSBAND");
-      }
+        setType(defaultType);
+        setAmountInput("");
+        setNumericAmount(0);
+        setDate(new Date().toISOString().split("T")[0]);
+        setNote("");
+        setError(null);
 
-      // Chọn tài khoản đầu tiên phù hợp
-      if (accounts.length > 0) {
-        const preferred =
-          activePerspective === "WIFE"
-            ? accounts.find((a) => a.owner === "WIFE") || accounts[0]
-            : accounts.find((a) => a.owner === "HUSBAND") || accounts[0];
-        setAccountId(preferred.id);
-        const second = accounts.find((a) => a.id !== preferred.id);
-        if (second) setToAccountId(second.id);
+        // Gán thành viên theo activePerspective
+        if (activePerspective === "WIFE") {
+          setMemberId("WIFE");
+        } else {
+          setMemberId("HUSBAND");
+        }
+
+        // Chọn tài khoản đầu tiên phù hợp
+        if (accounts.length > 0) {
+          const preferred =
+            activePerspective === "WIFE"
+              ? accounts.find((a) => a.owner === "WIFE") || accounts[0]
+              : accounts.find((a) => a.owner === "HUSBAND") || accounts[0];
+          setAccountId(preferred.id);
+          const second = accounts.find((a) => a.id !== preferred.id);
+          if (second) setToAccountId(second.id);
+        }
       }
     }
-  }, [isOpen, defaultType, activePerspective, accounts]);
+  }, [isOpen, defaultType, editTransaction, activePerspective, accounts]);
 
   // Lọc danh mục tương ứng với type
   const availableCategories = categories.filter((c) => c.type === type);
 
   useEffect(() => {
-    if (availableCategories.length > 0 && !availableCategories.some((c) => c.id === categoryId)) {
+    if (!editTransaction && availableCategories.length > 0 && !availableCategories.some((c) => c.id === categoryId)) {
       setCategoryId(availableCategories[0].id);
     }
-  }, [type, availableCategories, categoryId]);
+  }, [type, availableCategories, categoryId, editTransaction]);
 
   if (!isOpen) return null;
 
@@ -135,7 +151,11 @@ export function TransactionFormModal({
       scope,
     };
 
-    addTransaction(payload);
+    if (editTransaction) {
+      updateTransaction(editTransaction.id, payload);
+    } else {
+      addTransaction(payload);
+    }
     onClose();
   };
 
@@ -150,7 +170,7 @@ export function TransactionFormModal({
           <div className="flex items-center gap-2">
             <span className="text-xl">🏡</span>
             <h2 className="text-base sm:text-lg font-bold text-[#172B4D]">
-              Ghi chép giao dịch gia đình
+              {editTransaction ? "Chỉnh sửa giao dịch" : "Ghi chép giao dịch gia đình"}
             </h2>
           </div>
           <button
@@ -440,7 +460,7 @@ export function TransactionFormModal({
               }`}
             >
               <Check className="w-4 h-4" />
-              Lưu giao dịch
+              {editTransaction ? "Lưu thay đổi" : "Lưu giao dịch"}
             </button>
           </div>
         </form>

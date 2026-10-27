@@ -15,11 +15,14 @@ import {
   Plane,
   Laptop,
   Trash2,
+  Edit2,
+  Pencil,
 } from "lucide-react";
 import { useFinance } from "@/context/FinanceContext";
 import { formatVND } from "@/lib/formatters";
 import { CategoryIcon } from "@/components/common/CategoryIcon";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
+import { SavingsGoal } from "@/types/finance";
 
 export function PlanningView() {
   const {
@@ -28,6 +31,7 @@ export function PlanningView() {
     categories,
     setCategoryBudget,
     addGoal,
+    updateGoal,
     depositGoal,
     deleteGoal,
   } = useFinance();
@@ -39,31 +43,88 @@ export function PlanningView() {
   const [depositAmount, setDepositAmount] = useState("");
   const [deleteGoalId, setDeleteGoalId] = useState<string | null>(null);
 
-  // New goal form states
+  // Goal Form State (Dual-Mode: Create & Edit)
+  const [editingGoal, setEditingGoal] = useState<SavingsGoal | null>(null);
   const [goalName, setGoalName] = useState("");
   const [goalTarget, setGoalTarget] = useState("");
   const [goalCurrent, setGoalCurrent] = useState("");
   const [goalDeadline, setGoalDeadline] = useState("");
 
-  const handleCreateGoal = (e: React.FormEvent) => {
+  // Quick Category Budget Edit Modal
+  const [editingCategoryBudget, setEditingCategoryBudget] = useState<{
+    categoryId: string;
+    categoryName: string;
+    categoryColor: string;
+    limitAmount: number;
+  } | null>(null);
+  const [categoryBudgetInput, setCategoryBudgetInput] = useState("");
+
+  const handleOpenCreateGoal = () => {
+    setEditingGoal(null);
+    setGoalName("");
+    setGoalTarget("");
+    setGoalCurrent("");
+    setGoalDeadline("");
+    setIsGoalModalOpen(true);
+  };
+
+  const handleOpenEditGoal = (goal: SavingsGoal) => {
+    setEditingGoal(goal);
+    setGoalName(goal.name);
+    setGoalTarget(new Intl.NumberFormat("vi-VN").format(goal.targetAmount));
+    setGoalCurrent(new Intl.NumberFormat("vi-VN").format(goal.currentAmount));
+    setGoalDeadline(goal.deadline || "");
+    setIsGoalModalOpen(true);
+  };
+
+  const handleSaveGoal = (e: React.FormEvent) => {
     e.preventDefault();
     if (!goalName.trim()) return;
 
     const target = parseFloat(goalTarget.replace(/[^0-9]/g, "")) || 0;
     const current = parseFloat(goalCurrent.replace(/[^0-9]/g, "")) || 0;
 
-    addGoal({
-      name: goalName.trim(),
-      targetAmount: target,
-      currentAmount: current,
-      deadline: goalDeadline || undefined,
-    });
+    if (editingGoal) {
+      updateGoal(editingGoal.id, {
+        name: goalName.trim(),
+        targetAmount: target,
+        currentAmount: current,
+        deadline: goalDeadline || undefined,
+      });
+    } else {
+      addGoal({
+        name: goalName.trim(),
+        targetAmount: target,
+        currentAmount: current,
+        deadline: goalDeadline || undefined,
+      });
+    }
 
+    setEditingGoal(null);
     setGoalName("");
     setGoalTarget("");
     setGoalCurrent("");
     setGoalDeadline("");
     setIsGoalModalOpen(false);
+  };
+
+  const handleOpenQuickBudgetEdit = (item: {
+    categoryId: string;
+    categoryName: string;
+    categoryColor: string;
+    limitAmount: number;
+  }) => {
+    setEditingCategoryBudget(item);
+    setCategoryBudgetInput(new Intl.NumberFormat("vi-VN").format(item.limitAmount));
+  };
+
+  const handleSaveCategoryBudget = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingCategoryBudget) return;
+    const val = parseFloat(categoryBudgetInput.replace(/[^0-9]/g, "")) || 0;
+    setCategoryBudget(editingCategoryBudget.categoryId, val);
+    setEditingCategoryBudget(null);
+    setCategoryBudgetInput("");
   };
 
   const handleDeposit = (e: React.FormEvent) => {
@@ -184,9 +245,18 @@ export function PlanningView() {
                       />
                       <h4 className="font-bold text-[#172B4D] text-sm">{item.categoryName}</h4>
                     </div>
-                    <span className="text-xs font-semibold text-slate-500">
-                      {formatVND(item.spentAmount)} / {formatVND(item.limitAmount)}
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-semibold text-slate-500">
+                        {formatVND(item.spentAmount)} / {formatVND(item.limitAmount)}
+                      </span>
+                      <button
+                        onClick={() => handleOpenQuickBudgetEdit(item)}
+                        title="Điều chỉnh hạn mức danh mục"
+                        className="p-1 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                      >
+                        <Edit2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
 
                   <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
@@ -222,7 +292,7 @@ export function PlanningView() {
               </p>
             </div>
             <button
-              onClick={() => setIsGoalModalOpen(true)}
+              onClick={handleOpenCreateGoal}
               className="flex items-center gap-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs sm:text-sm font-bold shadow-xs active:scale-95 transition-all self-start sm:self-auto"
             >
               <Plus className="w-4 h-4" />
@@ -288,26 +358,38 @@ export function PlanningView() {
                   </div>
 
                   <div className="pt-3 border-t border-[#E9EEF5] flex items-center justify-between">
-                    {!isDone ? (
-                      <button
-                        onClick={() => setDepositGoalId(g.id)}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-semibold rounded-md transition-colors"
-                      >
-                        <Coins className="w-3.5 h-3.5" />
-                        <span>Nạp thêm</span>
-                      </button>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 text-emerald-600 text-xs font-bold">
-                        <CheckCircle2 className="w-4 h-4" /> Đạt mục tiêu
-                      </span>
-                    )}
+                    <div className="flex items-center gap-2">
+                      {!isDone ? (
+                        <button
+                          onClick={() => setDepositGoalId(g.id)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-semibold rounded-md transition-colors"
+                        >
+                          <Coins className="w-3.5 h-3.5" />
+                          <span>Nạp thêm</span>
+                        </button>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-emerald-600 text-xs font-bold">
+                          <CheckCircle2 className="w-4 h-4" /> Đạt mục tiêu
+                        </span>
+                      )}
+                    </div>
 
-                    <button
-                      onClick={() => setDeleteGoalId(g.id)}
-                      className="p-1.5 text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => handleOpenEditGoal(g)}
+                        title="Chỉnh sửa mục tiêu"
+                        className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                      >
+                        <Edit2 className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => setDeleteGoalId(g.id)}
+                        title="Xóa mục tiêu"
+                        className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
@@ -414,7 +496,7 @@ export function PlanningView() {
         </div>
       )}
 
-      {/* Modal Tạo Mục Tiêu Mới */}
+      {/* Modal Tạo / Sửa Mục Tiêu Tiết Kiệm (Dual-Mode) */}
       {isGoalModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
           <div
@@ -422,13 +504,21 @@ export function PlanningView() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between pb-3 border-b border-[#E9EEF5]">
-              <h3 className="text-base font-bold text-[#172B4D]">Thêm mục tiêu tiết kiệm</h3>
-              <button onClick={() => setIsGoalModalOpen(false)} className="text-slate-400 p-1">
+              <h3 className="text-base font-bold text-[#172B4D]">
+                {editingGoal ? "Chỉnh sửa mục tiêu tiết kiệm" : "Thêm mục tiêu tiết kiệm"}
+              </h3>
+              <button
+                onClick={() => {
+                  setIsGoalModalOpen(false);
+                  setEditingGoal(null);
+                }}
+                className="text-slate-400 p-1 hover:text-slate-600 rounded-md transition-colors"
+              >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleCreateGoal} className="space-y-3.5 pt-4">
+            <form onSubmit={handleSaveGoal} className="space-y-3.5 pt-4">
               <div>
                 <label className="block text-xs font-bold text-slate-600 mb-1">Tên mục tiêu</label>
                 <input
@@ -483,16 +573,108 @@ export function PlanningView() {
               <div className="pt-2 flex gap-3">
                 <button
                   type="button"
-                  onClick={() => setIsGoalModalOpen(false)}
-                  className="flex-1 py-2.5 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  onClick={() => {
+                    setIsGoalModalOpen(false);
+                    setEditingGoal(null);
+                  }}
+                  className="flex-1 py-2.5 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
                 >
                   Hủy
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 rounded-md text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 shadow-xs"
+                  className="flex-1 py-2.5 rounded-md text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 shadow-xs transition-colors"
                 >
-                  Lưu mục tiêu
+                  {editingGoal ? "Cập nhật mục tiêu" : "Lưu mục tiêu"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Chỉnh sửa nhanh Hạn mức Danh mục */}
+      {editingCategoryBudget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
+          <div
+            className="w-full max-w-sm bg-white rounded-xl shadow-2xl p-6 border border-[#DCE4EE]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between pb-3 border-b border-[#E9EEF5]">
+              <div className="flex items-center gap-2">
+                <span
+                  className="w-3.5 h-3.5 rounded-full"
+                  style={{ backgroundColor: editingCategoryBudget.categoryColor }}
+                />
+                <h3 className="text-sm font-bold text-[#172B4D]">
+                  Hạn mức: {editingCategoryBudget.categoryName}
+                </h3>
+              </div>
+              <button
+                onClick={() => setEditingCategoryBudget(null)}
+                className="text-slate-400 p-1 hover:text-slate-600 rounded-md transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveCategoryBudget} className="space-y-4 pt-4">
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 mb-1">
+                  Hạn mức chi tháng này (VND)
+                </label>
+                <input
+                  type="text"
+                  autoFocus
+                  required
+                  value={categoryBudgetInput}
+                  onChange={(e) => {
+                    const raw = e.target.value.replace(/[^0-9]/g, "");
+                    setCategoryBudgetInput(
+                      raw ? new Intl.NumberFormat("vi-VN").format(parseInt(raw, 10)) : ""
+                    );
+                  }}
+                  placeholder="0"
+                  className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3 py-2 text-base font-black text-slate-800 outline-none focus:border-blue-500 text-right"
+                />
+              </div>
+
+              {/* Quick adjustment buttons */}
+              <div className="grid grid-cols-3 gap-1.5 pt-1">
+                {[
+                  { label: "1.000.000đ", val: 1000000 },
+                  { label: "2.000.000đ", val: 2000000 },
+                  { label: "3.000.000đ", val: 3000000 },
+                  { label: "5.000.000đ", val: 5000000 },
+                  { label: "7.000.000đ", val: 7000000 },
+                  { label: "10.000.000đ", val: 10000000 },
+                ].map((preset) => (
+                  <button
+                    key={preset.val}
+                    type="button"
+                    onClick={() =>
+                      setCategoryBudgetInput(new Intl.NumberFormat("vi-VN").format(preset.val))
+                    }
+                    className="py-1 px-2 text-[11px] font-semibold bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-600 rounded-md transition-colors"
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setEditingCategoryBudget(null)}
+                  className="flex-1 py-2 text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-md transition-colors"
+                >
+                  Hủy
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-2 text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 rounded-md shadow-xs transition-colors"
+                >
+                  Lưu hạn mức
                 </button>
               </div>
             </form>
