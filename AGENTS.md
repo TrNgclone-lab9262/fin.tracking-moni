@@ -55,6 +55,7 @@ flowchart LR
      - Đồng bộ Supabase Cloud Sync: `.agents/standards/03_supabase_cloud_sync.md`
      - Quản trị Git & Phân nhánh: `.agents/standards/04_git_collaboration.md`
      - Tam Giác Vai Trò Audit: `.agents/standards/05_persona_triad_audit.md`
+     - Giao Thức Phát Hành Git & CI/CD: `.agents/standards/06_git_release_cicd_protocol.md`
 
 ---
 
@@ -89,3 +90,8 @@ flowchart LR
      - Cập nhật số phiên bản nếu có bước tiến lớn.
 3. **Phản Hồi Người Dùng:**
    - Trình bày kết quả ngắn gọn, rõ ràng, dẫn link clickable đến các file và code symbols vừa thay đổi.
+4. **Kích Hoạt Kỹ Năng Phát Hành Git & CI/CD (`home-moni-git-release`):**
+   - Khi người dùng yêu cầu (*"hãy chạy release code"*, *"hãy đẩy lên github"*, *"hãy commit đẩy lên github"*, *"hãy commit và đẩy nhánh lên GitHub"*) hoặc sau các cập nhật lớn: AI Agent kích hoạt quy trình 3 giai đoạn:
+     - **Giai đoạn 1:** Hỏi chọn nhánh, tự động trích dẫn changelog tiếng Việt tinh gọn, sinh khối lệnh Terminal để người dùng copy chạy.
+     - **Giai đoạn 2:** Hướng dẫn người dùng mở PR trên GitHub, chờ CI check xanh 🟢 và merge vào `main`.
+     - **Giai đoạn 3:** Khi người dùng xác nhận xong Giai đoạn 2, sinh khối lệnh Terminal cập nhật `main` local và gắn Tag chuẩn `vX.X` đẩy lên GitHub kích hoạt Vercel CD.
