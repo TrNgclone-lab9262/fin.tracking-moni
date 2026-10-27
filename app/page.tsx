@@ -6,6 +6,7 @@ import { useFinance } from "@/context/FinanceContext";
 import { Sidebar } from "@/components/common/Sidebar";
 import { TopBar } from "@/components/common/TopBar";
 import { MobileDrawer } from "@/components/common/MobileDrawer";
+import { BottomNavBar } from "@/components/common/BottomNavBar";
 import { OverviewView } from "@/components/views/OverviewView";
 import { TransactionsView } from "@/components/views/TransactionsView";
 import { AccountsView } from "@/components/views/AccountsView";
@@ -96,21 +97,13 @@ export default function HomePage() {
           onToggleMobileMenu={() => setIsMobileMenuOpen(true)}
         />
 
-        <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 pb-24 md:pb-8">
           {renderActiveView()}
         </main>
       </div>
 
-      {/* 4. Floating Action Button cho Mobile (Khớp hình uix-mobile.JPG) */}
-      <div className="fixed bottom-6 right-6 md:hidden z-40">
-        <button
-          onClick={() => setIsAddModalOpen(true)}
-          className="w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-xl shadow-blue-600/40 flex items-center justify-center active:scale-90 transition-transform"
-          aria-label="Thêm giao dịch mới"
-        >
-          <Plus className="w-7 h-7" />
-        </button>
-      </div>
+      {/* 4. Thanh điều hướng đáy cho Thiết bị Di động (Mobile Bottom Navigation Bar) */}
+      <BottomNavBar onOpenAddModal={() => setIsAddModalOpen(true)} />
 
       {/* 5. Modals toàn cục */}
       <TransactionFormModal

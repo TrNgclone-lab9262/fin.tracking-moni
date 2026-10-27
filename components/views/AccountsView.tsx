@@ -8,6 +8,7 @@ import {
   Banknote,
   Eye,
   Trash2,
+  Pencil,
   X,
   Users,
   ShieldCheck,
@@ -23,6 +24,7 @@ export function AccountsView() {
     accounts,
     transactions,
     addAccount,
+    updateAccount,
     deleteAccount,
     getCategoryById,
     activePerspective,
@@ -30,6 +32,7 @@ export function AccountsView() {
 
   const [selectedAccountForDetail, setSelectedAccountForDetail] = useState<Account | null>(null);
   const [isAddAccountModalOpen, setIsAddAccountModalOpen] = useState(false);
+  const [editingAccount, setEditingAccount] = useState<Account | null>(null);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
 
   // Form states thêm tài khoản
@@ -59,27 +62,60 @@ export function AccountsView() {
       .reduce((sum, a) => sum + Math.max(0, a.currentBalance), 0);
   }, [accounts]);
 
-  const handleCreateAccount = (e: React.FormEvent) => {
+  const handleOpenAddAccount = () => {
+    setEditingAccount(null);
+    setName("");
+    setInitialBalance("");
+    setCreditLimit("");
+    setAccountNumber("");
+    setOwner("HUSBAND");
+    setType("BANK");
+    setIsAddAccountModalOpen(true);
+  };
+
+  const handleOpenEditAccount = (acc: Account) => {
+    setEditingAccount(acc);
+    setName(acc.name);
+    setOwner(acc.owner);
+    setType(acc.type);
+    setInitialBalance(new Intl.NumberFormat("vi-VN").format(acc.initialBalance));
+    setCreditLimit(acc.creditLimit ? new Intl.NumberFormat("vi-VN").format(acc.creditLimit) : "");
+    setAccountNumber(acc.accountNumber || "");
+    setIsAddAccountModalOpen(true);
+  };
+
+  const handleSubmitAccount = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
 
     const initVal = parseFloat(initialBalance.replace(/[^0-9]/g, "")) || 0;
     const limitVal = type === "CREDIT_CARD" ? parseFloat(creditLimit.replace(/[^0-9]/g, "")) || 0 : undefined;
 
-    addAccount({
-      name: name.trim(),
-      owner,
-      type,
-      initialBalance: initVal,
-      creditLimit: limitVal,
-      accountNumber: accountNumber.trim() || undefined,
-    });
+    if (editingAccount) {
+      updateAccount(editingAccount.id, {
+        name: name.trim(),
+        owner,
+        initialBalance: initVal,
+        creditLimit: limitVal,
+        accountNumber: accountNumber.trim() || undefined,
+      });
+    } else {
+      addAccount({
+        name: name.trim(),
+        owner,
+        type,
+        initialBalance: initVal,
+        creditLimit: limitVal,
+        accountNumber: accountNumber.trim() || undefined,
+      });
+    }
 
     setName("");
     setInitialBalance("");
     setCreditLimit("");
     setAccountNumber("");
     setIsAddAccountModalOpen(false);
+    setEditingAccount(null);
   };
 
   const detailTransactions = useMemo(() => {
@@ -202,12 +238,22 @@ export function AccountsView() {
             <span>Xem sổ giao dịch</span>
           </button>
 
-          <button
-            onClick={() => setDeleteTargetId(acc.id)}
-            className="p-1.5 text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
-          >
-            <Trash2 className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => handleOpenEditAccount(acc)}
+              title="Chỉnh sửa tài khoản"
+              className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+            >
+              <Pencil className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setDeleteTargetId(acc.id)}
+              title="Xóa tài khoản"
+              className="p-1.5 text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -237,7 +283,7 @@ export function AccountsView() {
         </div>
 
         <button
-          onClick={() => setIsAddAccountModalOpen(true)}
+          onClick={handleOpenAddAccount}
           className="flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs sm:text-sm font-bold shadow-xs active:scale-95 transition-all self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
@@ -391,7 +437,7 @@ export function AccountsView() {
         </div>
       )}
 
-      {/* Modal Thêm tài khoản mới */}
+      {/* Modal Thêm hoặc Chỉnh sửa tài khoản */}
       {isAddAccountModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
           <div
@@ -399,13 +445,21 @@ export function AccountsView() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between pb-3 border-b border-[#E9EEF5]">
-              <h3 className="text-base font-bold text-[#172B4D]">Thêm tài khoản / thẻ mới</h3>
-              <button onClick={() => setIsAddAccountModalOpen(false)} className="text-slate-400 p-1">
+              <h3 className="text-base font-bold text-[#172B4D]">
+                {editingAccount ? "Chỉnh sửa tài khoản / thẻ" : "Thêm tài khoản / thẻ mới"}
+              </h3>
+              <button
+                onClick={() => {
+                  setIsAddAccountModalOpen(false);
+                  setEditingAccount(null);
+                }}
+                className="text-slate-400 p-1"
+              >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleCreateAccount} className="space-y-3.5 pt-4">
+            <form onSubmit={handleSubmitAccount} className="space-y-3.5 pt-4">
               <div>
                 <label className="block text-xs font-bold text-slate-600 mb-1">Chủ sở hữu</label>
                 <div className="grid grid-cols-3 gap-2">
@@ -452,11 +506,16 @@ export function AccountsView() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-600 mb-1">Loại tài khoản</label>
+                <label className="block text-xs font-bold text-slate-600 mb-1">
+                  Loại tài khoản {editingAccount && <span className="text-[10px] text-slate-400 font-normal">(Cố định)</span>}
+                </label>
                 <select
+                  disabled={editingAccount !== null}
                   value={type}
                   onChange={(e) => setType(e.target.value as AccountType)}
-                  className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold"
+                  className={`w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold ${
+                    editingAccount ? "opacity-75 cursor-not-allowed bg-slate-100" : ""
+                  }`}
                 >
                   <option value="BANK">Tài khoản ngân hàng</option>
                   <option value="CREDIT_CARD">Thẻ tín dụng (Credit Card)</option>
@@ -498,7 +557,10 @@ export function AccountsView() {
               <div className="pt-2 flex gap-3">
                 <button
                   type="button"
-                  onClick={() => setIsAddAccountModalOpen(false)}
+                  onClick={() => {
+                    setIsAddAccountModalOpen(false);
+                    setEditingAccount(null);
+                  }}
                   className="flex-1 py-2.5 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200"
                 >
                   Hủy
@@ -507,7 +569,7 @@ export function AccountsView() {
                   type="submit"
                   className="flex-1 py-2.5 rounded-md text-xs font-bold bg-blue-600 text-white shadow-xs hover:bg-blue-700"
                 >
-                  Lưu tài khoản
+                  {editingAccount ? "Lưu thay đổi" : "Lưu tài khoản"}
                 </button>
               </div>
             </form>

@@ -1,6 +1,6 @@
 # 🏛️ HOME MONI - LIVING PROJECT STATE LEDGER
-> **Last Synchronized:** 2026-10-26T09:08:00+07:00  
-> **App Version:** v4.0 (Supabase Cloud BaaS & Realtime Edition)  
+> **Last Synchronized:** 2026-10-27T09:05:00+07:00  
+> **App Version:** v4.1 (Triple-Device Responsive & Universal CRUD Edit Edition)  
 > **Active Storage Key:** `HOME_MONI_DATA_V4` + Supabase PostgreSQL Cloud BaaS (`ymcxdzxdbhivopxyyhph`)  
 > **Build Status:** 🟢 PASSING (`npm run build` verified: 0 errors, 4/4 static pages)  
 > **Runtime Environment:** Next.js 14.2.35 (App Router) · React 18 · TypeScript 5 · Tailwind CSS · Recharts · Supabase JS v2
@@ -37,15 +37,17 @@ fi.tracking-moni/
 │       ├── 01_ci_cd_automation.md     # Tiêu chuẩn GitHub Actions CI & quy tắc kiểm thử
 │       ├── 02_deployment_vercel.md    # Tiêu chuẩn triển khai CD Vercel & PWA Mobile
 │       ├── 03_supabase_cloud_sync.md  # Tiêu chuẩn đồng bộ Cloud Supabase & Local-First
-│       └── 04_git_collaboration.md    # Tiêu chuẩn phân nhánh, commit convention, release tags
+│       ├── 04_git_collaboration.md    # Tiêu chuẩn phân nhánh, commit convention, release tags
+│       └── 05_persona_triad_audit.md  # Tiêu chuẩn Tam Giác Vai Trò Tối Cao (Architect, QA, Chồng Tận Tụy)
 ├── app/
 │   ├── globals.css                    # Tailwind directives & theme styles
 │   ├── layout.tsx                     # Root layout, PWA metadata, Inter font
-│   └── page.tsx                       # Main orchestrator: Sidebar sticky + TopBar + Views
+│   └── page.tsx                       # Main orchestrator: Sidebar sticky + TopBar + Views + BottomNavBar
 ├── components/
 │   ├── common/
-│   │   ├── Sidebar.tsx                # Sticky h-screen, Floating Edge Toggle, Mini Profile, Grouped IA
+│   │   ├── Sidebar.tsx                # Sticky h-screen, Responsive Tablet collapse (w-20), Edge Toggle
 │   │   ├── TopBar.tsx                 # Header, Perspective Switcher (My Home/Chuột/Mèo), Month selector
+│   │   ├── BottomNavBar.tsx           # Mobile Bottom Navigation (4 tabs + FAB thêm giao dịch nhanh 3s)
 │   │   ├── MobileDrawer.tsx           # Mobile navigation drawer with perspective switcher
 │   │   ├── CategoryIcon.tsx           # Dynamic Lucide icon renderer
 │   │   ├── ConfirmDialog.tsx          # Safety confirmation modal
@@ -125,6 +127,7 @@ flowchart LR
 
 | Phiên (Vibe ID) | Ngày Giờ | Mục Tiêu & Thay Đổi Cốt Lõi | Files Tác Động | Trạng Thái |
 | :--- | :--- | :--- | :--- | :--- |
+| **VIBE-12** | 2026-10-27 | **Thể Chế Hóa Tam Giác Vai Trò Tối Cao & Tối Ưu Toàn Diện Triple-Device Responsive & Universal CRUD Edit:**<br/>1. **Thể chế hóa Tam Giác Vai Trò Tối Cao (Triad Audit Protocol)**: Bổ sung định chế vĩnh cửu tại `AGENTS.md` và tiêu chuẩn `.agents/standards/05_persona_triad_audit.md` (Senior Software Architect - Event Sourcing recalculate balances, Lead QA - Edge case matrix & triple-device audit, Người Chồng Tận Tụy - Quy tắc 3 giây, minh bạch gia đình `[👨 Anh Chuột / 👩 Bé Mèo]`, `[🏠 Chung / 👤 Riêng]`, sao kê ngày 20).<br/>2. **Tối ưu Sổ giao dịch Desktop:** Áp dụng `table-fixed`, tỷ lệ phân bổ 8 cột chuẩn xác, triệt tiêu hoàn toàn lỗi xuống dòng nội dung bảng, tinh gọn nhãn `[🏠 Chung]` và `[👤 Riêng]`.<br/>3. **Chuẩn hóa Responsive Đa Thiết Bị:** Thống nhất trải nghiệm trên cả 3 màn hình: **Desktop (`>= 1024px`)**, **Tablet (`768px - 1023px`)** (Sidebar auto-collapse `w-20` mini-mode, bảng giao dịch 7 cột tinh gọn), **Mobile (`< 768px`)** (Bottom Navigation Bar `BottomNavBar.tsx` với 4 tabs chính + center FAB `[+]` nhập nhanh 3s, Bento Transaction Cards dạng thẻ chạm chuẩn `>= 44px`).<br/>4. **Universal CRUD Edit 5 Phân Hệ:** Chuẩn hóa khả năng sửa/chỉnh đốn dữ liệu trên toàn bộ 5 thực thể: Giao dịch (`TransactionFormModal.tsx` dual-mode), Tài khoản/Thẻ (`AccountsView.tsx` dual-mode), Nợ vay (`DebtsInvestView.tsx` + `FinanceContext.tsx` updateDebt), Đầu tư (`DebtsInvestView.tsx` dual-mode), Ngân sách & Mục tiêu (`PlanningView.tsx` dual-mode Goal Modal & Quick Category Budget Modal).<br/>5. **Kiểm thử Post-Vibe Gate:** Biên dịch `npm run build` thành công mã `0`, 0 lỗi TypeScript, 100% token purity (`rounded-xl` card/modal, `rounded-md` button, `rounded-lg` control). | `AGENTS.md`, `.agents/standards/05_persona_triad_audit.md`, `components/views/TransactionsView.tsx`, `components/transactions/TransactionFormModal.tsx`, `components/views/AccountsView.tsx`, `components/views/DebtsInvestView.tsx`, `components/views/PlanningView.tsx`, `components/common/BottomNavBar.tsx`, `components/common/Sidebar.tsx`, `app/page.tsx`, `context/FinanceContext.tsx`, `PROJECT_STATE.md` | 🟢 Verified |
 | **VIBE-11** | 2026-10-26 | Chuẩn hóa toàn diện ngôn ngữ thiết kế Calm Slate Fintech & Hệ phân cấp bo góc 3 tầng: Chuẩn hóa triệt để bo góc (`rounded-xl` card/modal/table, `rounded-md` button/pill/action, `rounded-lg` input/select/badge/sub-panel), xóa sạch 100% `rounded-3xl` và `rounded-2xl` trên toàn bộ components; Cố định nền Canvas `#F6F8FB`, Hero Navy Gradient Card cho Tài sản ròng và 3 Flat White Card viền `#DCE4EE`; Đồng bộ chu kỳ sao kê 2 thẻ BIDV Credit của cả Anh Chuột và Bé Mèo vào ngày 20 hàng tháng (hạn thanh toán ngày 25 hàng tháng) trên toàn bộ hệ thống (`DualCreditCardsWidget.tsx`, `GuideView.tsx`, `constants/mockData.ts`, `README.md`, `PROJECT_STATE.md`); Tinh gọn `SettingsView.tsx` (loại bỏ switcher 5 theme, tối ưu Cloud Sync). | `app/globals.css`, `app/page.tsx`, `tailwind.config.ts`, `components/dashboard/*`, `components/views/*`, `components/transactions/*`, `components/common/*`, `constants/mockData.ts`, `README.md`, `PROJECT_STATE.md` | 🟢 Verified |
 | **VIBE-10** | 2026-10-26 | Đồng bộ hóa toàn diện sau khi đổi tên thư mục skill sang `home-moni-uiux`: Cập nhật đồng bộ các file quy tắc (`AGENTS.md`, `.agents/rules/01_pre_vibe.md`, `.agents/rules/02_in_vibe.md`), sổ cái `PROJECT_STATE.md`, nâng cấp toàn diện tài liệu tham chiếu `references/ux-guidelines.md` và `SKILL.md` theo chuẩn HOME MONI v4.0 (Góc nhìn gia đình, Dual BIDV Credit, Cloud Realtime), sửa chuỗi nhận diện tại `ExportImportModal.tsx`. Kiểm thử `npm run build` pass 100%. | `AGENTS.md`, `.agents/rules/*`, `.agents/skills/home-moni-uiux/*`, `ExportImportModal.tsx`, `PROJECT_STATE.md` | 🟢 Verified |
 | **VIBE-09** | 2026-10-26 | Thiết lập hệ thống CI tự động hóa với GitHub Actions (`.github/workflows/ci.yml`), xây dựng bộ tiêu chuẩn kỹ thuật `.agents/standards/` (CI/CD, Vercel, Supabase Sync, Git Collaboration), cập nhật `AGENTS.md` và tài liệu hướng dẫn CD Vercel. | `.github/workflows/ci.yml`, `.agents/standards/*`, `AGENTS.md`, `PROJECT_STATE.md` | 🟢 Verified |
