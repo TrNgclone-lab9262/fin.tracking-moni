@@ -20,6 +20,16 @@ Use `design-tokens.md` as the source of truth for visual specifications.
 
 The goal is to improve usability and visual quality without compromising financial accuracy, existing business logic, data integrity, or established workflows.
 
+## 0. Senior UX/UI Vibe Loop Protocol (Tiêu Chuẩn Bắt Buộc)
+
+Mọi hoạt động thiết kế và nâng cấp giao diện bắt buộc tuân thủ tiêu chuẩn kỹ thuật số [.agents/standards/07_senior_uiux_vibe_loop_protocol.md](file:///.agents/standards/07_senior_uiux_vibe_loop_protocol.md) với 6 trụ cột cốt lõi:
+1. **Scope & State Matrix:** Luôn thiết kế đủ 5 trạng thái (Default, Skeleton Loading, Empty, Error/Offline, Overflow số tiền cực lớn).
+2. **Token Purity SSOT:** 100% sử dụng biến Token có sẵn (`$color/primary/900`, `$color/primary/600`, `$color/success/600`, `$color/error/600`, `$color/warning/600`), bo góc 3 tầng (`rounded-xl` 12px card, `rounded-md` 6px button, `rounded-lg` 8px control). Không dùng mã màu hex tùy tiện.
+3. **Mobile Thumb-zone & 3s Rule:** Vùng chạm ngón tay cái $\ge 44 \times 44px$, Numpad nhập nhanh `+000`, `50k`, `100k`, `200k`, `500k`, thao tác hoàn tất trong 3 giây.
+4. **Dual-AI Audits:** Chạy tự động `layout_audit`, `a11y_audit` (WCAG AA), và `responsive_audit` (Mobile 390px, Tablet 768px, Desktop 1440px).
+5. **Clean Code 1:1:** Ánh xạ Auto Layout trực tiếp sang Tailwind CSS, không dùng `any`, bảo toàn Event Sourcing `recalculateAccountBalances`.
+6. **Build & Ledger Gate:** Xác thực `npm run build` mã `0`, cập nhật `PROJECT_STATE.md`.
+
 ## 1. Mandatory Workflow
 
 ### Before implementation

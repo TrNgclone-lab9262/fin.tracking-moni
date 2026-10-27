@@ -56,11 +56,13 @@ flowchart LR
      - Quản trị Git & Phân nhánh: `.agents/standards/04_git_collaboration.md`
      - Tam Giác Vai Trò Audit: `.agents/standards/05_persona_triad_audit.md`
      - Giao Thức Phát Hành Git & CI/CD: `.agents/standards/06_git_release_cicd_protocol.md`
+     - Tiêu Chuẩn Thực Thi Vibe Loop Senior UX/UI: `.agents/standards/07_senior_uiux_vibe_loop_protocol.md`
 
 ---
 
 ### CỔNG 2: IN-VIBE GATE (Kiểm Soát Thực Thi & Chuẩn Mực Code)
-1. **Tuân Thủ Tuyệt Đối Skill UI/UX (`.agents/skills/home-moni-uiux/`):**
+1. **Tuân Thủ Tuyệt Đối Skill UI/UX (`.agents/skills/home-moni-uiux/`) & Tiêu Chuẩn 07:**
+   - Quy trình Vibe Loop 4 bước: (1) Scope & 5 Trạng thái (Default, Skeleton, Empty, Error, Overflow) $\rightarrow$ (2) Figma 100% Token Purity $\rightarrow$ (3) Dual-AI Audit & Mirror Test $\rightarrow$ (4) Clean Code 1:1 Mapping.
    - Bảng màu Fintech Tokens:
      - Primary Navy: `#1E3A8A` / `#1D4ED8` (Sidebar gradient)
      - Active Blue: `#2563EB` (Primary buttons, active highlight)
