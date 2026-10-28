@@ -141,21 +141,33 @@ Trước khi đưa thiết kế vào code, AI Agent kích hoạt 3 bài kiểm �
 
 ---
 
-### Trụ Cột 5.1: Định Chế Chiến Lược Chuyển Dịch Code Components (Clean Code Component Synthesis Strategy)
+### Trụ Cột 5.1: Định Chế Chiến Lược Chuyển Dịch Code Components & Kiến Trúc Dual-Shell View (Dual-Shell View & Clean Code Strategy)
 > **Quy chuẩn vĩnh cửu** cho toàn bộ việc chuyển dịch từ Canvas Figma sang Codebase của HOME MONI:
 
-1. **Kiến Trúc Component 4 Lớp Phân Tách Rõ Ràng:**
-   - **Lớp 1 - Core Views & Shell:** `components/views/*`, `app/page.tsx` quản lý responsive breakpoint (`md:` và `lg:`).
-   - **Lớp 2 - Mobile Action Sheets (`components/mobile/sheets/*`):** Toàn bộ Action Modals di động triển khai dưới dạng Bottom Sheet trượt lên (`slide-in-from-bottom`), có drag handle `48x5px`, Dynamic Island backdrop overlay, chạm nền mờ tự động đóng.
+1. **Chiến Lược Kiến Trúc Hai Vỏ Hiển Thị (Dual-Shell View Architecture):**
+   - **Tách Rời Vỏ Hiển Thị (Dual-Shell, Single-Ledger):** Tuyệt đối không cố "ép co" (squish) bố cục Desktop nhiều cột thành một dải cuộn dọc dài ngoằng trên di động. Thay vào đó, xây dựng 2 hệ vỏ hiển thị độc lập:
+     - **Desktop Shell (`hidden md:flex`):** Giữ trọn không gian thoáng đãng 1440px, Sidebar `w-64`, bảng dữ liệu 8 cột `table-fixed`, Heatmap 31 ngày và Recharts phân tích tài chính sâu rộng.
+     - **Mobile Shell (`block md:hidden`):** Tái hiện 1:1 "Bản Thiết Kế Chuẩn Vàng" trên Figma iPhone 14 Pro Max (`430 x 932 px`), cấu trúc Bento Card cô đọng dữ liệu, tối ưu ngón tay cái, loại bỏ hoàn toàn các bảng biểu cồng kềnh.
+   - **Zero Hydration Mismatch & No Layout Flickering:** Phân tách hoàn toàn bằng class CSS Tailwind (`hidden md:flex` và `block md:hidden`), không phụ thuộc `window.innerWidth` bằng JavaScript để triệt tiêu triệt để lỗi Hydration Mismatch của Next.js SSR.
+   - **Đơn Nhất Sổ Cái Dữ Liệu (Single Source of Truth):** Cả hai Shell dùng chung một tầng nghiệp vụ duy nhất từ `FinanceContext.tsx`, bảo toàn tính toàn vẹn kế toán Event Sourcing `recalculateAccountBalances` và đồng bộ Realtime Supabase Cloud.
+
+2. **Hệ Thống Phân Tầng Component 4 Lớp:**
+   - **Lớp 1 - Dual-Shell Views:** 
+     - Desktop Views: `components/views/*` (Overview, Transactions, Accounts, Planning, DebtsInvest, Settings, Guide).
+     - Mobile Views: `components/mobile/views/*` (`MobileOverviewView.tsx`, `MobileTransactionsView.tsx`, `MobileAccountsView.tsx`, `MobilePlanningView.tsx`) cùng `MobileHeader.tsx`.
+   - **Lớp 2 - Mobile Action Sheets (`components/mobile/sheets/*`):** Toàn bộ Action Modals di động triển khai dưới dạng Bottom Sheet trượt lên (`slide-in-from-bottom`), có drag handle `48x5px`, Dynamic Island backdrop overlay, chạm nền mờ tự động đóng (`TransactionDetailSheet`, `CreditCardRepaymentSheet`, `GoalDepositSheet`, `MobileNumpadSheet`).
    - **Lớp 3 - Reusable Atoms & Cards (`components/mobile/*` & `components/common/*`):** Bento Transaction Card, Credit Card Hero Card, Savings Goal Card, Quick Amount Chips.
    - **Lớp 4 - Data & Ledger Gate:** Nối thẳng `FinanceContext` và hàm Event Sourcing `recalculateAccountBalances`.
-2. **Quy Tắc Ánh Xạ Token 1:1 Tuyệt Đối:**
+
+3. **Quy Tắc Ánh Xạ Token 1:1 Tuyệt Đối:**
    - Màu sắc: Primary Navy (`#1E3A8A` / `#1D4ED8`), Emerald dương (`#047857`), Rose âm/nợ (`#BE123C`), Warning (`#F59E0B`), Slate typography (`#0F172A`, `#334155`, `#475569`).
    - Bo góc 3 tầng: `rounded-xl` (12px - Card/Modal/Sheet), `rounded-lg` (8px - Badge/Control), `rounded-md` (6px - Button/Action).
-3. **Công Thái Học Di Động (Thumb-Zone & Touch Target >= 44px):**
+
+4. **Công Thái Học Di Động (Thumb-Zone & Touch Target >= 44px):**
    - Mọi nút bấm, dải chip, phím số trên Mobile nằm trong 60% dưới màn hình.
    - Touch target tối thiểu 44 x 44 px cho mọi tương tác chạm.
-4. **Xử Lý 5 Trạng Thái (5-State Matrix):**
+
+5. **Xử Lý 5 Trạng Thái (5-State Matrix):**
    - Mọi view và component phải kiểm soát đủ: Default, Loading/Skeleton, Empty (ấm áp gia đình), Error (thông điệp trực quan), và Overflow (cuộn mượt, không che mất nội dung).
 
 ---

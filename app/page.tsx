@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { Plus } from "lucide-react";
 import { useFinance } from "@/context/FinanceContext";
 import { Sidebar } from "@/components/common/Sidebar";
 import { TopBar } from "@/components/common/TopBar";
 import { MobileDrawer } from "@/components/common/MobileDrawer";
 import { BottomNavBar } from "@/components/common/BottomNavBar";
+
+// 1. Desktop Shell Views (Bản mở rộng đầy đủ Recharts, Heatmap 31 ngày, Bảng 8 cột)
 import { OverviewView } from "@/components/views/OverviewView";
 import { TransactionsView } from "@/components/views/TransactionsView";
 import { AccountsView } from "@/components/views/AccountsView";
@@ -14,6 +15,15 @@ import { PlanningView } from "@/components/views/PlanningView";
 import { DebtsInvestView } from "@/components/views/DebtsInvestView";
 import { GuideView } from "@/components/views/GuideView";
 import { SettingsView } from "@/components/views/SettingsView";
+
+// 2. Mobile Shell Views (Chuẩn Vàng Figma 1:1 - Cô đọng, Bento, Thumb-zone)
+import { MobileHeader } from "@/components/mobile/MobileHeader";
+import { MobileOverviewView } from "@/components/mobile/views/MobileOverviewView";
+import { MobileTransactionsView } from "@/components/mobile/views/MobileTransactionsView";
+import { MobileAccountsView } from "@/components/mobile/views/MobileAccountsView";
+import { MobilePlanningView } from "@/components/mobile/views/MobilePlanningView";
+
+// 3. Modals & Action Sheets
 import { TransactionFormModal } from "@/components/transactions/TransactionFormModal";
 import { MobileNumpadSheet } from "@/components/mobile/sheets/MobileNumpadSheet";
 import { ExportImportModal } from "@/components/common/ExportImportModal";
@@ -25,14 +35,6 @@ export default function HomePage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isMobileNumpadOpen, setIsMobileNumpadOpen] = useState(false);
-
-  const handleOpenAddModal = () => {
-    if (typeof window !== "undefined" && window.innerWidth < 768) {
-      setIsMobileNumpadOpen(true);
-    } else {
-      setIsAddModalOpen(true);
-    }
-  };
   const [isBackupModalOpen, setIsBackupModalOpen] = useState(false);
   const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false);
 
@@ -56,14 +58,15 @@ export default function HomePage() {
     );
   }
 
-  const renderActiveView = () => {
+  // Luồng render View cho Desktop
+  const renderActiveDesktopView = () => {
     switch (activeTab) {
       case "overview":
         return <OverviewView />;
       case "transactions":
         return (
           <TransactionsView
-            onOpenAddModal={handleOpenAddModal}
+            onOpenAddModal={() => setIsAddModalOpen(true)}
             onOpenBackupModal={() => setIsBackupModalOpen(true)}
           />
         );
@@ -87,41 +90,91 @@ export default function HomePage() {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-[#F6F8FB] flex text-slate-900 font-sans antialiased">
-      {/* 1. Sidebar cố định bên trái (Khớp 100% hình ảnh tham khảo) */}
-      <Sidebar />
+  // Luồng render View cho Mobile (Chuẩn Vàng Figma)
+  const renderActiveMobileView = () => {
+    switch (activeTab) {
+      case "overview":
+        return <MobileOverviewView />;
+      case "transactions":
+        return (
+          <MobileTransactionsView
+            onOpenAddModal={() => setIsMobileNumpadOpen(true)}
+          />
+        );
+      case "accounts":
+        return <MobileAccountsView />;
+      case "planning":
+        return <MobilePlanningView />;
+      case "debts_invest":
+        return <DebtsInvestView />;
+      case "guide":
+        return <GuideView />;
+      case "settings":
+        return (
+          <SettingsView
+            onOpenBackupModal={() => setIsBackupModalOpen(true)}
+            onOpenResetConfirm={() => setIsResetConfirmOpen(true)}
+          />
+        );
+      default:
+        return <MobileOverviewView />;
+    }
+  };
 
-      {/* 2. Drawer Menu cho Thiết bị Di động */}
+  return (
+    <>
+      {/* =========================================================================
+          1. DESKTOP VIEW SHELL (>= 768px - md:flex)
+          Nguyên bản 100%: Sidebar mở rộng, TopBar desktop, Bảng 8 cột, Recharts
+         ========================================================================= */}
+      <div className="hidden md:flex min-h-screen bg-[#F6F8FB] text-slate-900 font-sans antialiased">
+        <Sidebar />
+        <div className="flex-1 flex flex-col min-w-0">
+          <TopBar
+            onOpenAddModal={() => setIsAddModalOpen(true)}
+            onOpenBackupModal={() => setIsBackupModalOpen(true)}
+            onOpenResetConfirm={() => setIsResetConfirmOpen(true)}
+            onToggleMobileMenu={() => setIsMobileMenuOpen(true)}
+          />
+          <main className="flex-1 max-w-7xl w-full mx-auto px-6 lg:px-8 py-8">
+            {renderActiveDesktopView()}
+          </main>
+        </div>
+      </div>
+
+      {/* =========================================================================
+          2. MOBILE VIEW SHELL (< 768px - block md:hidden) ⭐ CHUẨN VÀNG FIGMA
+          Cô đọng, Bento layout, thumb-zone tối ưu, zero layout clutter
+         ========================================================================= */}
+      <div className="block md:hidden min-h-screen bg-[#F6F8FB] text-slate-900 font-sans antialiased pb-24">
+        {/* Mobile Header Bar */}
+        <MobileHeader onOpenDrawer={() => setIsMobileMenuOpen(true)} />
+
+        {/* Thân Màn Hình Mobile Cô Đọng Khớp 100% Figma */}
+        <main className="p-3.5 space-y-3.5">
+          {renderActiveMobileView()}
+        </main>
+
+        {/* Thanh Điều Hướng Đáy Cho Di Động */}
+        <BottomNavBar onOpenAddModal={() => setIsMobileNumpadOpen(true)} />
+      </div>
+
+      {/* =========================================================================
+          3. GLOBAL MODALS & BOTTOM SHEETS
+         ========================================================================= */}
+      {/* Drawer Menu cho Di Động */}
       <MobileDrawer
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
       />
 
-      {/* 3. Vùng làm việc chính */}
-      <div className="flex-1 flex flex-col min-w-0">
-        <TopBar
-          onOpenAddModal={handleOpenAddModal}
-          onOpenBackupModal={() => setIsBackupModalOpen(true)}
-          onOpenResetConfirm={() => setIsResetConfirmOpen(true)}
-          onToggleMobileMenu={() => setIsMobileMenuOpen(true)}
-        />
-
-        <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 pb-24 md:pb-8">
-          {renderActiveView()}
-        </main>
-      </div>
-
-      {/* 4. Thanh điều hướng đáy cho Thiết bị Di động (Mobile Bottom Navigation Bar) */}
-      <BottomNavBar onOpenAddModal={() => setIsAddModalOpen(true)} />
-
-      {/* 5. Modals toàn cục */}
-      {/* Mobile Numpad 3 Giây Bottom Sheet (Chuẩn Figma Screen 2) */}
+      {/* Mobile Numpad 3 Giây Bottom Sheet (Khớp Figma Screen 2) */}
       <MobileNumpadSheet
         isOpen={isMobileNumpadOpen}
         onClose={() => setIsMobileNumpadOpen(false)}
       />
 
+      {/* Desktop Transaction Form Modal */}
       <TransactionFormModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
@@ -146,6 +199,6 @@ export default function HomePage() {
         }}
         onCancel={() => setIsResetConfirmOpen(false)}
       />
-    </div>
+    </>
   );
 }
