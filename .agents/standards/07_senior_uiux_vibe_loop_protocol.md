@@ -141,6 +141,25 @@ Trước khi đưa thiết kế vào code, AI Agent kích hoạt 3 bài kiểm �
 
 ---
 
+### Trụ Cột 5.1: Định Chế Chiến Lược Chuyển Dịch Code Components (Clean Code Component Synthesis Strategy)
+> **Quy chuẩn vĩnh cửu** cho toàn bộ việc chuyển dịch từ Canvas Figma sang Codebase của HOME MONI:
+
+1. **Kiến Trúc Component 4 Lớp Phân Tách Rõ Ràng:**
+   - **Lớp 1 - Core Views & Shell:** `components/views/*`, `app/page.tsx` quản lý responsive breakpoint (`md:` và `lg:`).
+   - **Lớp 2 - Mobile Action Sheets (`components/mobile/sheets/*`):** Toàn bộ Action Modals di động triển khai dưới dạng Bottom Sheet trượt lên (`slide-in-from-bottom`), có drag handle `48x5px`, Dynamic Island backdrop overlay, chạm nền mờ tự động đóng.
+   - **Lớp 3 - Reusable Atoms & Cards (`components/mobile/*` & `components/common/*`):** Bento Transaction Card, Credit Card Hero Card, Savings Goal Card, Quick Amount Chips.
+   - **Lớp 4 - Data & Ledger Gate:** Nối thẳng `FinanceContext` và hàm Event Sourcing `recalculateAccountBalances`.
+2. **Quy Tắc Ánh Xạ Token 1:1 Tuyệt Đối:**
+   - Màu sắc: Primary Navy (`#1E3A8A` / `#1D4ED8`), Emerald dương (`#047857`), Rose âm/nợ (`#BE123C`), Warning (`#F59E0B`), Slate typography (`#0F172A`, `#334155`, `#475569`).
+   - Bo góc 3 tầng: `rounded-xl` (12px - Card/Modal/Sheet), `rounded-lg` (8px - Badge/Control), `rounded-md` (6px - Button/Action).
+3. **Công Thái Học Di Động (Thumb-Zone & Touch Target >= 44px):**
+   - Mọi nút bấm, dải chip, phím số trên Mobile nằm trong 60% dưới màn hình.
+   - Touch target tối thiểu 44 x 44 px cho mọi tương tác chạm.
+4. **Xử Lý 5 Trạng Thái (5-State Matrix):**
+   - Mọi view và component phải kiểm soát đủ: Default, Loading/Skeleton, Empty (ấm áp gia đình), Error (thông điệp trực quan), và Overflow (cuộn mượt, không che mất nội dung).
+
+---
+
 ### Trụ Cột 6: Kiểm Thực Hậu Kỳ & Lưu Vết (Build & Ledger Gate)
 - Sau khi viết mã, bắt buộc chạy:
   ```powershell

@@ -23,6 +23,7 @@ import { formatVND } from "@/lib/formatters";
 import { CategoryIcon } from "@/components/common/CategoryIcon";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { SavingsGoal } from "@/types/finance";
+import { GoalDepositSheet } from "@/components/mobile/sheets/GoalDepositSheet";
 
 export function PlanningView() {
   const {
@@ -452,49 +453,12 @@ export function PlanningView() {
         </div>
       )}
 
-      {/* Modal Nạp thêm tiền vào Mục tiêu */}
-      {depositGoalId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
-          <div
-            className="w-full max-w-sm bg-white rounded-xl shadow-2xl p-6 border border-[#DCE4EE]"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 className="text-sm font-bold text-[#172B4D] mb-3">Nạp tiền vào mục tiêu</h3>
-            <form onSubmit={handleDeposit} className="space-y-4">
-              <div>
-                <label className="block text-xs font-semibold text-slate-500 mb-1">Số tiền nạp (VND)</label>
-                <input
-                  type="text"
-                  autoFocus
-                  required
-                  value={depositAmount}
-                  onChange={(e) => {
-                    const raw = e.target.value.replace(/[^0-9]/g, "");
-                    setDepositAmount(raw ? new Intl.NumberFormat("vi-VN").format(parseInt(raw, 10)) : "");
-                  }}
-                  placeholder="0"
-                  className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3 py-2 text-sm font-bold outline-none focus:border-blue-500"
-                />
-              </div>
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => setDepositGoalId(null)}
-                  className="flex-1 py-2 text-xs font-semibold bg-slate-100 rounded-md"
-                >
-                  Hủy
-                </button>
-                <button
-                  type="submit"
-                  className="flex-1 py-2 text-xs font-bold bg-blue-600 text-white rounded-md shadow-xs"
-                >
-                  Xác nhận
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      {/* Mobile Goal Deposit Bottom Sheet (Chuẩn Figma Screen 10) */}
+      <GoalDepositSheet
+        goal={goals.find((g) => g.id === depositGoalId) || null}
+        isOpen={depositGoalId !== null}
+        onClose={() => setDepositGoalId(null)}
+      />
 
       {/* Modal Tạo / Sửa Mục Tiêu Tiết Kiệm (Dual-Mode) */}
       {isGoalModalOpen && (
