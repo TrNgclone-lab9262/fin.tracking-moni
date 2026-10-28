@@ -82,12 +82,48 @@ Mọi component hoặc màn hình mới trước khi code **bắt buộc** phả
 
 ---
 
+### 🌟 Trụ Cột 3.1: Định Chế Thiết Kế Mobile Chuẩn Vàng Cho HOME MONI (The Golden Mobile Benchmark)
+> **Mẫu chuẩn đối chiếu duy nhất:** Hai màn hình `Accounts / Mobile 14PM / Default` (Node `26:1481`) và `Planning / Mobile 14PM / Default` (Node `26:1703`).  
+> **Quy tắc vĩnh cửu:** Mọi màn hình Mobile của HOME MONI bắt buộc tuân thủ 100% các thông số kiến trúc sau để bảo đảm tính nhất quán hoàn hảo:
+
+1. **Khung Máy & Chassis Thiết Bị:**
+   - Kích thước chuẩn: Apple iPhone 14 Pro Max (`430 x 932 px`), bo góc ngoài `48px`, nền canvas `#F6F8FB`.
+   - Cấu trúc trục dọc (Auto layout): `VERTICAL`, `primaryAxisAlignItems: "SPACE_BETWEEN"`, `itemSpacing: 0`, `clipsContent: true`.
+
+2. **Nguyên Lý Phân Bổ Chiều Cao Trục Dọc (Zero-Overflow Budget):**
+   - **Block 1: Status Bar (h-44px):** Nền transparent/canvas, padding ngang `24px`, Dynamic Island capsule đen (`120 x 28 px`, bo `14px`), giờ `09:41` bold 15px `#0F172A`, icon sóng pin 13px `#0F172A`.
+   - **Block 2: Top Bar Header (h-52px tiêu chuẩn hoặc h-82px/96px khi có Segmented Control):** Nền trắng `#FFFFFF`, viền mềm `#DCE4EE`, padding ngang `16px`, vertical `8-10px`. Tiêu đề 17px bold `#0F172A`, phụ đề 11px `#475569`. Nút CTA hành động góc phải bo góc `8px`, nền `#EFF6FF`, viền `#BFDBFE`, chữ `#2563EB` bold 12px.
+   - **Block 3: Thân Màn Hình (h-728px đến h-772px):** `width: 430`, padding ngang `16px`, padding dọc `8-10px`, gap nội dung `8-10px`, `clipsContent: true`. Mọi nội dung thẻ gói gọn vừa vặn, không bao giờ để con số hoặc nút bị che bởi thanh điều hướng đáy.
+   - **Block 4: Bottom Navigation Bar (h-64px):** Nền trắng `#FFFFFF`, viền trên `#DCE4EE`, padding ngang `12px`, top `6px`, bottom `10px`, `primaryAxisAlignItems: "SPACE_AROUND"`.
+     - Nút trung tâm FAB `[+]`: Tròn `46 x 46 px`, nền `#2563EB`, dấu cộng trắng 24px bold, viền `3px #F6F8FB`.
+     - Tab Active: Pill nền `#EFF6FF`, bo `6px`, padding ngang `10px`, dọc `3px`, icon 16px `#2563EB`, nhãn 10px bold `#2563EB`.
+     - Tab Inactive: Icon 16px `#475569`, nhãn 10px medium `#475569`.
+
+3. **Bảng Màu Độ Tương Phản Cao (WCAG 4.5:1 High-Contrast Palette):**
+   - **Thu nhập / Số dương / Tích lũy:** `#047857` (dark emerald) thay cho màu nhạt.
+   - **Chi tiêu / Dư nợ thẻ / Số âm:** `#BE123C` (dark rose) thay cho màu nhạt.
+   - **Cảnh báo trần chi / Hạn mức thẻ:** `#B45309` hoặc `#92400E` (dark amber).
+   - **Nhãn / Phụ đề / Metas:** Bắt buộc dùng `#475569` và `#334155` (Slate đậm), tuyệt đối cấm dùng `#94A3B8` làm chữ nhỏ gây mờ mắt.
+   - **Tiêu đề chính / Heading:** `#0F172A` (Slate 900).
+
+4. **Hệ Bo Góc 3 Tầng Chuẩn Mực:**
+   - Thẻ Card / Widget / Bento / Modal: Bo `12px` (`rounded-xl`), viền `#DCE4EE`, padding `12-14px`.
+   - Nút thao tác nhanh (Button): Bo `6px` (`rounded-md`), padding ngang `12-14px`.
+   - Ô nhập liệu / Chip / Badge / Pill: Bo `8px` (`rounded-lg`).
+
+5. **Kỹ Thuật Chống Lỗi Proxy Bridge (Anti-Crash Protocol):**
+   - Mọi frame có padding/align đều phải có `layoutMode: "HORIZONTAL"` hoặc `"VERTICAL"`.
+   - `layoutGrow` CHỈ dùng `0` hoặc `1` (tuyệt đối không dùng `2`).
+   - Khai báo rõ `itemSpacing: 0` khi không có khoảng cách (tránh cảnh báo default 8px của Figma).
+
+---
+
 ### Trụ Cột 4: Kiểm Định Kỹ Thuật Số Kép Bằng AI (Dual-AI Audits)
 Trước khi đưa thiết kế vào code, AI Agent kích hoạt 3 bài kiểm định tự động:
 1. `layout_audit`: Xác thực bounds, triệt tiêu `overflowsParent`, `textTruncated`, `zIndexWarnings`.
 2. `a11y_audit`: Xác thực tỷ lệ tương phản chữ WCAG AA ($\ge 4.5:1$ cho text, $\ge 3:1$ cho large text).
 3. `responsive_audit`: Kiểm thử tính co giãn trên 3 mốc màn hình:
-   - **Mobile:** `< 768px` (Canvas chuẩn `390 x 844`).
+   - **Mobile:** `< 768px` (Canvas chuẩn Apple iPhone 14 Pro Max `430 x 932 px`).
    - **Tablet:** `768px - 1023px` (Sidebar auto-collapse `w-20`, bảng dữ liệu 7 cột).
    - **Desktop:** `\ge 1024px` (Canvas chuẩn `1440 x 1024`, phân bổ cột tối ưu).
 
