@@ -1,11 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import { CreditCardRepaymentSheet } from "@/components/mobile/sheets/CreditCardRepaymentSheet";
 import { CreditCard, AlertCircle, CheckCircle2, ArrowRight } from "lucide-react";
-import { useFinance } from "@/context/FinanceContext";
+import { useFinance, CreditCardInfo } from "@/context/FinanceContext";
 import { formatVND } from "@/lib/formatters";
 
 export function DualCreditCardsWidget() {
+  const [repayingCard, setRepayingCard] = useState<CreditCardInfo | null>(null);
   const { husbandCreditCard, wifeCreditCard, setActiveTab } = useFinance();
 
   const getStatusBadge = (percentage: number) => {

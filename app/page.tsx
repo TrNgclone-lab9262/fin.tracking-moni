@@ -15,6 +15,7 @@ import { DebtsInvestView } from "@/components/views/DebtsInvestView";
 import { GuideView } from "@/components/views/GuideView";
 import { SettingsView } from "@/components/views/SettingsView";
 import { TransactionFormModal } from "@/components/transactions/TransactionFormModal";
+import { MobileNumpadSheet } from "@/components/mobile/sheets/MobileNumpadSheet";
 import { ExportImportModal } from "@/components/common/ExportImportModal";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 
@@ -23,6 +24,15 @@ export default function HomePage() {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isMobileNumpadOpen, setIsMobileNumpadOpen] = useState(false);
+
+  const handleOpenAddModal = () => {
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      setIsMobileNumpadOpen(true);
+    } else {
+      setIsAddModalOpen(true);
+    }
+  };
   const [isBackupModalOpen, setIsBackupModalOpen] = useState(false);
   const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false);
 
@@ -53,7 +63,7 @@ export default function HomePage() {
       case "transactions":
         return (
           <TransactionsView
-            onOpenAddModal={() => setIsAddModalOpen(true)}
+            onOpenAddModal={handleOpenAddModal}
             onOpenBackupModal={() => setIsBackupModalOpen(true)}
           />
         );
@@ -91,7 +101,7 @@ export default function HomePage() {
       {/* 3. Vùng làm việc chính */}
       <div className="flex-1 flex flex-col min-w-0">
         <TopBar
-          onOpenAddModal={() => setIsAddModalOpen(true)}
+          onOpenAddModal={handleOpenAddModal}
           onOpenBackupModal={() => setIsBackupModalOpen(true)}
           onOpenResetConfirm={() => setIsResetConfirmOpen(true)}
           onToggleMobileMenu={() => setIsMobileMenuOpen(true)}
@@ -106,6 +116,12 @@ export default function HomePage() {
       <BottomNavBar onOpenAddModal={() => setIsAddModalOpen(true)} />
 
       {/* 5. Modals toàn cục */}
+      {/* Mobile Numpad 3 Giây Bottom Sheet (Chuẩn Figma Screen 2) */}
+      <MobileNumpadSheet
+        isOpen={isMobileNumpadOpen}
+        onClose={() => setIsMobileNumpadOpen(false)}
+      />
+
       <TransactionFormModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}

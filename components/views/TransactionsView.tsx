@@ -20,6 +20,7 @@ import { useFinance } from "@/context/FinanceContext";
 import { formatVND, formatDateVN, getMonthDisplayLabel } from "@/lib/formatters";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { TransactionFormModal } from "@/components/transactions/TransactionFormModal";
+import { TransactionDetailSheet } from "@/components/mobile/sheets/TransactionDetailSheet";
 import { Transaction } from "@/types/finance";
 
 interface TransactionsViewProps {
@@ -54,6 +55,7 @@ export function TransactionsView({
 
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [editingTx, setEditingTx] = useState<Transaction | null>(null);
+  const [selectedTxForDetail, setSelectedTxForDetail] = useState<Transaction | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
 
@@ -501,7 +503,7 @@ export function TransactionsView({
                 const isTransfer = tx.type === "TRANSFER";
 
                 return (
-                  <div key={tx.id} className="p-4 space-y-2.5 hover:bg-slate-50/80 transition-colors">
+                  <div key={tx.id} onClick={() => setSelectedTxForDetail(tx)} className="p-4 space-y-2.5 hover:bg-slate-50/80 transition-colors cursor-pointer active:bg-blue-50/40">
                     {/* Hàng 1: Người chi + Mục đích + Ngày */}
                     <div className="flex items-center justify-between text-xs">
                       <div className="flex items-center gap-1.5">
@@ -646,6 +648,21 @@ export function TransactionsView({
         onCancel={() => setDeleteTargetId(null)}
       />
 
+
+      {/* Mobile Transaction Detail Bottom Sheet */}
+      <TransactionDetailSheet
+        transaction={selectedTxForDetail}
+        isOpen={selectedTxForDetail !== null}
+        onClose={() => setSelectedTxForDetail(null)}
+        onEdit={(tx) => {
+          setSelectedTxForDetail(null);
+          setEditingTx(tx);
+        }}
+        onDelete={(id) => {
+          setSelectedTxForDetail(null);
+          setDeleteTargetId(id);
+        }}
+      />
       {/* Modal Chỉnh Sửa Giao Dịch */}
       {editingTx && (
         <TransactionFormModal

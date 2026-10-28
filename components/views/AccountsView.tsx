@@ -18,6 +18,8 @@ import { useFinance } from "@/context/FinanceContext";
 import { Account, AccountType, FamilyMember } from "@/types/finance";
 import { formatVND, formatDateVN } from "@/lib/formatters";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
+import { CreditCardRepaymentSheet } from "@/components/mobile/sheets/CreditCardRepaymentSheet";
+import { CreditCardInfo } from "@/context/FinanceContext";
 
 export function AccountsView() {
   const {
@@ -34,6 +36,7 @@ export function AccountsView() {
   const [isAddAccountModalOpen, setIsAddAccountModalOpen] = useState(false);
   const [editingAccount, setEditingAccount] = useState<Account | null>(null);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [repayingCardInfo, setRepayingCardInfo] = useState<CreditCardInfo | null>(null);
 
   // Form states thêm tài khoản
   const [name, setName] = useState("");
