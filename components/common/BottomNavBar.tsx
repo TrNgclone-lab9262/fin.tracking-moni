@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import {
@@ -37,13 +37,13 @@ export function BottomNavBar({ onOpenAddModal }: BottomNavBarProps) {
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id)}
-            className={`flex-1 flex flex-col items-center justify-center py-1 rounded-md transition-all ${
+            className={`flex-1 flex flex-col items-center justify-center py-1 rounded-[3px] transition-all ${
               isActive
                 ? "text-blue-600 font-bold"
                 : "text-slate-400 hover:text-slate-600 font-medium"
             }`}
           >
-            <div className={`p-1 rounded-md transition-colors ${isActive ? "bg-blue-50" : ""}`}>
+            <div className={`p-1 rounded-[3px] transition-colors ${isActive ? "bg-blue-50" : ""}`}>
               <Icon className="w-5 h-5" />
             </div>
             <span className="text-[10px] mt-0.5 tracking-tight">{item.label}</span>
@@ -70,13 +70,13 @@ export function BottomNavBar({ onOpenAddModal }: BottomNavBarProps) {
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id)}
-            className={`flex-1 flex flex-col items-center justify-center py-1 rounded-md transition-all ${
+            className={`flex-1 flex flex-col items-center justify-center py-1 rounded-[3px] transition-all ${
               isActive
                 ? "text-blue-600 font-bold"
                 : "text-slate-400 hover:text-slate-600 font-medium"
             }`}
           >
-            <div className={`p-1 rounded-md transition-colors ${isActive ? "bg-blue-50" : ""}`}>
+            <div className={`p-1 rounded-[3px] transition-colors ${isActive ? "bg-blue-50" : ""}`}>
               <Icon className="w-5 h-5" />
             </div>
             <span className="text-[10px] mt-0.5 tracking-tight">{item.label}</span>
@@ -86,3 +86,4 @@ export function BottomNavBar({ onOpenAddModal }: BottomNavBarProps) {
     </nav>
   );
 }
+

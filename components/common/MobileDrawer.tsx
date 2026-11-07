@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import {
@@ -104,7 +104,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
         {/* Brand Header */}
         <div className="flex items-center justify-between pb-4 border-b border-blue-400/20">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-rose-500 to-indigo-600 flex items-center justify-center text-white shadow-md">
+            <div className="w-10 h-10 rounded-[3px] bg-gradient-to-tr from-amber-400 via-rose-500 to-indigo-600 flex items-center justify-center text-white shadow-md">
               <Home className="w-5 h-5 stroke-[2.5]" />
             </div>
             <div>
@@ -118,14 +118,14 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg bg-blue-900/80 hover:bg-blue-800 text-blue-200 hover:text-white flex items-center justify-center transition-colors"
+            className="w-8 h-8 rounded-[3px] bg-blue-900/80 hover:bg-blue-800 text-blue-200 hover:text-white flex items-center justify-center transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Mini-Profile Gia Đình (👨 Anh Chuột & 👩 Bé Mèo) */}
-        <div className="my-4 p-3 rounded-xl bg-blue-950/40 border border-blue-400/20 flex items-center justify-between">
+        <div className="my-4 p-3 rounded-[3px] bg-blue-950/40 border border-blue-400/20 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-500 to-emerald-400 flex items-center justify-center text-sm shadow-xs font-bold">
               👫
@@ -165,7 +165,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
               <button
                 key={item.id}
                 onClick={() => handleSelectTab(item.id)}
-                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                className={`w-full flex items-center justify-between px-3.5 py-3 rounded-[3px] text-xs sm:text-sm font-bold transition-all ${
                   isActive
                     ? "bg-white text-[#1D4ED8] shadow-md font-extrabold translate-x-1"
                     : "text-blue-100 hover:bg-blue-800/50 hover:text-white"
@@ -178,7 +178,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
 
                 {item.badge && (
                   <span
-                    className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                    className={`text-[10px] font-bold px-2 py-0.5 rounded-[3px] ${
                       isActive
                         ? "bg-blue-100 text-blue-800"
                         : item.badgeColor || "bg-blue-900 text-blue-200"
@@ -204,3 +204,4 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
     </div>
   );
 }
+

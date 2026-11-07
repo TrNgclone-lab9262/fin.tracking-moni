@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import {
@@ -143,7 +143,7 @@ export function CreditCardRepaymentSheet({
         </div>
 
         {error && (
-          <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold rounded-lg flex items-center gap-2">
+          <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold rounded-[3px] flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
@@ -151,7 +151,7 @@ export function CreditCardRepaymentSheet({
 
         {/* Credit Card Hero Card */}
         <div
-          className={`rounded-xl p-4 text-white shadow-md relative overflow-hidden space-y-3 ${
+          className={`rounded-[3px] p-4 text-white shadow-md relative overflow-hidden space-y-3 ${
             isHusband
               ? "bg-gradient-to-br from-[#0F172A] via-[#172B4D] to-[#1E3A8A]"
               : "bg-gradient-to-br from-[#451A03] via-[#78350F] to-[#B45309]"
@@ -181,14 +181,14 @@ export function CreditCardRepaymentSheet({
             <span className="text-slate-300">
               Khả dụng: <strong className="text-white">{formatVND(cardInfo.availableAmount)}</strong>
             </span>
-            <span className="px-2 py-0.5 rounded-md bg-amber-400/20 text-amber-300 font-bold border border-amber-400/30">
+            <span className="px-2 py-0.5 rounded-[3px] bg-amber-400/20 text-amber-300 font-bold border border-amber-400/30">
               Hạn trả: 25/10 (Còn 3 ngày ⚠️)
             </span>
           </div>
         </div>
 
         {/* Repayment Options Selector */}
-        <div className="rounded-xl p-3 bg-[#F8FAFC] border border-[#E2E8F0] space-y-2">
+        <div className="rounded-[3px] p-3 bg-[#F8FAFC] border border-[#E2E8F0] space-y-2">
           <span className="text-[11px] font-bold text-[#475569] uppercase tracking-wider block">
             CHỌN SỐ TIỀN THANH TOÁN KỲ NÀY:
           </span>
@@ -196,7 +196,7 @@ export function CreditCardRepaymentSheet({
           {/* Option 1: Full statement (Khuyên dùng) */}
           <div
             onClick={() => setPaymentOption("FULL")}
-            className={`p-3 rounded-lg border flex items-center justify-between cursor-pointer transition-all ${
+            className={`p-3 rounded-[3px] border flex items-center justify-between cursor-pointer transition-all ${
               paymentOption === "FULL"
                 ? "bg-[#EFF6FF] border-[#3B82F6] ring-1 ring-blue-500/30 shadow-xs"
                 : "bg-white border-[#E2E8F0] hover:bg-slate-50"
@@ -227,7 +227,7 @@ export function CreditCardRepaymentSheet({
           {/* Option 2: Minimum payment */}
           <div
             onClick={() => setPaymentOption("MINIMUM")}
-            className={`p-3 rounded-lg border flex items-center justify-between cursor-pointer transition-all ${
+            className={`p-3 rounded-[3px] border flex items-center justify-between cursor-pointer transition-all ${
               paymentOption === "MINIMUM"
                 ? "bg-[#EFF6FF] border-[#3B82F6] ring-1 ring-blue-500/30 shadow-xs"
                 : "bg-white border-[#E2E8F0] hover:bg-slate-50"
@@ -257,7 +257,7 @@ export function CreditCardRepaymentSheet({
         </div>
 
         {/* Source Account Selector */}
-        <div className="rounded-xl p-3 bg-[#F1F5F9] border border-[#E2E8F0] space-y-1.5">
+        <div className="rounded-[3px] p-3 bg-[#F1F5F9] border border-[#E2E8F0] space-y-1.5">
           <label className="text-[11px] font-bold text-[#475569] uppercase tracking-wider block">
             Nguồn trích tiền thanh toán:
           </label>
@@ -265,7 +265,7 @@ export function CreditCardRepaymentSheet({
             <select
               value={sourceAccountId}
               onChange={(e) => setSourceAccountId(e.target.value)}
-              className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-[#1E293B] focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full bg-white border border-slate-300 rounded-[3px] px-3 py-2 text-xs font-bold text-[#1E293B] focus:ring-2 focus:ring-blue-500 focus:outline-none"
             >
               {eligibleSourceAccounts.map((acc) => (
                 <option key={acc.id} value={acc.id}>
@@ -277,7 +277,7 @@ export function CreditCardRepaymentSheet({
         </div>
 
         {/* Safety Box (Event Sourcing) */}
-        <div className="rounded-xl p-2.5 bg-[#ECFDF5] border border-[#A7F3D0] flex items-center gap-2.5 text-xs text-[#047857]">
+        <div className="rounded-[3px] p-2.5 bg-[#ECFDF5] border border-[#A7F3D0] flex items-center gap-2.5 text-xs text-[#047857]">
           <ShieldCheck className="w-5 h-5 shrink-0 text-emerald-600" />
           <p className="text-[11px] font-medium leading-tight">
             Cơ chế <strong>Event Sourcing</strong> tự động trừ tài khoản thanh toán và hoàn lại hạn mức thẻ tức thì, chống lệch sổ cái gia đình.
@@ -288,7 +288,7 @@ export function CreditCardRepaymentSheet({
         <button
           onClick={handleConfirmRepayment}
           disabled={isSubmitting || fullAmount <= 0}
-          className="w-full h-12 rounded-xl bg-[#1D4ED8] hover:bg-blue-800 disabled:bg-slate-300 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-colors"
+          className="w-full h-12 rounded-[3px] bg-[#1D4ED8] hover:bg-blue-800 disabled:bg-slate-300 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-colors"
         >
           <CreditCard className="w-4 h-4" />
           <span>
@@ -302,3 +302,4 @@ export function CreditCardRepaymentSheet({
     </div>
   );
 }
+

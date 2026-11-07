@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import {
@@ -148,7 +148,7 @@ export function Sidebar() {
       {/* 2. Brand Header: HOME MONI */}
       <div className="h-20 flex items-center justify-between px-4 border-b border-blue-800/40 shrink-0">
         <div className="flex items-center gap-3 overflow-hidden">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-tr from-amber-400 via-rose-500 to-indigo-600 flex items-center justify-center text-white shrink-0 shadow-lg shadow-rose-500/25 ring-2 ring-white/20">
+          <div className="w-10 h-10 rounded-[3px] bg-gradient-to-tr from-amber-400 via-rose-500 to-indigo-600 flex items-center justify-center text-white shrink-0 shadow-lg shadow-rose-500/25 ring-2 ring-white/20">
             <Home className="w-5 h-5" />
           </div>
           {!isCollapsed && (
@@ -183,7 +183,7 @@ export function Sidebar() {
                 <div key={item.id} className="relative group">
                   <button
                     onClick={() => setActiveTab(item.id)}
-                    className={`w-full flex items-center gap-3.5 px-3 py-2.5 rounded-md text-xs sm:text-sm font-semibold transition-all duration-200 ${
+                    className={`w-full flex items-center gap-3.5 px-3 py-2.5 rounded-[3px] text-xs sm:text-sm font-semibold transition-all duration-200 ${
                       isActive
                         ? "bg-white text-blue-900 shadow-md shadow-blue-950/25 font-black"
                         : "text-blue-100 hover:bg-white/10 hover:text-white hover:translate-x-1"
@@ -218,11 +218,11 @@ export function Sidebar() {
 
                   {/* Tooltip nổi khi Sidebar ở trạng thái thu gọn */}
                   {isCollapsed && (
-                    <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 px-3 py-2 bg-slate-900/95 backdrop-blur-md text-white text-xs font-semibold rounded-md shadow-2xl whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-150 z-50 border border-slate-700/60 flex items-center gap-2">
+                    <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 px-3 py-2 bg-slate-900/95 backdrop-blur-md text-white text-xs font-semibold rounded-[3px] shadow-2xl whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-150 z-50 border border-slate-700/60 flex items-center gap-2">
                       <span>{item.label}</span>
                       {item.badge && (
                         <span
-                          className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
+                          className={`text-[10px] font-bold px-1.5 py-0.5 rounded-[3px] ${
                             item.badge.variant === "warning"
                               ? "bg-amber-400 text-amber-950"
                               : item.badge.variant === "danger"
@@ -263,7 +263,7 @@ export function Sidebar() {
       ) : (
         <div className="p-3.5 border-t border-blue-800/40 flex justify-center shrink-0 group relative">
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-          <div className="absolute left-full bottom-2 ml-3 px-2.5 py-1 bg-slate-900/95 text-white text-[10px] font-semibold rounded-lg shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 border border-slate-700/50">
+          <div className="absolute left-full bottom-2 ml-3 px-2.5 py-1 bg-slate-900/95 text-white text-[10px] font-semibold rounded-[3px] shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 border border-slate-700/50">
             🟢 Local-First đã sẵn sàng
           </div>
         </div>
@@ -271,3 +271,4 @@ export function Sidebar() {
     </aside>
   );
 }
+

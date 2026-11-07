@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import {
@@ -29,10 +29,10 @@ export function MobilePlanningView() {
   return (
     <div className="space-y-3.5 animate-in fade-in duration-200">
       {/* 1. Header Switcher (Khớp 100% Figma Screen 6) */}
-      <div className="grid grid-cols-2 gap-1.5 p-1 bg-slate-100 rounded-xl text-xs font-bold">
+      <div className="grid grid-cols-2 gap-1.5 p-1 bg-slate-100 rounded-[3px] text-xs font-bold">
         <button
           onClick={() => setActiveTab("GOALS")}
-          className={`py-2 rounded-lg transition-all text-center flex items-center justify-center gap-1.5 ${
+          className={`py-2 rounded-[3px] transition-all text-center flex items-center justify-center gap-1.5 ${
             activeTab === "GOALS"
               ? "bg-white text-blue-600 shadow-xs"
               : "text-slate-500 hover:text-slate-800"
@@ -44,7 +44,7 @@ export function MobilePlanningView() {
 
         <button
           onClick={() => setActiveTab("BUDGET")}
-          className={`py-2 rounded-lg transition-all text-center flex items-center justify-center gap-1.5 ${
+          className={`py-2 rounded-[3px] transition-all text-center flex items-center justify-center gap-1.5 ${
             activeTab === "BUDGET"
               ? "bg-white text-blue-600 shadow-xs"
               : "text-slate-500 hover:text-slate-800"
@@ -56,7 +56,7 @@ export function MobilePlanningView() {
       </div>
 
       {/* 2. DAILY ALLOWANCE WIDGET (Luôn hiển thị) */}
-      <div className="p-3.5 rounded-xl bg-white border border-[#DCE4EE] shadow-xs space-y-2">
+      <div className="p-3.5 rounded-[3px] bg-white border border-[#DCE4EE] shadow-xs space-y-2">
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
             <span className="text-base">🛡️</span>
@@ -69,7 +69,7 @@ export function MobilePlanningView() {
               </span>
             </div>
           </div>
-          <span className="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-bold text-[11px]">
+          <span className="px-2 py-0.5 rounded-[3px] bg-emerald-100 text-emerald-800 font-bold text-[11px]">
             Còn {100 - dailyPct}%
           </span>
         </div>
@@ -109,7 +109,7 @@ export function MobilePlanningView() {
             return (
               <div
                 key={g.id}
-                className={`p-4 rounded-xl border shadow-xs space-y-3 ${
+                className={`p-4 rounded-[3px] border shadow-xs space-y-3 ${
                   isHome
                     ? "bg-[#F5F3FF] border-[#DDD6FE]"
                     : "bg-white border-[#DCE4EE]"
@@ -129,7 +129,7 @@ export function MobilePlanningView() {
                   </div>
 
                   <span
-                    className={`text-xs font-black px-2 py-0.5 rounded-md ${
+                    className={`text-xs font-black px-2 py-0.5 rounded-[3px] ${
                       isHome
                         ? "bg-[#EEF2FF] text-[#4F46E5] border border-[#C7D2FE]"
                         : "bg-slate-100 text-slate-700"
@@ -163,7 +163,7 @@ export function MobilePlanningView() {
                   </span>
                   <button
                     onClick={() => setDepositingGoal(g)}
-                    className={`px-3 py-1.5 rounded-lg text-white font-bold text-xs flex items-center gap-1 shadow-xs transition-colors ${
+                    className={`px-3 py-1.5 rounded-[3px] text-white font-bold text-xs flex items-center gap-1 shadow-xs transition-colors ${
                       isHome ? "bg-[#4F46E5] hover:bg-indigo-700" : "bg-blue-600 hover:bg-blue-700"
                     }`}
                   >
@@ -183,7 +183,7 @@ export function MobilePlanningView() {
             <span className="text-[10px] text-slate-400 font-medium">Chi tiêu an toàn</span>
           </div>
 
-          <div className="bg-white rounded-xl border border-[#DCE4EE] shadow-xs divide-y divide-slate-100 overflow-hidden">
+          <div className="bg-white rounded-[3px] border border-[#DCE4EE] shadow-xs divide-y divide-slate-100 overflow-hidden">
             {(budgetSummary?.items || []).slice(0, 5).map((item) => {
               const pct = Math.min(100, Math.round(item.percentage));
               const isOver = item.spentAmount > item.limitAmount;
@@ -228,3 +228,4 @@ export function MobilePlanningView() {
     </div>
   );
 }
+

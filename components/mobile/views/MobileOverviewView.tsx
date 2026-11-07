@@ -12,7 +12,8 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { useFinance, CreditCardInfo } from "@/context/FinanceContext";
-import { formatVND, formatDateVN } from "@/lib/formatters";
+import { useSecurity } from "@/context/SecurityContext";
+import { formatVND, formatVNDMasked, formatDateVN } from "@/lib/formatters";
 import { Transaction } from "@/types/finance";
 import { TransactionDetailSheet } from "@/components/mobile/sheets/TransactionDetailSheet";
 import { CreditCardRepaymentSheet } from "@/components/mobile/sheets/CreditCardRepaymentSheet";
@@ -27,6 +28,7 @@ export function MobileOverviewView() {
     setActiveTab,
     deleteTransaction,
   } = useFinance();
+  const { isPrivacyMode } = useSecurity();
 
   const totalNetWorth = summary.netWorth;
   const monthlyIncome = summary.monthlyIncome;
@@ -53,7 +55,7 @@ export function MobileOverviewView() {
   return (
     <div className="space-y-3.5 animate-in fade-in duration-200">
       {/* 1. HERO NET WORTH NAVY CARD (Khớp 100% Figma Screen 1) */}
-      <div className="rounded-xl p-4 bg-gradient-to-br from-[#0F172A] via-[#1E3A8A] to-[#1D4ED8] text-white shadow-md relative overflow-hidden space-y-3">
+      <div className="rounded-[3px] p-4 bg-gradient-to-br from-[#0F172A] via-[#1E3A8A] to-[#1D4ED8] text-white shadow-md relative overflow-hidden space-y-3">
         <div className="flex items-center justify-between text-xs">
           <span className="text-blue-200 uppercase tracking-widest font-bold text-[10px]">
             TỔNG TÀI SẢN RÒNG GIA ĐÌNH
@@ -65,7 +67,7 @@ export function MobileOverviewView() {
 
         <div>
           <div className="text-3xl font-black tracking-tight text-white">
-            {formatVND(totalNetWorth)}
+            {formatVNDMasked(totalNetWorth, isPrivacyMode)}
           </div>
         </div>
 
@@ -74,13 +76,13 @@ export function MobileOverviewView() {
           <div>
             <span className="text-[10px] text-blue-200/80 block">Thu nhập</span>
             <span className="font-extrabold text-emerald-400 text-xs sm:text-sm">
-              +{formatVND(monthlyIncome)}
+              +{formatVNDMasked(monthlyIncome, isPrivacyMode)}
             </span>
           </div>
           <div>
             <span className="text-[10px] text-blue-200/80 block">Chi tiêu</span>
             <span className="font-extrabold text-rose-300 text-xs sm:text-sm">
-              -{formatVND(monthlyExpense)}
+              -{formatVNDMasked(monthlyExpense, isPrivacyMode)}
             </span>
           </div>
           <div>
@@ -110,7 +112,7 @@ export function MobileOverviewView() {
         <div className="grid grid-cols-2 gap-2.5">
           {/* Thẻ Chuột 50M */}
           {husbandCreditCard && (
-            <div className="p-3 rounded-xl bg-gradient-to-br from-[#0F172A] to-[#1E3A8A] text-white shadow-xs flex flex-col justify-between space-y-2">
+            <div className="p-3 rounded-[3px] bg-gradient-to-br from-[#0F172A] to-[#1E3A8A] text-white shadow-xs flex flex-col justify-between space-y-2">
               <div>
                 <div className="flex items-center justify-between text-[10px]">
                   <span className="font-bold text-blue-300">👨 Thẻ Chuột</span>
@@ -133,7 +135,7 @@ export function MobileOverviewView() {
                 </div>
                 <button
                   onClick={() => setRepayingCard(husbandCreditCard)}
-                  className="w-full py-1 rounded-md bg-blue-600 hover:bg-blue-500 text-[10px] font-bold text-white transition-colors"
+                  className="w-full py-1 rounded-[3px] bg-blue-600 hover:bg-blue-500 text-[10px] font-bold text-white transition-colors"
                 >
                   Thanh toán
                 </button>
@@ -143,14 +145,14 @@ export function MobileOverviewView() {
 
           {/* Thẻ Mèo 20M */}
           {wifeCreditCard && (
-            <div className="p-3 rounded-xl bg-gradient-to-br from-[#451A03] to-[#78350F] text-white shadow-xs flex flex-col justify-between space-y-2">
+            <div className="p-3 rounded-[3px] bg-gradient-to-br from-[#881337] via-[#9F1239] to-[#BE123C] text-white shadow-xs flex flex-col justify-between space-y-2 border border-rose-400/40">
               <div>
                 <div className="flex items-center justify-between text-[10px]">
-                  <span className="font-bold text-amber-300">👩 Thẻ Mèo</span>
-                  <span className="text-[9px] text-amber-200">20M</span>
+                  <span className="font-bold text-rose-100 flex items-center gap-1">👩 Thẻ Mèo <Sparkles className="w-2.5 h-2.5" /></span>
+                  <span className="text-[9px] text-rose-200">20M</span>
                 </div>
                 <div className="mt-1">
-                  <span className="text-[10px] text-amber-200/80 block">Dư nợ kỳ này:</span>
+                  <span className="text-[10px] text-rose-200/90 block">Dư nợ kỳ này:</span>
                   <span className="font-black text-sm text-white">
                     {formatVND(wifeCreditCard.usedAmount)}
                   </span>
@@ -158,15 +160,15 @@ export function MobileOverviewView() {
               </div>
 
               <div>
-                <div className="w-full h-1.5 rounded-full bg-white/20 overflow-hidden mb-1.5">
+                <div className="w-full h-1.5 rounded-full bg-black/30 overflow-hidden mb-1.5">
                   <div
-                    className="h-full bg-amber-300 rounded-full"
+                    className="h-full bg-white rounded-full"
                     style={{ width: `${Math.min(wifeCreditCard.usagePercentage, 100)}%` }}
                   />
                 </div>
                 <button
                   onClick={() => setRepayingCard(wifeCreditCard)}
-                  className="w-full py-1 rounded-md bg-amber-600 hover:bg-amber-500 text-[10px] font-bold text-white transition-colors"
+                  className="w-full py-1 rounded-[3px] bg-white hover:bg-rose-50 text-[10px] font-bold text-rose-700 transition-colors shadow-xs"
                 >
                   Thanh toán
                 </button>
@@ -177,9 +179,9 @@ export function MobileOverviewView() {
       </div>
 
       {/* 3. DAILY ALLOWANCE MINI CARD (Hạn mức ngày an toàn) */}
-      <div className="p-3.5 rounded-xl bg-white border border-[#DCE4EE] shadow-xs flex items-center justify-between">
+      <div className="p-3.5 rounded-[3px] bg-white border border-[#DCE4EE] shadow-xs flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-base">
+          <div className="w-9 h-9 rounded-[3px] bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-base">
             🛡️
           </div>
           <div>
@@ -209,7 +211,7 @@ export function MobileOverviewView() {
           </button>
         </div>
 
-        <div className="bg-white rounded-xl border border-[#DCE4EE] shadow-xs divide-y divide-slate-100 overflow-hidden">
+        <div className="bg-white rounded-[3px] border border-[#DCE4EE] shadow-xs divide-y divide-slate-100 overflow-hidden">
           {recentTransactions.map((tx) => {
             const isExpense = tx.type === "EXPENSE";
             const isTransfer = tx.type === "TRANSFER";
@@ -222,7 +224,7 @@ export function MobileOverviewView() {
               >
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div
-                    className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm shrink-0 ${
+                    className={`w-9 h-9 rounded-[3px] flex items-center justify-center text-sm shrink-0 ${
                       isExpense
                         ? "bg-rose-50 text-rose-600"
                         : isTransfer
@@ -257,7 +259,7 @@ export function MobileOverviewView() {
                     {formatVND(tx.amount)}
                   </span>
                   <span
-                    className={`text-[9px] font-bold px-1.5 py-0.5 rounded-md ${
+                    className={`text-[9px] font-bold px-1.5 py-0.5 rounded-[3px] ${
                       tx.scope === "FAMILY"
                         ? "bg-slate-100 text-slate-600"
                         : "bg-purple-50 text-purple-700"
@@ -295,3 +297,4 @@ export function MobileOverviewView() {
     </div>
   );
 }
+

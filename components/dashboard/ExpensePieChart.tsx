@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import {
@@ -21,7 +21,7 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div className="bg-slate-900/95 backdrop-blur-md text-white text-xs p-3 rounded-xl shadow-xl border border-slate-800">
+      <div className="bg-slate-900/95 backdrop-blur-md text-white text-xs p-3 rounded-[3px] shadow-xl border border-slate-800">
         <div className="flex items-center gap-2 mb-1.5">
           <span
             className="w-3 h-3 rounded-full shrink-0"
@@ -55,11 +55,11 @@ export function ExpensePieChart() {
     selectedMonth === "ALL" ? "Toàn thời gian" : getMonthDisplayLabel(selectedMonth);
 
   return (
-    <div className="bg-white rounded-xl p-5 sm:p-6 border border-[#DCE4EE] shadow-xs flex flex-col h-full">
+    <div className="bg-white rounded-[3px] p-5 sm:p-6 border border-[#DCE4EE] shadow-xs flex flex-col h-full">
       {/* Tiêu đề Box */}
       <div className="flex items-center justify-between pb-4 border-b border-[#E9EEF5]">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-[3px] bg-rose-50 text-rose-600 flex items-center justify-center">
             <PieIcon className="w-4 h-4" />
           </div>
           <div>
@@ -69,7 +69,7 @@ export function ExpensePieChart() {
             </p>
           </div>
         </div>
-        <span className="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md">
+        <span className="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-600 rounded-[3px]">
           {categoryExpenseStats.length} danh mục
         </span>
       </div>
@@ -78,7 +78,7 @@ export function ExpensePieChart() {
       <div className="flex-1 flex flex-col justify-center items-center py-4">
         {categoryExpenseStats.length === 0 ? (
           <div className="text-center py-12 px-4">
-            <div className="w-14 h-14 bg-slate-100 text-slate-400 rounded-lg flex items-center justify-center mx-auto mb-3">
+            <div className="w-14 h-14 bg-slate-100 text-slate-400 rounded-[3px] flex items-center justify-center mx-auto mb-3">
               <Info className="w-7 h-7" />
             </div>
             <p className="text-sm font-semibold text-slate-700">Chưa có dữ liệu chi tiêu</p>
@@ -130,7 +130,7 @@ export function ExpensePieChart() {
               {categoryExpenseStats.map((cat) => (
                 <div
                   key={cat.categoryId}
-                  className="flex items-center gap-2 p-2 rounded-xl bg-slate-50/80 hover:bg-slate-100 transition-colors"
+                  className="flex items-center gap-2 p-2 rounded-[3px] bg-slate-50/80 hover:bg-slate-100 transition-colors"
                 >
                   <span
                     className="w-2.5 h-2.5 rounded-full shrink-0"
@@ -158,3 +158,4 @@ export function ExpensePieChart() {
     </div>
   );
 }
+

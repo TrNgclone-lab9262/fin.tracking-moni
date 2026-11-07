@@ -82,12 +82,12 @@ export function MobileTransactionsView({ onOpenAddModal }: MobileTransactionsVie
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Tìm theo ghi chú, danh mục..."
-            className="w-full pl-9 pr-3 py-2 bg-white border border-[#DCE4EE] rounded-xl text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-9 pr-3 py-2 bg-white border border-[#DCE4EE] rounded-[3px] text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
         <button
           onClick={onOpenAddModal}
-          className="h-9 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold flex items-center gap-1 shadow-xs shrink-0"
+          className="h-9 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded-[3px] text-xs font-bold flex items-center gap-1 shadow-xs shrink-0"
         >
           <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
           <span>Ghi 3s</span>
@@ -98,7 +98,7 @@ export function MobileTransactionsView({ onOpenAddModal }: MobileTransactionsVie
       <div className="grid grid-cols-4 gap-1.5 text-xs font-bold">
         <button
           onClick={() => setQuickFilter("ALL")}
-          className={`py-2 px-1 rounded-xl transition-all text-center border ${
+          className={`py-2 px-1 rounded-[3px] transition-all text-center border ${
             quickFilter === "ALL"
               ? "bg-blue-600 border-blue-600 text-white shadow-xs"
               : "bg-white border-[#DCE4EE] text-slate-600 hover:bg-slate-50"
@@ -109,7 +109,7 @@ export function MobileTransactionsView({ onOpenAddModal }: MobileTransactionsVie
 
         <button
           onClick={() => setQuickFilter("HUSBAND")}
-          className={`py-2 px-1 rounded-xl transition-all text-center border ${
+          className={`py-2 px-1 rounded-[3px] transition-all text-center border ${
             quickFilter === "HUSBAND"
               ? "bg-blue-600 border-blue-600 text-white shadow-xs"
               : "bg-white border-[#DCE4EE] text-slate-600 hover:bg-slate-50"
@@ -120,10 +120,10 @@ export function MobileTransactionsView({ onOpenAddModal }: MobileTransactionsVie
 
         <button
           onClick={() => setQuickFilter("WIFE")}
-          className={`py-2 px-1 rounded-xl transition-all text-center border ${
+          className={`py-2 px-1 rounded-[3px] transition-all text-center border ${
             quickFilter === "WIFE"
-              ? "bg-blue-600 border-blue-600 text-white shadow-xs"
-              : "bg-white border-[#DCE4EE] text-slate-600 hover:bg-slate-50"
+              ? "bg-[#F43F5E] border-[#F43F5E] text-white shadow-xs"
+              : "bg-white border-[#DCE4EE] text-slate-600 hover:bg-rose-50/50"
           }`}
         >
           👩 Mèo ({counts.wife})
@@ -131,7 +131,7 @@ export function MobileTransactionsView({ onOpenAddModal }: MobileTransactionsVie
 
         <button
           onClick={() => setQuickFilter("FAMILY")}
-          className={`py-2 px-1 rounded-xl transition-all text-center border ${
+          className={`py-2 px-1 rounded-[3px] transition-all text-center border ${
             quickFilter === "FAMILY"
               ? "bg-blue-600 border-blue-600 text-white shadow-xs"
               : "bg-white border-[#DCE4EE] text-slate-600 hover:bg-slate-50"
@@ -142,7 +142,7 @@ export function MobileTransactionsView({ onOpenAddModal }: MobileTransactionsVie
       </div>
 
       {/* 3. THẺ TÓM TẮT BỘ LỌC (KPI Pill Card) */}
-      <div className="p-3 bg-white rounded-xl border border-[#DCE4EE] shadow-xs flex items-center justify-between text-xs">
+      <div className="p-3 bg-white rounded-[3px] border border-[#DCE4EE] shadow-xs flex items-center justify-between text-xs">
         <div>
           <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">
             Tổng chi trong bộ lọc
@@ -165,7 +165,7 @@ export function MobileTransactionsView({ onOpenAddModal }: MobileTransactionsVie
       {/* 4. DANH SÁCH BENTO CARDS HOẶC TRẠNG THÁI RỖNG (Khớp Figma Screen 3 & 4) */}
       {displayedTransactions.length === 0 ? (
         /* TRẠNG THÁI RỖNG ẤM ÁP (Figma Screen 4) */
-        <div className="p-8 bg-white rounded-2xl border border-[#DCE4EE] shadow-xs text-center space-y-4">
+        <div className="p-8 bg-white rounded-[3px] border border-[#DCE4EE] shadow-xs text-center space-y-4">
           <div className="w-16 h-16 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-3xl mx-auto shadow-inner">
             🧾
           </div>
@@ -181,13 +181,13 @@ export function MobileTransactionsView({ onOpenAddModal }: MobileTransactionsVie
 
           <button
             onClick={onOpenAddModal}
-            className="w-full max-w-xs mx-auto py-3 bg-[#2563EB] hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md active:scale-98 transition-all flex items-center justify-center gap-2"
+            className="w-full max-w-xs mx-auto py-3 bg-[#2563EB] hover:bg-blue-700 text-white rounded-[3px] text-xs font-bold shadow-md active:scale-98 transition-all flex items-center justify-center gap-2"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>+ GHI CHÉP GIAO DỊCH (3S)</span>
           </button>
 
-          <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-left text-xs text-emerald-800 space-y-0.5">
+          <div className="p-3 rounded-[3px] bg-emerald-50 border border-emerald-200 text-left text-xs text-emerald-800 space-y-0.5">
             <span className="font-bold flex items-center gap-1 text-[11px]">
               <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
               Mẹo tài chính tổ ấm:
@@ -210,13 +210,13 @@ export function MobileTransactionsView({ onOpenAddModal }: MobileTransactionsVie
               <div
                 key={tx.id}
                 onClick={() => setSelectedTx(tx)}
-                className="p-3.5 bg-white rounded-xl border border-[#DCE4EE] shadow-xs hover:border-blue-400 active:bg-blue-50/50 cursor-pointer transition-all space-y-2"
+                className="p-3.5 bg-white rounded-[3px] border border-[#DCE4EE] shadow-xs hover:border-blue-400 active:bg-blue-50/50 cursor-pointer transition-all space-y-2"
               >
                 {/* Dòng trên: Người chi + Ngày + Phạm vi */}
                 <div className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-1.5">
                     <span
-                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold ${
+                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-[3px] text-[10px] font-bold ${
                         tx.memberId === "HUSBAND"
                           ? "bg-blue-50 text-blue-700 border border-blue-200"
                           : "bg-rose-50 text-rose-700 border border-rose-200"
@@ -226,7 +226,7 @@ export function MobileTransactionsView({ onOpenAddModal }: MobileTransactionsVie
                     </span>
 
                     <span
-                      className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
+                      className={`text-[10px] font-bold px-1.5 py-0.5 rounded-[3px] ${
                         tx.scope === "FAMILY"
                           ? "bg-slate-100 text-slate-700"
                           : "bg-purple-50 text-purple-700 border border-purple-200"
@@ -245,7 +245,7 @@ export function MobileTransactionsView({ onOpenAddModal }: MobileTransactionsVie
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <div
-                      className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm shrink-0 ${
+                      className={`w-9 h-9 rounded-[3px] flex items-center justify-center text-sm shrink-0 ${
                         isExpense
                           ? "bg-rose-50 text-rose-600"
                           : isTransfer
@@ -302,3 +302,4 @@ export function MobileTransactionsView({ onOpenAddModal }: MobileTransactionsVie
     </div>
   );
 }
+

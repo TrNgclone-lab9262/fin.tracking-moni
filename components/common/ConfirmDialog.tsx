@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { AlertTriangle, X } from "lucide-react";
@@ -29,13 +29,13 @@ export function ConfirmDialog({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
       <div
-        className="w-full max-w-md bg-white rounded-xl shadow-xl overflow-hidden border border-[#DCE4EE]"
+        className="w-full max-w-md bg-white rounded-[3px] shadow-xl overflow-hidden border border-[#DCE4EE]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6">
           <div className="flex items-center gap-4">
             <div
-              className={`w-12 h-12 rounded-lg flex items-center justify-center shrink-0 ${
+              className={`w-12 h-12 rounded-[3px] flex items-center justify-center shrink-0 ${
                 isDanger ? "bg-rose-100 text-rose-600" : "bg-blue-100 text-blue-600"
               }`}
             >
@@ -47,7 +47,7 @@ export function ConfirmDialog({
             </div>
             <button
               onClick={onCancel}
-              className="text-slate-400 hover:text-slate-600 p-1 rounded-md transition-colors"
+              className="text-slate-400 hover:text-slate-600 p-1 rounded-[3px] transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -58,14 +58,14 @@ export function ConfirmDialog({
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-200 rounded-md transition-colors"
+            className="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-200 rounded-[3px] transition-colors"
           >
             {cancelLabel}
           </button>
           <button
             type="button"
             onClick={onConfirm}
-            className={`px-4 py-2 text-sm font-semibold text-white rounded-md shadow-xs transition-all ${
+            className={`px-4 py-2 text-sm font-semibold text-white rounded-[3px] shadow-xs transition-all ${
               isDanger
                 ? "bg-rose-600 hover:bg-rose-700 active:scale-95"
                 : "bg-blue-600 hover:bg-blue-700 active:scale-95"
@@ -78,3 +78,4 @@ export function ConfirmDialog({
     </div>
   );
 }
+

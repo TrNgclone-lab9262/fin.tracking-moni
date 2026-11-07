@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect, useMemo } from "react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
@@ -15,7 +15,7 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div className="bg-slate-900/95 backdrop-blur-md text-white text-xs p-3 rounded-xl shadow-xl border border-slate-800">
+      <div className="bg-slate-900/95 backdrop-blur-md text-white text-xs p-3 rounded-[3px] shadow-xl border border-slate-800">
         <div className="flex items-center gap-2 mb-1.5">
           <span
             className="w-3 h-3 rounded-full shrink-0"
@@ -76,10 +76,10 @@ export function IncomePieChart() {
   }, [transactions, selectedMonth, getCategoryById]);
 
   return (
-    <div className="bg-white rounded-xl p-5 sm:p-6 border border-[#DCE4EE] shadow-xs flex flex-col h-full">
+    <div className="bg-white rounded-[3px] p-5 sm:p-6 border border-[#DCE4EE] shadow-xs flex flex-col h-full">
       <div className="flex items-center justify-between pb-4 border-b border-[#E9EEF5]">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-[3px] bg-emerald-50 text-emerald-600 flex items-center justify-center">
             <ArrowDownLeft className="w-4 h-4" />
           </div>
           <div>
@@ -138,7 +138,7 @@ export function IncomePieChart() {
               {incomeStats.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-50 text-xs font-semibold text-slate-700"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-[3px] bg-slate-50 text-xs font-semibold text-slate-700"
                 >
                   <span
                     className="w-2.5 h-2.5 rounded-full"
@@ -155,3 +155,4 @@ export function IncomePieChart() {
     </div>
   );
 }
+

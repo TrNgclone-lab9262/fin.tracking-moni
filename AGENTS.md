@@ -57,6 +57,7 @@ flowchart LR
      - Tam Giác Vai Trò Audit: `.agents/standards/05_persona_triad_audit.md`
      - Giao Thức Phát Hành Git & CI/CD: `.agents/standards/06_git_release_cicd_protocol.md`
      - Tiêu Chuẩn Thực Thi Vibe Loop Senior UX/UI: `.agents/standards/07_senior_uiux_vibe_loop_protocol.md`
+     - Tiêu Chuẩn Tích Hợp & Quản Trị shadcn/ui: `.agents/standards/08_shadcn_ui_integration_protocol.md`
 
 ---
 
@@ -79,13 +80,13 @@ flowchart LR
 
 ---
 
-### CỔNG 3: POST-VIBE GATE (Kiểm Thử & Tự Động Đồng Bộ State)
-1. **Kiểm Thử Biên Dịch Tự Động:**
-   - Sau khi hoàn thành việc viết mã, AI Agent **BẮT BUỘC** chạy lệnh:
+### CỔNG 3: POST-VIBE GATE (Kiểm Thử Khâu Cuối Tối Thượng & Đồng Bộ State)
+1. **Kiểm Thử Toàn Diện Bộ Ba (Triple-Verification Audit):**
+   - Sau khi hoàn thành việc viết mã, AI Agent **BẮT BUỘC** chạy chuỗi 3 lệnh xác thực:
      ```bash
-     npm run build
+     npx tsc --noEmit && npm run lint && npm run build
      ```
-   - Nếu có lỗi TypeScript, linting, hoặc lỗi trang: Phải tự động phân tích và khắc phục triệt để đến khi lệnh kết thúc với mã `0`.
+   - Nếu có bất kỳ lỗi TypeScript, vi phạm ESLint hoặc build error: Phải tự động phân tích và khắc phục triệt để đến khi toàn bộ chuỗi kết thúc với mã thoát `0`. Tuyệt đối không bàn giao code khi chưa chạy kiểm thử này.
 2. **Đồng Bộ Hóa `PROJECT_STATE.md`:**
    - Cập nhật mục `4. Nhật Ký Biến Thiên Vibe Coding (Vibe Session Changelog)` trong `PROJECT_STATE.md`:
      - Ghi nhận `Vibe ID` mới, ngày giờ, mục tiêu và danh sách các file đã tác động.

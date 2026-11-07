@@ -28,6 +28,7 @@ import { TransactionFormModal } from "@/components/transactions/TransactionFormM
 import { MobileNumpadSheet } from "@/components/mobile/sheets/MobileNumpadSheet";
 import { ExportImportModal } from "@/components/common/ExportImportModal";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
+import { SecurityGate } from "@/components/security/SecurityGate";
 
 export default function HomePage() {
   const { isLoaded, activeTab, resetToMockData } = useFinance();
@@ -122,7 +123,7 @@ export default function HomePage() {
   };
 
   return (
-    <>
+    <SecurityGate>
       {/* =========================================================================
           1. DESKTOP VIEW SHELL (>= 768px - md:flex)
           Nguyên bản 100%: Sidebar mở rộng, TopBar desktop, Bảng 8 cột, Recharts
@@ -199,6 +200,6 @@ export default function HomePage() {
         }}
         onCancel={() => setIsResetConfirmOpen(false)}
       />
-    </>
+    </SecurityGate>
   );
 }

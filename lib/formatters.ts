@@ -11,6 +11,21 @@ export function formatVND(amount: number, showCurrency: boolean = true): string 
 }
 
 /**
+ * Định dạng số tiền kèm chế độ ẩn số dư (Privacy Mode)
+ * Khi isPrivacyMode = true, trả về "•••••• ₫" để chống nhìn trộm nơi công cộng
+ */
+export function formatVNDMasked(
+  amount: number,
+  isPrivacyMode: boolean = false,
+  showCurrency: boolean = true
+): string {
+  if (isPrivacyMode) {
+    return showCurrency ? "•••••• ₫" : "••••••";
+  }
+  return formatVND(amount, showCurrency);
+}
+
+/**
  * Định dạng rút gọn cho biểu đồ tâm tròn hoặc nhãn nhỏ
  * Ví dụ: 7469000 -> "7.5tr", 21619000 -> "21.6tr"
  */

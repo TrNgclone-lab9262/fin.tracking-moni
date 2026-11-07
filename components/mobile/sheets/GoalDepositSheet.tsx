@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import {
@@ -131,14 +131,14 @@ export function GoalDepositSheet({
         </div>
 
         {error && (
-          <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold rounded-lg flex items-center gap-2">
+          <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold rounded-[3px] flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
         {/* Target Goal Mini Card (Indigo Theme) */}
-        <div className="rounded-xl p-3.5 bg-[#F5F3FF] border border-[#DDD6FE] space-y-2.5">
+        <div className="rounded-[3px] p-3.5 bg-[#F5F3FF] border border-[#DDD6FE] space-y-2.5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-lg">🏡</span>
@@ -168,7 +168,7 @@ export function GoalDepositSheet({
         </div>
 
         {/* Amount Input Display */}
-        <div className="rounded-xl p-3 bg-[#F8FAFC] border border-[#E2E8F0] text-center space-y-1">
+        <div className="rounded-[3px] p-3 bg-[#F8FAFC] border border-[#E2E8F0] text-center space-y-1">
           <span className="text-[11px] font-bold text-[#475569] uppercase tracking-wider block">
             SỐ TIỀN MUỐN NẠP VÀO HŨ:
           </span>
@@ -186,7 +186,7 @@ export function GoalDepositSheet({
                 key={chip.value}
                 type="button"
                 onClick={() => setAmount(chip.value)}
-                className={`h-9 rounded-lg text-xs font-bold transition-all flex items-center justify-center border ${
+                className={`h-9 rounded-[3px] text-xs font-bold transition-all flex items-center justify-center border ${
                   isActive
                     ? "bg-[#4F46E5] border-[#4338CA] text-white shadow-xs"
                     : "bg-[#F1F5F9] border-[#E2E8F0] text-[#334155] hover:bg-slate-200"
@@ -199,14 +199,14 @@ export function GoalDepositSheet({
         </div>
 
         {/* Source Wallet Selector */}
-        <div className="rounded-xl p-3 bg-[#F1F5F9] border border-[#E2E8F0] space-y-1.5">
+        <div className="rounded-[3px] p-3 bg-[#F1F5F9] border border-[#E2E8F0] space-y-1.5">
           <label className="text-[11px] font-bold text-[#475569] uppercase tracking-wider block">
             Trích tiền từ tài khoản tích lũy:
           </label>
           <select
             value={sourceAccountId}
             onChange={(e) => setSourceAccountId(e.target.value)}
-            className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-[#1E293B] focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            className="w-full bg-white border border-slate-300 rounded-[3px] px-3 py-2 text-xs font-bold text-[#1E293B] focus:ring-2 focus:ring-indigo-500 focus:outline-none"
           >
             {eligibleAccounts.map((acc) => (
               <option key={acc.id} value={acc.id}>
@@ -217,7 +217,7 @@ export function GoalDepositSheet({
         </div>
 
         {/* Milestone Impact Badge */}
-        <div className="rounded-xl p-2.5 bg-[#ECFDF5] border border-[#A7F3D0] flex items-center gap-2.5 text-xs text-[#047857]">
+        <div className="rounded-[3px] p-2.5 bg-[#ECFDF5] border border-[#A7F3D0] flex items-center gap-2.5 text-xs text-[#047857]">
           <TrendingUp className="w-5 h-5 shrink-0 text-emerald-600" />
           <div>
             <span className="font-bold block text-xs">
@@ -233,7 +233,7 @@ export function GoalDepositSheet({
         <button
           onClick={handleConfirmDeposit}
           disabled={isSubmitting || amount <= 0}
-          className="w-full h-12 rounded-xl bg-[#4F46E5] hover:bg-indigo-700 disabled:bg-slate-300 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-colors"
+          className="w-full h-12 rounded-[3px] bg-[#4F46E5] hover:bg-indigo-700 disabled:bg-slate-300 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-colors"
         >
           <Sparkles className="w-4 h-4" />
           <span>
@@ -247,3 +247,4 @@ export function GoalDepositSheet({
     </div>
   );
 }
+

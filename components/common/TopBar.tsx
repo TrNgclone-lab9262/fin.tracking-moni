@@ -16,8 +16,12 @@ import {
   Cloud,
   CloudOff,
   RefreshCw,
+  Eye,
+  EyeOff,
+  Lock,
 } from "lucide-react";
 import { useFinance, NavTab, PerspectiveMode } from "@/context/FinanceContext";
+import { useSecurity } from "@/context/SecurityContext";
 import { getMonthDisplayLabel } from "@/lib/formatters";
 
 interface TopBarProps {
@@ -47,6 +51,8 @@ export function TopBar({
     syncWithCloud,
   } = useFinance();
 
+  const { isPrivacyMode, togglePrivacyMode, isConfigured, lockApp } = useSecurity();
+
   const [showNotifications, setShowNotifications] = useState(false);
 
   const tabTitles: Record<NavTab, string> = {
@@ -67,7 +73,7 @@ export function TopBar({
           <div className="flex items-center gap-3">
             <button
               onClick={onToggleMobileMenu}
-              className="md:hidden p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors"
+              className="md:hidden p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-[3px] transition-colors"
               aria-label="Mở menu"
             >
               <Menu className="w-6 h-6" />
@@ -87,7 +93,7 @@ export function TopBar({
                         ? `Supabase Realtime • Bấm để đồng bộ (Lần cuối: ${lastSyncedAt.toLocaleTimeString("vi-VN")})`
                         : "Supabase Realtime • Bấm để đồng bộ lại"
                     }
-                    className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100/80 px-2 py-0.5 rounded-md border border-emerald-200 transition-all cursor-pointer shadow-2xs"
+                    className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100/80 px-2 py-0.5 rounded-[3px] border border-emerald-200 transition-all cursor-pointer shadow-2xs"
                   >
                     <RefreshCw
                       className={`w-3 h-3 text-emerald-600 ${isSyncing ? "animate-spin" : ""}`}
@@ -97,7 +103,7 @@ export function TopBar({
                 ) : (
                   <span
                     title="Đang hoạt động chế độ lưu máy (Offline-first)"
-                    className="hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200"
+                    className="hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-[3px] border border-slate-200"
                   >
                     <CloudOff className="w-3.5 h-3.5 text-slate-500" />
                     🟡 Lưu máy
@@ -108,11 +114,11 @@ export function TopBar({
           </div>
 
           {/* Giữa: Bộ Chuyển Đổi Góc Nhìn Thành Viên (My Home / Anh Chuột / Bé Mèo) */}
-          <div className="flex items-center bg-slate-100 p-1 rounded-lg border border-[#E9EEF5]">
+          <div className="flex items-center bg-slate-100 p-1 rounded-[3px] border border-[#E9EEF5]">
             <button
               type="button"
               onClick={() => setActivePerspective("ALL")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[3px] text-xs font-bold transition-all ${
                 activePerspective === "ALL"
                   ? "bg-white text-blue-700 shadow-xs"
                   : "text-slate-500 hover:text-slate-800"
@@ -124,7 +130,7 @@ export function TopBar({
             <button
               type="button"
               onClick={() => setActivePerspective("HUSBAND")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[3px] text-xs font-bold transition-all ${
                 activePerspective === "HUSBAND"
                   ? "bg-blue-600 text-white shadow-xs"
                   : "text-slate-500 hover:text-slate-800"
@@ -136,9 +142,9 @@ export function TopBar({
             <button
               type="button"
               onClick={() => setActivePerspective("WIFE")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[3px] text-xs font-bold transition-all ${
                 activePerspective === "WIFE"
-                  ? "bg-emerald-600 text-white shadow-xs"
+                  ? "bg-[#F43F5E] text-white shadow-xs"
                   : "text-slate-500 hover:text-slate-800"
               }`}
             >
@@ -150,7 +156,7 @@ export function TopBar({
           {/* Bên Phải: Bộ chọn kỳ + Chuông thông báo + Nút Thao tác */}
           <div className="flex items-center gap-2 sm:gap-2.5">
             {/* Bộ chọn tháng */}
-            <div className="flex items-center bg-slate-100 text-slate-700 px-2.5 py-1.5 rounded-md text-xs sm:text-sm font-semibold border border-[#E9EEF5]">
+            <div className="flex items-center bg-slate-100 text-slate-700 px-2.5 py-1.5 rounded-[3px] text-xs sm:text-sm font-semibold border border-[#E9EEF5]">
               <Calendar className="w-3.5 h-3.5 text-blue-600 mr-1.5 shrink-0" />
               <select
                 value={selectedMonth}
@@ -170,7 +176,7 @@ export function TopBar({
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
+                className="relative p-2 rounded-[3px] bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
                 title="Cảnh báo & Nhắc nhở"
               >
                 <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -184,7 +190,7 @@ export function TopBar({
               {/* Popup Cảnh báo & Nhắc nhở */}
               {showNotifications && (
                 <div
-                  className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-xl border border-[#DCE4EE] py-3 z-50 animate-in fade-in slide-in-from-top-2"
+                  className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-[3px] shadow-xl border border-[#DCE4EE] py-3 z-50 animate-in fade-in slide-in-from-top-2"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="px-4 py-2 border-b border-[#E9EEF5] flex items-center justify-between">
@@ -204,7 +210,7 @@ export function TopBar({
                     {notifications.map((notif) => (
                       <div
                         key={notif.id}
-                        className="p-3 hover:bg-slate-50 rounded-lg transition-colors flex items-start gap-2.5"
+                        className="p-3 hover:bg-slate-50 rounded-[3px] transition-colors flex items-start gap-2.5"
                       >
                         <span
                           className={`w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 ${
@@ -230,11 +236,35 @@ export function TopBar({
               )}
             </div>
 
+            {/* Nút Chế độ riêng tư (Privacy Mode) - Che/Mở số tiền */}
+            <button
+              onClick={togglePrivacyMode}
+              title={isPrivacyMode ? "Hiển thị số tiền" : "Ẩn số tiền (Chống nhìn trộm)"}
+              className={`p-2 rounded-[3px] border transition-all ${
+                isPrivacyMode
+                  ? "bg-rose-50 border-rose-200 text-rose-600 hover:bg-rose-100"
+                  : "bg-white border-[#DCE4EE] text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+              }`}
+            >
+              {isPrivacyMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
+
+            {/* Nút Khóa app nhanh (Nếu đã thiết lập PIN) */}
+            {isConfigured && (
+              <button
+                onClick={lockApp}
+                title="Khóa ứng dụng ngay lập tức"
+                className="p-2 rounded-[3px] border border-[#DCE4EE] bg-white text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition-all"
+              >
+                <Lock className="w-4 h-4" />
+              </button>
+            )}
+
             {/* Nút Sao lưu */}
             <button
               onClick={onOpenBackupModal}
               title="Sao lưu / Khôi phục dữ liệu JSON"
-              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium text-slate-600 bg-white hover:bg-slate-50 border border-[#DCE4EE] rounded-md transition-all shadow-xs"
+              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium text-slate-600 bg-white hover:bg-slate-50 border border-[#DCE4EE] rounded-[3px] transition-all shadow-xs"
             >
               <Download className="w-3.5 h-3.5 text-slate-500" />
               <span>Sao lưu</span>
@@ -244,7 +274,7 @@ export function TopBar({
             <button
               onClick={onOpenResetConfirm}
               title="Nạp lại bộ dữ liệu mẫu gia đình chuẩn"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium text-slate-600 bg-white hover:bg-slate-50 border border-[#DCE4EE] rounded-md transition-all shadow-xs"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium text-slate-600 bg-white hover:bg-slate-50 border border-[#DCE4EE] rounded-[3px] transition-all shadow-xs"
             >
               <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
               <span>Mẫu demo</span>
@@ -253,7 +283,7 @@ export function TopBar({
             {/* Nút Thêm giao dịch */}
             <button
               onClick={onOpenAddModal}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 sm:py-2 text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-md transition-all shadow-xs active:scale-95"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 sm:py-2 text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-[3px] transition-all shadow-xs active:scale-95"
             >
               <Plus className="w-4 h-4" />
               <span className="hidden sm:inline">Thêm giao dịch</span>
@@ -265,3 +295,4 @@ export function TopBar({
     </header>
   );
 }
+

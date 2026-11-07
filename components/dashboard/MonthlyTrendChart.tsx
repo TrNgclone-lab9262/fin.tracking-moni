@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import {
@@ -23,7 +23,7 @@ interface CustomBarTooltipProps {
 function CustomBarTooltip({ active, payload, label }: CustomBarTooltipProps) {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-slate-900/95 backdrop-blur-md text-white text-xs p-3 rounded-xl shadow-xl border border-slate-800">
+      <div className="bg-slate-900/95 backdrop-blur-md text-white text-xs p-3 rounded-[3px] shadow-xl border border-slate-800">
         <p className="font-bold text-slate-200 mb-1.5 border-b border-slate-700 pb-1">
           {label}
         </p>
@@ -54,10 +54,10 @@ export function MonthlyTrendChart() {
   }, []);
 
   return (
-    <div className="bg-white rounded-xl p-5 sm:p-6 border border-[#DCE4EE] shadow-xs flex flex-col h-full">
+    <div className="bg-white rounded-[3px] p-5 sm:p-6 border border-[#DCE4EE] shadow-xs flex flex-col h-full">
       <div className="flex items-center justify-between pb-4 border-b border-[#E9EEF5]">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-[3px] bg-blue-50 text-blue-600 flex items-center justify-center">
             <BarChart3 className="w-4 h-4" />
           </div>
           <div>
@@ -124,3 +124,4 @@ export function MonthlyTrendChart() {
     </div>
   );
 }
+
