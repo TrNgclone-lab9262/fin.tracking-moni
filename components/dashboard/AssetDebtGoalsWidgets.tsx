@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect, useMemo } from "react";
 import {
@@ -86,7 +86,7 @@ export function AssetDebtGoalsWidgets() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* WIDGET 1: CƠ CẤU TÀI SẢN */}
-        <div className="bg-white rounded-xl p-5 border border-[#DCE4EE] shadow-xs flex flex-col justify-between">
+        <div className="bg-white rounded-[3px] p-5 border border-[#DCE4EE] shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between">
             <h4 className="text-xs font-bold text-slate-700">Cơ cấu tài sản</h4>
           </div>
@@ -135,7 +135,7 @@ export function AssetDebtGoalsWidgets() {
         </div>
 
         {/* WIDGET 2: ĐẦU TƯ ĐANG HOẠT ĐỘNG */}
-        <div className="bg-white rounded-xl p-5 border border-[#DCE4EE] shadow-xs flex flex-col justify-between">
+        <div className="bg-white rounded-[3px] p-5 border border-[#DCE4EE] shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between mb-1">
             <h4 className="text-xs font-bold text-slate-700">Đầu tư đang hoạt động</h4>
             <div className="flex items-center gap-2 text-[10px] font-semibold">
@@ -177,7 +177,7 @@ export function AssetDebtGoalsWidgets() {
         </div>
 
         {/* WIDGET 3: TIẾN ĐỘ TRẢ NỢ */}
-        <div className="bg-white rounded-xl p-5 border border-[#DCE4EE] shadow-xs flex flex-col justify-between">
+        <div className="bg-white rounded-[3px] p-5 border border-[#DCE4EE] shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between">
             <h4 className="text-xs font-bold text-slate-700">Tiến độ trả nợ</h4>
           </div>
@@ -209,7 +209,7 @@ export function AssetDebtGoalsWidgets() {
         </div>
 
         {/* WIDGET 4: MỤC TIÊU TIẾT KIỆM */}
-        <div className="bg-white rounded-xl p-5 border border-[#DCE4EE] shadow-xs flex flex-col justify-between">
+        <div className="bg-white rounded-[3px] p-5 border border-[#DCE4EE] shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between mb-2">
             <h4 className="text-xs font-bold text-slate-700">Mục tiêu tiết kiệm</h4>
           </div>
@@ -222,7 +222,7 @@ export function AssetDebtGoalsWidgets() {
                   <div className="flex justify-between items-center text-xs">
                     <span className="font-bold text-slate-700">{g.name}</span>
                     <span
-                      className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-md ${
+                      className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-[3px] ${
                         pct === 100
                           ? "bg-emerald-100 text-emerald-700"
                           : "bg-blue-100 text-blue-700"
@@ -252,3 +252,4 @@ export function AssetDebtGoalsWidgets() {
     </div>
   );
 }
+

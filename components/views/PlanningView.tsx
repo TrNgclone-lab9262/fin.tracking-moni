@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import {
@@ -150,10 +150,10 @@ export function PlanningView() {
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* Tab Switcher: Ngân sách vs Mục tiêu (Khớp hình financial-plan.JPG) */}
-      <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-lg border border-[#E9EEF5] w-fit">
+      <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-[3px] border border-[#E9EEF5] w-fit">
         <button
           onClick={() => setActiveSubTab("BUDGET")}
-          className={`px-3.5 py-1.5 text-xs sm:text-sm font-bold rounded-md transition-all ${
+          className={`px-3.5 py-1.5 text-xs sm:text-sm font-bold rounded-[3px] transition-all ${
             activeSubTab === "BUDGET"
               ? "bg-white text-blue-700 shadow-xs"
               : "text-slate-600 hover:text-slate-900"
@@ -163,7 +163,7 @@ export function PlanningView() {
         </button>
         <button
           onClick={() => setActiveSubTab("GOALS")}
-          className={`px-3.5 py-1.5 text-xs sm:text-sm font-bold rounded-md transition-all ${
+          className={`px-3.5 py-1.5 text-xs sm:text-sm font-bold rounded-[3px] transition-all ${
             activeSubTab === "GOALS"
               ? "bg-white text-blue-700 shadow-xs"
               : "text-slate-600 hover:text-slate-900"
@@ -176,7 +176,7 @@ export function PlanningView() {
       {activeSubTab === "BUDGET" ? (
         <div className="space-y-6">
           {/* Header 4 thẻ chỉ số ngân sách tháng (Khớp 100% financial-plan.JPG) */}
-          <div className="bg-white rounded-xl p-6 border border-[#DCE4EE] shadow-xs">
+          <div className="bg-white rounded-[3px] p-6 border border-[#DCE4EE] shadow-xs">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#E9EEF5]">
               <div>
                 <h3 className="text-base font-bold text-[#172B4D]">Theo dõi ngân sách tháng</h3>
@@ -186,7 +186,7 @@ export function PlanningView() {
               </div>
               <button
                 onClick={() => setIsBudgetModalOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-md transition-colors self-start sm:self-auto"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-[3px] transition-colors self-start sm:self-auto"
               >
                 <Sliders className="w-4 h-4 text-slate-500" />
                 <span>Đặt ngân sách</span>
@@ -218,7 +218,7 @@ export function PlanningView() {
                   {formatVND(budgetSummary.remaining)}
                 </span>
               </div>
-              <div className="bg-blue-50/70 p-3 sm:p-4 rounded-lg border border-blue-100">
+              <div className="bg-blue-50/70 p-3 sm:p-4 rounded-[3px] border border-blue-100">
                 <span className="text-[11px] font-bold text-blue-700 uppercase tracking-wider block">
                   Mỗi ngày còn được tiêu ({budgetSummary.daysRemaining} ngày)
                 </span>
@@ -236,7 +236,7 @@ export function PlanningView() {
               return (
                 <div
                   key={item.categoryId}
-                  className="bg-white rounded-xl p-5 border border-[#DCE4EE] shadow-xs flex flex-col justify-between space-y-3"
+                  className="bg-white rounded-[3px] p-5 border border-[#DCE4EE] shadow-xs flex flex-col justify-between space-y-3"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -253,7 +253,7 @@ export function PlanningView() {
                       <button
                         onClick={() => handleOpenQuickBudgetEdit(item)}
                         title="Điều chỉnh hạn mức danh mục"
-                        className="p-1 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                        className="p-1 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-[3px] transition-colors"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
                       </button>
@@ -285,7 +285,7 @@ export function PlanningView() {
       ) : (
         /* TAB 2: MỤC TIÊU TIẾT KIỆM (Khớp 100% financial-plan.JPG) */
         <div className="space-y-6">
-          <div className="bg-white rounded-xl p-6 border border-[#DCE4EE] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="bg-white rounded-[3px] p-6 border border-[#DCE4EE] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h3 className="text-base font-bold text-[#172B4D]">Mục tiêu tài chính</h3>
               <p className="text-xs text-slate-500 font-medium mt-0.5">
@@ -294,7 +294,7 @@ export function PlanningView() {
             </div>
             <button
               onClick={handleOpenCreateGoal}
-              className="flex items-center gap-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs sm:text-sm font-bold shadow-xs active:scale-95 transition-all self-start sm:self-auto"
+              className="flex items-center gap-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-[3px] text-xs sm:text-sm font-bold shadow-xs active:scale-95 transition-all self-start sm:self-auto"
             >
               <Plus className="w-4 h-4" />
               <span>Thêm mục tiêu</span>
@@ -309,12 +309,12 @@ export function PlanningView() {
               return (
                 <div
                   key={g.id}
-                  className="bg-white rounded-xl p-5 sm:p-6 border border-[#DCE4EE] shadow-xs flex flex-col justify-between space-y-4"
+                  className="bg-white rounded-[3px] p-5 sm:p-6 border border-[#DCE4EE] shadow-xs flex flex-col justify-between space-y-4"
                 >
                   <div>
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center border border-[#E9EEF5]">
+                        <div className="w-10 h-10 rounded-[3px] bg-slate-50 flex items-center justify-center border border-[#E9EEF5]">
                           {getGoalIcon(g.name)}
                         </div>
                         <div>
@@ -363,7 +363,7 @@ export function PlanningView() {
                       {!isDone ? (
                         <button
                           onClick={() => setDepositGoalId(g.id)}
-                          className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-semibold rounded-md transition-colors"
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-semibold rounded-[3px] transition-colors"
                         >
                           <Coins className="w-3.5 h-3.5" />
                           <span>Nạp thêm</span>
@@ -379,14 +379,14 @@ export function PlanningView() {
                       <button
                         onClick={() => handleOpenEditGoal(g)}
                         title="Chỉnh sửa mục tiêu"
-                        className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                        className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-[3px] transition-colors"
                       >
                         <Edit2 className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => setDeleteGoalId(g.id)}
                         title="Xóa mục tiêu"
-                        className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
+                        className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-[3px] transition-colors"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -403,7 +403,7 @@ export function PlanningView() {
       {isBudgetModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
           <div
-            className="w-full max-w-lg bg-white rounded-xl shadow-2xl p-6 border border-[#DCE4EE] max-h-[85vh] flex flex-col"
+            className="w-full max-w-lg bg-white rounded-[3px] shadow-2xl p-6 border border-[#DCE4EE] max-h-[85vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between pb-3 border-b border-[#E9EEF5]">
@@ -421,7 +421,7 @@ export function PlanningView() {
                   return (
                     <div
                       key={cat.id}
-                      className="flex items-center justify-between gap-3 p-3 rounded-lg bg-slate-50 border border-[#E9EEF5]"
+                      className="flex items-center justify-between gap-3 p-3 rounded-[3px] bg-slate-50 border border-[#E9EEF5]"
                     >
                       <div className="flex items-center gap-2">
                         <span className="w-3 h-3 rounded-full" style={{ backgroundColor: cat.color }} />
@@ -434,7 +434,7 @@ export function PlanningView() {
                           const val = parseFloat(e.target.value.replace(/[^0-9]/g, "")) || 0;
                           setCategoryBudget(cat.id, val);
                         }}
-                        className="w-32 text-right bg-white border border-[#DCE4EE] rounded-lg px-2.5 py-1 text-xs font-black text-slate-800 outline-none focus:border-blue-500"
+                        className="w-32 text-right bg-white border border-[#DCE4EE] rounded-[3px] px-2.5 py-1 text-xs font-black text-slate-800 outline-none focus:border-blue-500"
                       />
                     </div>
                   );
@@ -444,7 +444,7 @@ export function PlanningView() {
             <div className="pt-3 border-t border-[#E9EEF5] flex justify-end">
               <button
                 onClick={() => setIsBudgetModalOpen(false)}
-                className="px-5 py-2.5 bg-blue-600 text-white font-bold text-xs rounded-md shadow-xs"
+                className="px-5 py-2.5 bg-blue-600 text-white font-bold text-xs rounded-[3px] shadow-xs"
               >
                 Hoàn tất
               </button>
@@ -464,7 +464,7 @@ export function PlanningView() {
       {isGoalModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
           <div
-            className="w-full max-w-md bg-white rounded-xl shadow-2xl p-6 border border-[#DCE4EE]"
+            className="w-full max-w-md bg-white rounded-[3px] shadow-2xl p-6 border border-[#DCE4EE]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between pb-3 border-b border-[#E9EEF5]">
@@ -476,7 +476,7 @@ export function PlanningView() {
                   setIsGoalModalOpen(false);
                   setEditingGoal(null);
                 }}
-                className="text-slate-400 p-1 hover:text-slate-600 rounded-md transition-colors"
+                className="text-slate-400 p-1 hover:text-slate-600 rounded-[3px] transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -491,7 +491,7 @@ export function PlanningView() {
                   value={goalName}
                   onChange={(e) => setGoalName(e.target.value)}
                   placeholder="VD: Quỹ dự phòng, Mua xe máy..."
-                  className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold"
+                  className="w-full bg-slate-50 border border-[#DCE4EE] rounded-[3px] px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold"
                 />
               </div>
 
@@ -506,7 +506,7 @@ export function PlanningView() {
                     setGoalTarget(raw ? new Intl.NumberFormat("vi-VN").format(parseInt(raw, 10)) : "");
                   }}
                   placeholder="VD: 50.000.000"
-                  className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-bold"
+                  className="w-full bg-slate-50 border border-[#DCE4EE] rounded-[3px] px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-bold"
                 />
               </div>
 
@@ -520,7 +520,7 @@ export function PlanningView() {
                     setGoalCurrent(raw ? new Intl.NumberFormat("vi-VN").format(parseInt(raw, 10)) : "");
                   }}
                   placeholder="0"
-                  className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-bold"
+                  className="w-full bg-slate-50 border border-[#DCE4EE] rounded-[3px] px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-bold"
                 />
               </div>
 
@@ -530,7 +530,7 @@ export function PlanningView() {
                   type="date"
                   value={goalDeadline}
                   onChange={(e) => setGoalDeadline(e.target.value)}
-                  className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold"
+                  className="w-full bg-slate-50 border border-[#DCE4EE] rounded-[3px] px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold"
                 />
               </div>
 
@@ -541,13 +541,13 @@ export function PlanningView() {
                     setIsGoalModalOpen(false);
                     setEditingGoal(null);
                   }}
-                  className="flex-1 py-2.5 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
+                  className="flex-1 py-2.5 rounded-[3px] text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
                 >
                   Hủy
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 rounded-md text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 shadow-xs transition-colors"
+                  className="flex-1 py-2.5 rounded-[3px] text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 shadow-xs transition-colors"
                 >
                   {editingGoal ? "Cập nhật mục tiêu" : "Lưu mục tiêu"}
                 </button>
@@ -561,7 +561,7 @@ export function PlanningView() {
       {editingCategoryBudget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
           <div
-            className="w-full max-w-sm bg-white rounded-xl shadow-2xl p-6 border border-[#DCE4EE]"
+            className="w-full max-w-sm bg-white rounded-[3px] shadow-2xl p-6 border border-[#DCE4EE]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between pb-3 border-b border-[#E9EEF5]">
@@ -576,7 +576,7 @@ export function PlanningView() {
               </div>
               <button
                 onClick={() => setEditingCategoryBudget(null)}
-                className="text-slate-400 p-1 hover:text-slate-600 rounded-md transition-colors"
+                className="text-slate-400 p-1 hover:text-slate-600 rounded-[3px] transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -599,7 +599,7 @@ export function PlanningView() {
                     );
                   }}
                   placeholder="0"
-                  className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3 py-2 text-base font-black text-slate-800 outline-none focus:border-blue-500 text-right"
+                  className="w-full bg-slate-50 border border-[#DCE4EE] rounded-[3px] px-3 py-2 text-base font-black text-slate-800 outline-none focus:border-blue-500 text-right"
                 />
               </div>
 
@@ -619,7 +619,7 @@ export function PlanningView() {
                     onClick={() =>
                       setCategoryBudgetInput(new Intl.NumberFormat("vi-VN").format(preset.val))
                     }
-                    className="py-1 px-2 text-[11px] font-semibold bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-600 rounded-md transition-colors"
+                    className="py-1 px-2 text-[11px] font-semibold bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-600 rounded-[3px] transition-colors"
                   >
                     {preset.label}
                   </button>
@@ -630,13 +630,13 @@ export function PlanningView() {
                 <button
                   type="button"
                   onClick={() => setEditingCategoryBudget(null)}
-                  className="flex-1 py-2 text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-md transition-colors"
+                  className="flex-1 py-2 text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-[3px] transition-colors"
                 >
                   Hủy
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2 text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 rounded-md shadow-xs transition-colors"
+                  className="flex-1 py-2 text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 rounded-[3px] shadow-xs transition-colors"
                 >
                   Lưu hạn mức
                 </button>
@@ -665,3 +665,4 @@ export function PlanningView() {
     </div>
   );
 }
+

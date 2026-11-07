@@ -61,7 +61,7 @@ export function MobileAccountsView({ onOpenAddAccount }: MobileAccountsViewProps
     <div className="space-y-3.5 animate-in fade-in duration-200">
       {/* 1. HEADER 2 CHỈ SỐ TÀI CHÍNH TỔNG (Khớp 100% Figma Screen 5) */}
       <div className="grid grid-cols-2 gap-2.5">
-        <div className="p-3.5 rounded-xl bg-white border border-[#DCE4EE] shadow-xs space-y-1">
+        <div className="p-3.5 rounded-[3px] bg-white border border-[#DCE4EE] shadow-xs space-y-1">
           <span className="text-[10px] text-blue-600 font-bold uppercase tracking-wider block">
             Tổng khả dụng (Ví & Bank)
           </span>
@@ -73,7 +73,7 @@ export function MobileAccountsView({ onOpenAddAccount }: MobileAccountsViewProps
           </span>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-white border border-[#DCE4EE] shadow-xs space-y-1">
+        <div className="p-3.5 rounded-[3px] bg-white border border-[#DCE4EE] shadow-xs space-y-1">
           <span className="text-[10px] text-amber-600 font-bold uppercase tracking-wider block">
             Dư nợ 2 thẻ BIDV
           </span>
@@ -99,7 +99,7 @@ export function MobileAccountsView({ onOpenAddAccount }: MobileAccountsViewProps
         <div className="space-y-2.5">
           {/* Thẻ Chuột 50M */}
           {husbandCreditCard && (activePerspective === "ALL" || activePerspective === "HUSBAND") && (
-            <div className="rounded-xl p-4 bg-gradient-to-br from-[#0F172A] via-[#172B4D] to-[#1E3A8A] text-white shadow-sm space-y-3">
+            <div className="rounded-[3px] p-4 bg-gradient-to-br from-[#0F172A] via-[#172B4D] to-[#1E3A8A] text-white shadow-sm space-y-3">
               <div className="flex items-center justify-between text-xs">
                 <div>
                   <span className="text-[10px] text-blue-300 font-bold uppercase tracking-widest block">
@@ -139,7 +139,7 @@ export function MobileAccountsView({ onOpenAddAccount }: MobileAccountsViewProps
                 </span>
                 <button
                   onClick={() => setRepayingCard(husbandCreditCard)}
-                  className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-xs transition-colors"
+                  className="px-3 py-1.5 rounded-[3px] bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-xs transition-colors"
                 >
                   Thanh toán dư nợ
                 </button>
@@ -149,47 +149,47 @@ export function MobileAccountsView({ onOpenAddAccount }: MobileAccountsViewProps
 
           {/* Thẻ Mèo 20M */}
           {wifeCreditCard && (activePerspective === "ALL" || activePerspective === "WIFE") && (
-            <div className="rounded-xl p-4 bg-gradient-to-br from-[#451A03] via-[#78350F] to-[#B45309] text-white shadow-sm space-y-3">
+            <div className="rounded-[3px] p-4 bg-gradient-to-br from-[#881337] via-[#9F1239] to-[#BE123C] text-white shadow-sm space-y-3 border border-rose-400/40">
               <div className="flex items-center justify-between text-xs">
                 <div>
-                  <span className="text-[10px] text-amber-200 font-bold uppercase tracking-widest block">
+                  <span className="text-[10px] text-rose-200 font-bold uppercase tracking-widest block">
                     BIDV GOLD FLEXI
                   </span>
                   <span className="font-extrabold text-white text-sm">
                     Thẻ 👩 Bé Mèo (20 Triệu)
                   </span>
                 </div>
-                <span className="font-mono text-amber-200 text-xs">•••• 2020</span>
+                <span className="font-mono text-rose-200 text-xs">•••• 2020</span>
               </div>
 
               <div>
                 <div className="flex items-baseline justify-between text-xs mb-1">
-                  <span className="text-amber-100 text-[11px]">Dư nợ đã dùng:</span>
-                  <span className="font-black text-base text-amber-200">
+                  <span className="text-rose-200 text-[11px]">Dư nợ đã dùng:</span>
+                  <span className="font-black text-base text-white">
                     {formatVND(wifeCreditCard.usedAmount)}
                   </span>
                 </div>
-                <div className="w-full h-2 rounded-full bg-white/20 overflow-hidden">
+                <div className="w-full h-2 rounded-full bg-black/30 overflow-hidden">
                   <div
-                    className="h-full bg-amber-300 rounded-full transition-all"
+                    className="h-full bg-white rounded-full transition-all"
                     style={{ width: `${Math.min(wifeCreditCard.usagePercentage, 100)}%` }}
                   />
                 </div>
-                <div className="flex justify-between text-[10px] text-amber-100 mt-1.5">
+                <div className="flex justify-between text-[10px] text-rose-200 mt-1.5">
                   <span>Khả dụng: {formatVND(wifeCreditCard.availableAmount)}</span>
-                  <span className="font-bold text-amber-200">
+                  <span className="font-bold text-white">
                     {wifeCreditCard.usagePercentage}% (An toàn)
                   </span>
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-white/15 flex items-center justify-between">
-                <span className="text-[10px] text-amber-100">
+              <div className="pt-2 border-t border-rose-400/30 flex items-center justify-between">
+                <span className="text-[10px] text-rose-200">
                   Sao kê: ngày 20 · Hạn trả: <strong>25/10</strong>
                 </span>
                 <button
                   onClick={() => setRepayingCard(wifeCreditCard)}
-                  className="px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs shadow-xs transition-colors"
+                  className="px-3 py-1.5 rounded-[3px] bg-white hover:bg-rose-50 text-rose-700 font-bold text-xs shadow-xs transition-colors"
                 >
                   Thanh toán dư nợ
                 </button>
@@ -208,7 +208,7 @@ export function MobileAccountsView({ onOpenAddAccount }: MobileAccountsViewProps
           </span>
         </div>
 
-        <div className="bg-white rounded-xl border border-[#DCE4EE] shadow-xs divide-y divide-slate-100 overflow-hidden">
+        <div className="bg-white rounded-[3px] border border-[#DCE4EE] shadow-xs divide-y divide-slate-100 overflow-hidden">
           {bankAndCashAccounts.map((acc) => {
             const isHusband = acc.owner === "HUSBAND";
             const isCash = acc.type === "CASH";
@@ -220,7 +220,7 @@ export function MobileAccountsView({ onOpenAddAccount }: MobileAccountsViewProps
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <div
-                    className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold shrink-0 ${
+                    className={`w-9 h-9 rounded-[3px] flex items-center justify-center text-sm font-bold shrink-0 ${
                       isCash
                         ? "bg-amber-50 text-amber-600"
                         : isHusband
@@ -265,3 +265,4 @@ export function MobileAccountsView({ onOpenAddAccount }: MobileAccountsViewProps
     </div>
   );
 }
+

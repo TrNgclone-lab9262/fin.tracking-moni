@@ -178,16 +178,22 @@ export function AccountsView() {
     const used = Math.max(0, acc.currentBalance);
     const available = Math.max(0, limit - used);
 
+    const isWife = acc.owner === "WIFE";
+
     return (
       <div
         key={acc.id}
-        className="bg-white rounded-xl p-5 border border-[#DCE4EE] shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+        className={`rounded-[3px] p-5 border shadow-xs hover:shadow-md transition-all flex flex-col justify-between ${
+          isWife
+            ? "bg-rose-50/30 border-rose-200"
+            : "bg-white border-[#DCE4EE]"
+        }`}
       >
         <div>
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
               <div
-                className="w-11 h-11 rounded-lg flex items-center justify-center text-white shrink-0 shadow-xs"
+                className="w-11 h-11 rounded-[3px] flex items-center justify-center text-white shrink-0 shadow-xs"
                 style={{ backgroundColor: acc.color || "#0284C7" }}
               >
                 {isCredit ? <CreditCard className="w-6 h-6" /> : <Building2 className="w-6 h-6" />}
@@ -235,7 +241,7 @@ export function AccountsView() {
         <div className="mt-4 pt-3 border-t border-[#E9EEF5] flex items-center justify-between">
           <button
             onClick={() => setSelectedAccountForDetail(acc)}
-            className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-md transition-colors"
+            className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-[3px] transition-colors"
           >
             <Eye className="w-3.5 h-3.5" />
             <span>Xem sổ giao dịch</span>
@@ -245,14 +251,14 @@ export function AccountsView() {
             <button
               onClick={() => handleOpenEditAccount(acc)}
               title="Chỉnh sửa tài khoản"
-              className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+              className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-[3px] transition-colors"
             >
               <Pencil className="w-4 h-4" />
             </button>
             <button
               onClick={() => setDeleteTargetId(acc.id)}
               title="Xóa tài khoản"
-              className="p-1.5 text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
+              className="p-1.5 text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-[3px] transition-colors"
             >
               <Trash2 className="w-4 h-4" />
             </button>
@@ -265,7 +271,7 @@ export function AccountsView() {
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* Header Tóm tắt số dư gia đình */}
-      <div className="bg-white rounded-xl p-6 border border-[#DCE4EE] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white rounded-[3px] p-6 border border-[#DCE4EE] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-6 sm:gap-12">
           <div>
             <span className="text-xs font-bold text-blue-600 uppercase tracking-wider block">
@@ -287,7 +293,7 @@ export function AccountsView() {
 
         <button
           onClick={handleOpenAddAccount}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs sm:text-sm font-bold shadow-xs active:scale-95 transition-all self-start sm:self-auto"
+          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-[3px] text-xs sm:text-sm font-bold shadow-xs active:scale-95 transition-all self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Thêm ví / thẻ</span>
@@ -339,7 +345,7 @@ export function AccountsView() {
       {selectedAccountForDetail && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
           <div
-            className="w-full max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden border border-[#DCE4EE] flex flex-col max-h-[90vh]"
+            className="w-full max-w-4xl bg-white rounded-[3px] shadow-2xl overflow-hidden border border-[#DCE4EE] flex flex-col max-h-[90vh]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="px-6 py-4 border-b border-[#E9EEF5] flex items-center justify-between bg-slate-50/50">
@@ -355,7 +361,7 @@ export function AccountsView() {
               </div>
               <button
                 onClick={() => setSelectedAccountForDetail(null)}
-                className="w-8 h-8 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center"
+                className="w-8 h-8 rounded-[3px] bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -444,7 +450,7 @@ export function AccountsView() {
       {isAddAccountModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
           <div
-            className="w-full max-w-md bg-white rounded-xl shadow-2xl p-6 border border-[#DCE4EE]"
+            className="w-full max-w-md bg-white rounded-[3px] shadow-2xl p-6 border border-[#DCE4EE]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between pb-3 border-b border-[#E9EEF5]">
@@ -469,7 +475,7 @@ export function AccountsView() {
                   <button
                     type="button"
                     onClick={() => setOwner("HUSBAND")}
-                    className={`py-2 text-xs font-bold rounded-md border ${
+                    className={`py-2 text-xs font-bold rounded-[3px] border ${
                       owner === "HUSBAND" ? "bg-blue-600 text-white" : "border-[#DCE4EE] text-slate-600"
                     }`}
                   >
@@ -478,7 +484,7 @@ export function AccountsView() {
                   <button
                     type="button"
                     onClick={() => setOwner("WIFE")}
-                    className={`py-2 text-xs font-bold rounded-md border ${
+                    className={`py-2 text-xs font-bold rounded-[3px] border ${
                       owner === "WIFE" ? "bg-emerald-600 text-white" : "border-[#DCE4EE] text-slate-600"
                     }`}
                   >
@@ -487,7 +493,7 @@ export function AccountsView() {
                   <button
                     type="button"
                     onClick={() => setOwner("SHARED")}
-                    className={`py-2 text-xs font-bold rounded-md border ${
+                    className={`py-2 text-xs font-bold rounded-[3px] border ${
                       owner === "SHARED" ? "bg-purple-600 text-white" : "border-[#DCE4EE] text-slate-600"
                     }`}
                   >
@@ -504,7 +510,7 @@ export function AccountsView() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="VD: Vietinbank Lương, BIDV Credit..."
-                  className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold"
+                  className="w-full bg-slate-50 border border-[#DCE4EE] rounded-[3px] px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold"
                 />
               </div>
 
@@ -516,7 +522,7 @@ export function AccountsView() {
                   disabled={editingAccount !== null}
                   value={type}
                   onChange={(e) => setType(e.target.value as AccountType)}
-                  className={`w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold ${
+                  className={`w-full bg-slate-50 border border-[#DCE4EE] rounded-[3px] px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-semibold ${
                     editingAccount ? "opacity-75 cursor-not-allowed bg-slate-100" : ""
                   }`}
                 >
@@ -538,7 +544,7 @@ export function AccountsView() {
                       setCreditLimit(raw ? new Intl.NumberFormat("vi-VN").format(parseInt(raw, 10)) : "");
                     }}
                     placeholder="VD: 50.000.000"
-                    className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-bold"
+                    className="w-full bg-slate-50 border border-[#DCE4EE] rounded-[3px] px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-bold"
                   />
                 </div>
               ) : (
@@ -552,7 +558,7 @@ export function AccountsView() {
                       setInitialBalance(raw ? new Intl.NumberFormat("vi-VN").format(parseInt(raw, 10)) : "");
                     }}
                     placeholder="0"
-                    className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-bold"
+                    className="w-full bg-slate-50 border border-[#DCE4EE] rounded-[3px] px-3.5 py-2 text-sm text-slate-800 outline-none focus:border-blue-500 font-bold"
                   />
                 </div>
               )}
@@ -564,13 +570,13 @@ export function AccountsView() {
                     setIsAddAccountModalOpen(false);
                     setEditingAccount(null);
                   }}
-                  className="flex-1 py-2.5 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  className="flex-1 py-2.5 rounded-[3px] text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200"
                 >
                   Hủy
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 rounded-md text-xs font-bold bg-blue-600 text-white shadow-xs hover:bg-blue-700"
+                  className="flex-1 py-2.5 rounded-[3px] text-xs font-bold bg-blue-600 text-white shadow-xs hover:bg-blue-700"
                 >
                   {editingAccount ? "Lưu thay đổi" : "Lưu tài khoản"}
                 </button>
@@ -599,3 +605,4 @@ export function AccountsView() {
     </div>
   );
 }
+

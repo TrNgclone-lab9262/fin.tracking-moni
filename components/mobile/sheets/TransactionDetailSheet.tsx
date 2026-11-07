@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import {
@@ -82,7 +82,7 @@ export function TransactionDetailSheet({
 
         {/* Amount Hero Card (Chuẩn Fintech Tokens) */}
         <div
-          className={`rounded-xl p-4 text-center border flex flex-col items-center justify-center gap-1.5 ${
+          className={`rounded-[3px] p-4 text-center border flex flex-col items-center justify-center gap-1.5 ${
             isExpense
               ? "bg-[#FFF1F2] border-[#FECDD3] text-[#BE123C]"
               : isIncome
@@ -92,7 +92,7 @@ export function TransactionDetailSheet({
         >
           {/* Category Chip */}
           <span
-            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-bold ${
+            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-[3px] text-xs font-bold ${
               isExpense
                 ? "bg-[#FFE4E6] text-[#BE123C]"
                 : isIncome
@@ -117,13 +117,13 @@ export function TransactionDetailSheet({
         </div>
 
         {/* Bento Details Card */}
-        <div className="rounded-xl p-3.5 bg-[#F8FAFC] border border-[#E2E8F0] space-y-2.5 text-xs">
+        <div className="rounded-[3px] p-3.5 bg-[#F8FAFC] border border-[#E2E8F0] space-y-2.5 text-xs">
           {/* Row 1: Thành viên & Phạm vi */}
           <div className="flex items-center justify-between pb-2 border-b border-[#E2E8F0]">
             <div className="flex items-center gap-1.5">
               <span className="text-[#64748B] font-medium">Người chi:</span>
               <span
-                className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md font-bold ${
+                className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-[3px] font-bold ${
                   transaction.memberId === "HUSBAND"
                     ? "bg-[#EFF6FF] border border-[#BFDBFE] text-[#1D4ED8]"
                     : "bg-[#FDF2F8] border border-[#FBCFE8] text-[#BE185D]"
@@ -136,7 +136,7 @@ export function TransactionDetailSheet({
             <div className="flex items-center gap-1.5">
               <span className="text-[#64748B] font-medium">Phạm vi:</span>
               <span
-                className={`px-2 py-0.5 rounded-md font-bold ${
+                className={`px-2 py-0.5 rounded-[3px] font-bold ${
                   transaction.scope === "FAMILY"
                     ? "bg-[#ECFDF5] border border-[#A7F3D0] text-[#047857]"
                     : "bg-[#FAF5FF] border border-[#E9D5FF] text-[#7E22CE]"
@@ -172,7 +172,7 @@ export function TransactionDetailSheet({
         </div>
 
         {/* Bill OCR Attachment Card */}
-        <div className="rounded-xl p-2.5 bg-[#F1F5F9] border border-slate-200/70 flex items-center justify-between text-xs">
+        <div className="rounded-[3px] p-2.5 bg-[#F1F5F9] border border-slate-200/70 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2.5 min-w-0">
             <span className="text-xl">🧾</span>
             <div className="min-w-0">
@@ -200,7 +200,7 @@ export function TransactionDetailSheet({
               onClose();
               onEdit(transaction);
             }}
-            className="w-full h-11 rounded-xl bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-colors"
+            className="w-full h-11 rounded-[3px] bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-colors"
           >
             <Pencil className="w-4 h-4" />
             <span>Chỉnh Sửa Giao Dịch</span>
@@ -211,7 +211,7 @@ export function TransactionDetailSheet({
               onClose();
               onDelete(transaction.id);
             }}
-            className="w-full h-10 rounded-xl bg-[#FEE2E2] hover:bg-rose-200 border border-[#FCA5A5] text-[#BE123C] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-colors"
+            className="w-full h-10 rounded-[3px] bg-[#FEE2E2] hover:bg-rose-200 border border-[#FCA5A5] text-[#BE123C] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-colors"
           >
             <Trash2 className="w-4 h-4" />
             <span>Xóa Giao Dịch Này</span>
@@ -224,3 +224,4 @@ export function TransactionDetailSheet({
     </div>
   );
 }
+

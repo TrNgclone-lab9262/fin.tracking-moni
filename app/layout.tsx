@@ -1,6 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { FinanceProvider } from "@/context/FinanceContext";
+import { SecurityProvider } from "@/context/SecurityContext";
+import { Inter } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const inter = Inter({ subsets: ["latin", "vietnamese"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "HOME MONI - Quản Lý Tài Chính Gia Đình",
@@ -27,9 +32,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="vi">
+    <html lang="vi" className={cn("font-sans", inter.variable)}>
       <body className="font-sans antialiased">
-        <FinanceProvider>{children}</FinanceProvider>
+        <SecurityProvider>
+          <FinanceProvider>{children}</FinanceProvider>
+        </SecurityProvider>
       </body>
     </html>
   );

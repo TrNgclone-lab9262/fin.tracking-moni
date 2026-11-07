@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useMemo } from "react";
 import { Users, Heart, Calendar as CalendarIcon } from "lucide-react";
@@ -38,10 +38,10 @@ export function FamilyCashflowWidget() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       {/* 1. CƠ CẤU ĐÓNG GÓP THU NHẬP 2 VỢ CHỒNG */}
-      <div className="bg-white rounded-xl p-5 border border-[#DCE4EE] shadow-xs flex flex-col justify-between space-y-4">
+      <div className="bg-white rounded-[3px] p-5 border border-[#DCE4EE] shadow-xs flex flex-col justify-between space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-[#E9EEF5]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-[3px] bg-indigo-50 text-indigo-600 flex items-center justify-center">
               <Users className="w-4 h-4" />
             </div>
             <div>
@@ -53,14 +53,14 @@ export function FamilyCashflowWidget() {
               </p>
             </div>
           </div>
-          <span className="text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100">
+          <span className="text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-[3px] border border-indigo-100">
             Tổng {formatVND(totalIncome)}
           </span>
         </div>
 
         {/* Thanh tỷ lệ Anh Chuột vs Bé Mèo */}
         <div className="space-y-2.5">
-          <div className="w-full h-3.5 bg-slate-100 rounded-md overflow-hidden flex shadow-inner">
+          <div className="w-full h-3.5 bg-slate-100 rounded-[3px] overflow-hidden flex shadow-inner">
             <div
               className="h-full bg-blue-600 transition-all flex items-center justify-center text-[10px] text-white font-bold"
               style={{ width: `${husbandPct}%` }}
@@ -98,7 +98,7 @@ export function FamilyCashflowWidget() {
           </div>
         </div>
 
-        <div className="p-3 bg-slate-50 rounded-lg border border-[#E9EEF5] flex items-center gap-2 text-xs text-slate-600">
+        <div className="p-3 bg-slate-50 rounded-[3px] border border-[#E9EEF5] flex items-center gap-2 text-xs text-slate-600">
           <Heart className="w-4 h-4 text-rose-500 shrink-0" />
           <span>
             Hai vợ chồng cùng hợp lực tích lũy được{" "}
@@ -108,10 +108,10 @@ export function FamilyCashflowWidget() {
       </div>
 
       {/* 2. LỊCH CHI TIÊU GIA ĐÌNH (CALENDAR HEATMAP 31 NGÀY) */}
-      <div className="bg-white rounded-xl p-5 border border-[#DCE4EE] shadow-xs flex flex-col justify-between space-y-3">
+      <div className="bg-white rounded-[3px] p-5 border border-[#DCE4EE] shadow-xs flex flex-col justify-between space-y-3">
         <div className="flex items-center justify-between pb-3 border-b border-[#E9EEF5]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-[3px] bg-amber-50 text-amber-600 flex items-center justify-center">
               <CalendarIcon className="w-4 h-4" />
             </div>
             <div>
@@ -144,7 +144,7 @@ export function FamilyCashflowWidget() {
               <div
                 key={d.day}
                 title={`Ngày ${d.day}/10: ${d.amount > 0 ? formatVND(d.amount) : "Không chi tiêu"}`}
-                className={`h-8 rounded-md flex flex-col items-center justify-center text-xs transition-transform hover:scale-105 cursor-pointer ${bgClass}`}
+                className={`h-8 rounded-[3px] flex flex-col items-center justify-center text-xs transition-transform hover:scale-105 cursor-pointer ${bgClass}`}
               >
                 <span>{d.day}</span>
               </div>
@@ -159,3 +159,4 @@ export function FamilyCashflowWidget() {
     </div>
   );
 }
+

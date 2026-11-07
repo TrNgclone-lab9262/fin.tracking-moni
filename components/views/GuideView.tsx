@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import {
@@ -37,7 +37,7 @@ export function GuideView() {
       icon: Users,
       content: (
         <div className="space-y-3 text-xs sm:text-sm text-slate-600 leading-relaxed">
-          <div className="p-4 rounded-lg bg-blue-50/80 border border-blue-200/60 flex items-start gap-3 text-blue-900">
+          <div className="p-4 rounded-[3px] bg-blue-50/80 border border-blue-200/60 flex items-start gap-3 text-blue-900">
             <Lightbulb className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
             <div>
               <strong>Nguyên tắc đồng thuận:</strong> HOME MONI giúp Anh Chuột và Bé Mèo nắm rõ thu nhập, chi tiêu và nợ thẻ tín dụng của nhau nhưng vẫn tôn trọng các khoản chi tiêu cá nhân hợp lý.
@@ -99,7 +99,7 @@ export function GuideView() {
       content: (
         <div className="space-y-3 text-xs sm:text-sm text-slate-600 leading-relaxed">
           <p>
-            Chỉ số <strong>"Mỗi ngày còn được tiêu X VND"</strong> lấy số tiền ngân sách còn lại chia đều cho số ngày thực tế còn lại trong tháng, giúp 2 vợ chồng điều tiết chi tiêu hợp lý.
+            Chỉ số <strong>&quot;Mỗi ngày còn được tiêu X VND&quot;</strong> lấy số tiền ngân sách còn lại chia đều cho số ngày thực tế còn lại trong tháng, giúp 2 vợ chồng điều tiết chi tiêu hợp lý.
           </p>
         </div>
       ),
@@ -120,7 +120,7 @@ export function GuideView() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 animate-in fade-in duration-200">
-      <div className="bg-white rounded-xl p-6 border border-[#DCE4EE] shadow-xs">
+      <div className="bg-white rounded-[3px] p-6 border border-[#DCE4EE] shadow-xs">
         <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
           <HelpCircle className="w-5 h-5 text-blue-600" />
           Cẩm nang sử dụng HOME MONI
@@ -138,14 +138,14 @@ export function GuideView() {
           return (
             <div
               key={sec.id}
-              className="bg-white rounded-xl border border-[#DCE4EE] shadow-xs overflow-hidden transition-all"
+              className="bg-white rounded-[3px] border border-[#DCE4EE] shadow-xs overflow-hidden transition-all"
             >
               <button
                 onClick={() => toggleSection(sec.id)}
                 className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-slate-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-[3px] bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
                     <Icon className="w-4 h-4" />
                   </div>
                   <span className="font-bold text-sm text-slate-800">{sec.title}</span>
@@ -169,3 +169,4 @@ export function GuideView() {
     </div>
   );
 }
+

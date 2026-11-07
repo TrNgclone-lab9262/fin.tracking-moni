@@ -87,13 +87,13 @@ export function TransactionsView({
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
       {/* 1. Thanh Lọc & Tìm kiếm Toàn diện */}
-      <div className="bg-white rounded-xl p-5 border border-[#DCE4EE] shadow-xs space-y-4">
+      <div className="bg-white rounded-[3px] p-5 border border-[#DCE4EE] shadow-xs space-y-4">
         {/* Quick Month Filter Bar */}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
             <button
               onClick={() => setSelectedMonth("ALL")}
-              className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all whitespace-nowrap ${
+              className={`px-3 py-1.5 rounded-[3px] text-xs font-bold transition-all whitespace-nowrap ${
                 selectedMonth === "ALL"
                   ? "bg-blue-600 text-white shadow-xs"
                   : "bg-slate-100 hover:bg-slate-200 text-slate-600"
@@ -105,7 +105,7 @@ export function TransactionsView({
               <button
                 key={m}
                 onClick={() => setSelectedMonth(m)}
-                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all whitespace-nowrap ${
+                className={`px-3 py-1.5 rounded-[3px] text-xs font-bold transition-all whitespace-nowrap ${
                   selectedMonth === m
                     ? "bg-blue-600 text-white shadow-xs"
                     : "bg-slate-100 hover:bg-slate-200 text-slate-600"
@@ -119,14 +119,14 @@ export function TransactionsView({
           <div className="flex items-center gap-2">
             <button
               onClick={onOpenBackupModal}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-md transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-[3px] transition-colors"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Xuất dữ liệu</span>
             </button>
             <button
               onClick={onOpenAddModal}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-md shadow-xs"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-[3px] shadow-xs"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Thêm giao dịch</span>
@@ -140,7 +140,7 @@ export function TransactionsView({
             <select
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value as any)}
-              className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-blue-500"
+              className="w-full bg-slate-50 border border-[#DCE4EE] rounded-[3px] px-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-blue-500"
             >
               <option value="ALL">Tất cả loại giao dịch</option>
               <option value="INCOME">Thu nhập</option>
@@ -153,7 +153,7 @@ export function TransactionsView({
             <select
               value={selectedAccount}
               onChange={(e) => setSelectedAccount(e.target.value)}
-              className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-blue-500"
+              className="w-full bg-slate-50 border border-[#DCE4EE] rounded-[3px] px-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-blue-500"
             >
               <option value="ALL">Tất cả tài khoản (Ví)</option>
               {accounts.map((a) => (
@@ -168,7 +168,7 @@ export function TransactionsView({
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-blue-500"
+              className="w-full bg-slate-50 border border-[#DCE4EE] rounded-[3px] px-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-blue-500"
             >
               <option value="ALL">Tất cả danh mục</option>
               {categories.map((c) => (
@@ -187,7 +187,7 @@ export function TransactionsView({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Tìm theo ghi chú..."
-              className="w-full bg-slate-50 border border-[#DCE4EE] rounded-lg pl-9 pr-8 py-2 text-xs text-slate-800 outline-none focus:border-blue-500 placeholder:text-slate-400 font-medium"
+              className="w-full bg-slate-50 border border-[#DCE4EE] rounded-[3px] pl-9 pr-8 py-2 text-xs text-slate-800 outline-none focus:border-blue-500 placeholder:text-slate-400 font-medium"
             />
             {searchQuery && (
               <button
@@ -218,7 +218,7 @@ export function TransactionsView({
       </div>
 
       {/* 3. Bảng Giao Dịch Chi Tiết Đa Thiết Bị (Desktop / Tablet / Mobile) */}
-      <div className="bg-white rounded-xl border border-[#DCE4EE] shadow-xs overflow-hidden">
+      <div className="bg-white rounded-[3px] border border-[#DCE4EE] shadow-xs overflow-hidden">
         {filteredTransactions.length === 0 ? (
           <div className="p-12 text-center">
             <AlertCircle className="w-10 h-10 text-slate-300 mx-auto mb-2" />
@@ -270,10 +270,10 @@ export function TransactionsView({
                         {/* Người chi (Chồng hay Vợ) */}
                         <td className="py-3.5 px-3.5 whitespace-nowrap">
                           <span
-                            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
+                            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-[3px] text-[11px] font-bold ${
                               tx.memberId === "HUSBAND"
                                 ? "bg-blue-50 text-blue-700 border border-blue-200"
-                                : "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                                : "bg-rose-50 text-[#F43F5E] border border-rose-200"
                             }`}
                           >
                             {tx.memberId === "HUSBAND" ? "👨 Anh Chuột" : "👩 Bé Mèo"}
@@ -313,7 +313,7 @@ export function TransactionsView({
                         {/* Mục đích (Chung vs Riêng) */}
                         <td className="py-3.5 px-3 whitespace-nowrap">
                           <span
-                            className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                            className={`text-[10px] font-bold px-2 py-0.5 rounded-[3px] ${
                               tx.scope === "FAMILY"
                                 ? "bg-slate-100 text-slate-700"
                                 : "bg-purple-50 text-purple-700 border border-purple-200"
@@ -325,7 +325,7 @@ export function TransactionsView({
 
                         {/* Danh mục */}
                         <td className="py-3.5 px-3.5 whitespace-nowrap">
-                          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200/60 max-w-full">
+                          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-[3px] text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200/60 max-w-full">
                             <span
                               className="w-2.5 h-2.5 rounded-full shrink-0"
                               style={{ backgroundColor: cat?.color || "#94A3B8" }}
@@ -350,7 +350,7 @@ export function TransactionsView({
                         {/* Tài khoản nguồn */}
                         <td className="py-3.5 px-3.5 text-slate-600 font-semibold whitespace-nowrap">
                           <span
-                            className="inline-flex items-center gap-1 text-[11px] bg-slate-100 px-2 py-0.5 rounded-md text-slate-700 truncate max-w-full"
+                            className="inline-flex items-center gap-1 text-[11px] bg-slate-100 px-2 py-0.5 rounded-[3px] text-slate-700 truncate max-w-full"
                             title={isTransfer ? `${acc?.name} → ${toAcc?.name}` : acc?.name}
                           >
                             {isTransfer ? `${acc?.name} → ${toAcc?.name}` : acc?.name || "Ví tiền"}
@@ -371,14 +371,14 @@ export function TransactionsView({
                             <button
                               onClick={() => setEditingTx(tx)}
                               title="Chỉnh sửa giao dịch"
-                              className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                              className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-[3px] transition-colors"
                             >
                               <Pencil className="w-3.5 h-3.5" />
                             </button>
                             <button
                               onClick={() => setDeleteTargetId(tx.id)}
                               title="Xóa giao dịch"
-                              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
+                              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-[3px] transition-colors"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
@@ -428,7 +428,7 @@ export function TransactionsView({
                         </td>
                         <td className="py-3 px-3 whitespace-nowrap">
                           <div className="flex flex-col gap-0.5">
-                            <span className="text-[11px] font-bold text-slate-800">
+                            <span className={`text-[11px] font-bold ${tx.memberId === "HUSBAND" ? "text-slate-800" : "text-[#F43F5E]"}`}>
                               {tx.memberId === "HUSBAND" ? "👨 Anh Chuột" : "👩 Bé Mèo"}
                             </span>
                             <span className="text-[10px] text-slate-400 font-medium truncate">
@@ -472,14 +472,14 @@ export function TransactionsView({
                           <div className="flex items-center justify-center gap-1">
                             <button
                               onClick={() => setEditingTx(tx)}
-                              className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                              className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-[3px] transition-colors"
                               title="Sửa"
                             >
                               <Pencil className="w-3.5 h-3.5" />
                             </button>
                             <button
                               onClick={() => setDeleteTargetId(tx.id)}
-                              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
+                              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-[3px] transition-colors"
                               title="Xóa"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -517,7 +517,7 @@ export function TransactionsView({
                           {tx.memberId === "HUSBAND" ? "👨 Anh Chuột" : "👩 Bé Mèo"}
                         </span>
                         <span
-                          className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
+                          className={`text-[10px] font-bold px-1.5 py-0.5 rounded-[3px] ${
                             tx.scope === "FAMILY"
                               ? "bg-slate-100 text-slate-700"
                               : "bg-purple-50 text-purple-700 border border-purple-200"
@@ -547,7 +547,7 @@ export function TransactionsView({
                           </span>
                         </div>
                       </div>
-                      <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md shrink-0 whitespace-nowrap">
+                      <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-[3px] shrink-0 whitespace-nowrap">
                         {isTransfer ? `${acc?.name} → ${toAcc?.name}` : acc?.name || "Ví tiền"}
                       </span>
                     </div>
@@ -568,7 +568,7 @@ export function TransactionsView({
                       <div className="flex items-center gap-1.5">
                         <button
                           onClick={() => setEditingTx(tx)}
-                          className="p-2 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center active:scale-95"
+                          className="p-2 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-[3px] transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center active:scale-95"
                           aria-label="Sửa giao dịch"
                           title="Sửa"
                         >
@@ -576,7 +576,7 @@ export function TransactionsView({
                         </button>
                         <button
                           onClick={() => setDeleteTargetId(tx.id)}
-                          className="p-2 text-rose-600 bg-rose-50 hover:bg-rose-100 rounded-md transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center active:scale-95"
+                          className="p-2 text-rose-600 bg-rose-50 hover:bg-rose-100 rounded-[3px] transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center active:scale-95"
                           aria-label="Xóa giao dịch"
                           title="Xóa"
                         >
@@ -598,7 +598,7 @@ export function TransactionsView({
               <button
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                className="p-1.5 rounded-lg border border-slate-200 disabled:opacity-30 hover:bg-slate-50"
+                className="p-1.5 rounded-[3px] border border-slate-200 disabled:opacity-30 hover:bg-slate-50"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -606,7 +606,7 @@ export function TransactionsView({
                 <button
                   key={p}
                   onClick={() => setCurrentPage(p)}
-                  className={`w-7 h-7 rounded-lg font-bold text-xs ${
+                  className={`w-7 h-7 rounded-[3px] font-bold text-xs ${
                     currentPage === p ? "bg-blue-600 text-white" : "hover:bg-slate-100"
                   }`}
                 >
@@ -616,7 +616,7 @@ export function TransactionsView({
               <button
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                className="p-1.5 rounded-lg border border-slate-200 disabled:opacity-30 hover:bg-slate-50"
+                className="p-1.5 rounded-[3px] border border-slate-200 disabled:opacity-30 hover:bg-slate-50"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -674,3 +674,4 @@ export function TransactionsView({
     </div>
   );
 }
+

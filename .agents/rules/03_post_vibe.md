@@ -4,22 +4,24 @@
 
 ---
 
-## 1. Kiểm Thử Biên Dịch Bắt Buộc (Automated Build Test)
+## 1. Kiểm Thử Audit Khâu Cuối Bắt Buộc (Triple-Verification Audit)
 
-Mỗi khi kết thúc việc thêm/sửa code, AI Agent **BẮT BUỘC** chạy lệnh:
+Mỗi khi kết thúc việc thêm/sửa code, AI Agent **BẮT BUỘC** chạy chuỗi 3 lệnh kiểm thử:
 
 ```powershell
+npx tsc --noEmit
+npm run lint
 npm run build
 ```
 
 ### Quy tắc xử lý kết quả:
-- **Nếu mã thoát là `0` (`Compiled successfully`):**
-  - Chúc mừng! Mã nguồn đã đạt chuẩn TypeScript và Next.js App Router.
-- **Nếu mã thoát khác `0` (Có lỗi compile/type/lint):**
+- **Nếu toàn bộ chuỗi lệnh có mã thoát `0` (`Compiled successfully`, 0 TypeScript/ESLint errors):**
+  - Đạt chuẩn bàn giao.
+- **Nếu bất kỳ lệnh nào có mã thoát khác `0` (Có lỗi compile/type/lint):**
   - **TUYỆT ĐỐI KHÔNG DỪNG LẠI HOẶC BÁO CÁO HOÀN THÀNH.**
-  - Đọc kỹ log lỗi (file nào, dòng nào, thuộc tính nào bị thiếu hoặc sai type).
+  - Đọc kỹ log lỗi (file nào, dòng nào, thuộc tính nào bị thiếu hoặc sai type/lint).
   - Tự động sửa chữa ngay lập tức bằng các công cụ chỉnh sửa file.
-  - Chạy lại `npm run build` cho đến khi vượt qua 100%.
+  - Chạy lại toàn bộ chuỗi kiểm thử cho đến khi vượt qua 100%.
 
 ---
 
