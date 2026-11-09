@@ -1,34 +1,37 @@
 "use client";
 
 import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import { useFinance } from "@/context/FinanceContext";
 import { Sidebar } from "@/components/common/Sidebar";
 import { TopBar } from "@/components/common/TopBar";
 import { MobileDrawer } from "@/components/common/MobileDrawer";
 import { BottomNavBar } from "@/components/common/BottomNavBar";
 
-// 1. Desktop Shell Views (Bản mở rộng đầy đủ Recharts, Heatmap 31 ngày, Bảng 8 cột)
+// 1. Desktop Shell Views - Giữ OverviewView & TransactionsView tĩnh cho FCP tức thì
 import { OverviewView } from "@/components/views/OverviewView";
 import { TransactionsView } from "@/components/views/TransactionsView";
-import { AccountsView } from "@/components/views/AccountsView";
-import { PlanningView } from "@/components/views/PlanningView";
-import { DebtsInvestView } from "@/components/views/DebtsInvestView";
-import { GuideView } from "@/components/views/GuideView";
-import { SettingsView } from "@/components/views/SettingsView";
-import { MasterDataBackendView } from "@/components/views/MasterDataBackendView";
+
+// Dynamic Code-splitting cho các Views ít dùng ban đầu
+const AccountsView = dynamic(() => import("@/components/views/AccountsView").then((m) => m.AccountsView));
+const PlanningView = dynamic(() => import("@/components/views/PlanningView").then((m) => m.PlanningView));
+const DebtsInvestView = dynamic(() => import("@/components/views/DebtsInvestView").then((m) => m.DebtsInvestView));
+const GuideView = dynamic(() => import("@/components/views/GuideView").then((m) => m.GuideView));
+const SettingsView = dynamic(() => import("@/components/views/SettingsView").then((m) => m.SettingsView));
+const MasterDataBackendView = dynamic(() => import("@/components/views/MasterDataBackendView").then((m) => m.MasterDataBackendView));
 
 // 2. Mobile Shell Views (Chuẩn Vàng Figma 1:1 - Cô đọng, Bento, Thumb-zone)
 import { MobileHeader } from "@/components/mobile/MobileHeader";
 import { MobileOverviewView } from "@/components/mobile/views/MobileOverviewView";
 import { MobileTransactionsView } from "@/components/mobile/views/MobileTransactionsView";
-import { MobileAccountsView } from "@/components/mobile/views/MobileAccountsView";
-import { MobilePlanningView } from "@/components/mobile/views/MobilePlanningView";
+const MobileAccountsView = dynamic(() => import("@/components/mobile/views/MobileAccountsView").then((m) => m.MobileAccountsView));
+const MobilePlanningView = dynamic(() => import("@/components/mobile/views/MobilePlanningView").then((m) => m.MobilePlanningView));
 
-// 3. Modals & Action Sheets
-import { TransactionFormModal } from "@/components/transactions/TransactionFormModal";
-import { MobileNumpadSheet } from "@/components/mobile/sheets/MobileNumpadSheet";
-import { ExportImportModal } from "@/components/common/ExportImportModal";
-import { ConfirmDialog } from "@/components/common/ConfirmDialog";
+// 3. Modals & Action Sheets - Chỉ nạp khi người dùng mở
+const TransactionFormModal = dynamic(() => import("@/components/transactions/TransactionFormModal").then((m) => m.TransactionFormModal));
+const MobileNumpadSheet = dynamic(() => import("@/components/mobile/sheets/MobileNumpadSheet").then((m) => m.MobileNumpadSheet));
+const ExportImportModal = dynamic(() => import("@/components/common/ExportImportModal").then((m) => m.ExportImportModal));
+const ConfirmDialog = dynamic(() => import("@/components/common/ConfirmDialog").then((m) => m.ConfirmDialog));
 import { SecurityGate } from "@/components/security/SecurityGate";
 
 export default function HomePage() {
@@ -129,10 +132,7 @@ export default function HomePage() {
 
   return (
     <SecurityGate>
-      {/* =========================================================================
-          1. DESKTOP VIEW SHELL (>= 768px - md:flex)
-          Nguyên bản 100%: Sidebar mở rộng, TopBar desktop, Bảng 8 cột, Recharts
-         ========================================================================= */}
+      {/* 1. DESKTOP VIEW SHELL (>= 768px - md:flex) */}
       <div className="hidden md:flex min-h-screen bg-[#F6F8FB] text-slate-900 font-sans antialiased">
         <Sidebar />
         <div className="flex-1 flex flex-col min-w-0">
@@ -148,63 +148,58 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* =========================================================================
-          2. MOBILE VIEW SHELL (< 768px - block md:hidden) ⭐ CHUẨN VÀNG FIGMA
-          Cô đọng, Bento layout, thumb-zone tối ưu, zero layout clutter
-         ========================================================================= */}
+      {/* 2. MOBILE VIEW SHELL (< 768px - block md:hidden) ⭐ CHUẨN VÀNG FIGMA */}
       <div className="block md:hidden min-h-screen bg-[#F6F8FB] text-slate-900 font-sans antialiased pb-24">
-        {/* Mobile Header Bar */}
         <MobileHeader onOpenDrawer={() => setIsMobileMenuOpen(true)} />
-
-        {/* Thân Màn Hình Mobile Cô Đọng Khớp 100% Figma */}
         <main className="p-3.5 space-y-3.5">
           {renderActiveMobileView()}
         </main>
-
-        {/* Thanh Điều Hướng Đáy Cho Di Động */}
         <BottomNavBar onOpenAddModal={() => setIsMobileNumpadOpen(true)} />
       </div>
 
-      {/* =========================================================================
-          3. GLOBAL MODALS & BOTTOM SHEETS
-         ========================================================================= */}
-      {/* Drawer Menu cho Di Động */}
+      {/* 3. GLOBAL MODALS & BOTTOM SHEETS (Dynamic Loaded) */}
       <MobileDrawer
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
       />
 
-      {/* Mobile Numpad 3 Giây Bottom Sheet (Khớp Figma Screen 2) */}
-      <MobileNumpadSheet
-        isOpen={isMobileNumpadOpen}
-        onClose={() => setIsMobileNumpadOpen(false)}
-      />
+      {isMobileNumpadOpen && (
+        <MobileNumpadSheet
+          isOpen={isMobileNumpadOpen}
+          onClose={() => setIsMobileNumpadOpen(false)}
+        />
+      )}
 
-      {/* Desktop Transaction Form Modal */}
-      <TransactionFormModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-      />
+      {isAddModalOpen && (
+        <TransactionFormModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+        />
+      )}
 
-      <ExportImportModal
-        isOpen={isBackupModalOpen}
-        onClose={() => setIsBackupModalOpen(false)}
-        onOpenResetDemo={() => setIsResetConfirmOpen(true)}
-      />
+      {isBackupModalOpen && (
+        <ExportImportModal
+          isOpen={isBackupModalOpen}
+          onClose={() => setIsBackupModalOpen(false)}
+          onOpenResetDemo={() => setIsResetConfirmOpen(true)}
+        />
+      )}
 
-      <ConfirmDialog
-        isOpen={isResetConfirmOpen}
-        title="Khôi phục toàn bộ dữ liệu mẫu?"
-        message="Hệ thống sẽ nạp lại toàn bộ dữ liệu mẫu chuẩn (Tài khoản, Khoản nợ, Đầu tư, Kế hoạch & Giao dịch) theo bộ thiết kế tham khảo. Các thay đổi của bạn sẽ được thiết lập lại."
-        confirmLabel="Nạp lại mẫu chuẩn"
-        cancelLabel="Hủy"
-        isDanger={false}
-        onConfirm={() => {
-          resetToMockData();
-          setIsResetConfirmOpen(false);
-        }}
-        onCancel={() => setIsResetConfirmOpen(false)}
-      />
+      {isResetConfirmOpen && (
+        <ConfirmDialog
+          isOpen={isResetConfirmOpen}
+          title="Khôi phục toàn bộ dữ liệu mẫu?"
+          message="Hệ thống sẽ nạp lại toàn bộ dữ liệu mẫu chuẩn (Tài khoản, Khoản nợ, Đầu tư, Kế hoạch & Giao dịch) theo bộ thiết kế tham khảo. Các thay đổi của bạn sẽ được thiết lập lại."
+          confirmLabel="Nạp lại mẫu chuẩn"
+          cancelLabel="Hủy"
+          isDanger={false}
+          onConfirm={() => {
+            resetToMockData();
+            setIsResetConfirmOpen(false);
+          }}
+          onCancel={() => setIsResetConfirmOpen(false)}
+        />
+      )}
     </SecurityGate>
   );
 }

@@ -428,14 +428,23 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     return Array.from(set).sort((a, b) => b.localeCompare(a));
   }, [transactions]);
 
+  // Tối ưu hóa tra cứu O(1) bằng Map thay vì duyệt mảng O(N)
+  const categoryMap = useMemo(() => {
+    return new Map<string, Category>(categories.map((c) => [c.id, c]));
+  }, [categories]);
+
+  const accountMap = useMemo(() => {
+    return new Map<string, Account>(accounts.map((a) => [a.id, a]));
+  }, [accounts]);
+
   const getCategoryById = useCallback(
-    (id: string) => categories.find((c) => c.id === id),
-    [categories]
+    (id: string) => categoryMap.get(id),
+    [categoryMap]
   );
 
   const getAccountById = useCallback(
-    (id: string) => accounts.find((a) => a.id === id),
-    [accounts]
+    (id: string) => accountMap.get(id),
+    [accountMap]
   );
 
   // CRUD Giao dịch (Optimistic UI + Background Cloud Sync)

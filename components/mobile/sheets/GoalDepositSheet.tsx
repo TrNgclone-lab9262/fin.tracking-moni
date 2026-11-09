@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   X,
   Target,
@@ -42,10 +42,12 @@ export function GoalDepositSheet({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Lọc tài khoản ngân hàng / tiền mặt có số dư dương
-  const eligibleAccounts = accounts.filter(
-    (a) => a.type !== "CREDIT_CARD" && a.currentBalance > 0
-  );
+  // Bọc useMemo để tránh tạo mảng mới mỗi lần re-render
+  const eligibleAccounts = useMemo(() => {
+    return accounts.filter(
+      (a) => a.type !== "CREDIT_CARD" && a.currentBalance > 0
+    );
+  }, [accounts]);
 
   useEffect(() => {
     if (isOpen) {
@@ -55,7 +57,7 @@ export function GoalDepositSheet({
         setSourceAccountId(eligibleAccounts[0].id);
       }
     }
-  }, [isOpen]);
+  }, [isOpen, eligibleAccounts]);
 
   if (!isOpen || !goal) return null;
 
@@ -186,11 +188,10 @@ export function GoalDepositSheet({
                 key={chip.value}
                 type="button"
                 onClick={() => setAmount(chip.value)}
-                className={`h-9 rounded-[3px] text-xs font-bold transition-all flex items-center justify-center border ${
-                  isActive
-                    ? "bg-[#4F46E5] border-[#4338CA] text-white shadow-xs"
-                    : "bg-[#F1F5F9] border-[#E2E8F0] text-[#334155] hover:bg-slate-200"
-                }`}
+                className={`h-9 rounded-[3px] text-xs font-bold transition-all flex items-center justify-center border ${isActive
+                  ? "bg-[#4F46E5] border-[#4338CA] text-white shadow-xs"
+                  : "bg-[#F1F5F9] border-[#E2E8F0] text-[#334155] hover:bg-slate-200"
+                  }`}
               >
                 {chip.label}
               </button>
