@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   X,
   CreditCard,
@@ -33,10 +33,12 @@ export function CreditCardRepaymentSheet({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Lọc các tài khoản thanh toán/ngân hàng có số dư dương để trích tiền
-  const eligibleSourceAccounts = accounts.filter(
-    (a) => a.type !== "CREDIT_CARD" && a.currentBalance > 0
-  );
+  // Bọc useMemo để tránh tạo mảng mới mỗi lần re-render
+  const eligibleSourceAccounts = useMemo(() => {
+    return accounts.filter(
+      (a) => a.type !== "CREDIT_CARD" && a.currentBalance > 0
+    );
+  }, [accounts]);
 
   useEffect(() => {
     if (isOpen) {
@@ -50,7 +52,7 @@ export function CreditCardRepaymentSheet({
         setSourceAccountId(sameOwner ? sameOwner.id : eligibleSourceAccounts[0].id);
       }
     }
-  }, [isOpen, cardInfo]);
+  }, [isOpen, cardInfo, eligibleSourceAccounts]);
 
   if (!isOpen || !cardInfo) return null;
 
@@ -151,11 +153,10 @@ export function CreditCardRepaymentSheet({
 
         {/* Credit Card Hero Card */}
         <div
-          className={`rounded-[3px] p-4 text-white shadow-md relative overflow-hidden space-y-3 ${
-            isHusband
-              ? "bg-gradient-to-br from-[#0F172A] via-[#172B4D] to-[#1E3A8A]"
-              : "bg-gradient-to-br from-[#451A03] via-[#78350F] to-[#B45309]"
-          }`}
+          className={`rounded-[3px] p-4 text-white shadow-md relative overflow-hidden space-y-3 ${isHusband
+            ? "bg-gradient-to-br from-[#0F172A] via-[#172B4D] to-[#1E3A8A]"
+            : "bg-gradient-to-br from-[#451A03] via-[#78350F] to-[#B45309]"
+            }`}
         >
           {/* Card Top Row */}
           <div className="flex items-center justify-between text-xs">
@@ -196,17 +197,15 @@ export function CreditCardRepaymentSheet({
           {/* Option 1: Full statement (Khuyên dùng) */}
           <div
             onClick={() => setPaymentOption("FULL")}
-            className={`p-3 rounded-[3px] border flex items-center justify-between cursor-pointer transition-all ${
-              paymentOption === "FULL"
-                ? "bg-[#EFF6FF] border-[#3B82F6] ring-1 ring-blue-500/30 shadow-xs"
-                : "bg-white border-[#E2E8F0] hover:bg-slate-50"
-            }`}
+            className={`p-3 rounded-[3px] border flex items-center justify-between cursor-pointer transition-all ${paymentOption === "FULL"
+              ? "bg-[#EFF6FF] border-[#3B82F6] ring-1 ring-blue-500/30 shadow-xs"
+              : "bg-white border-[#E2E8F0] hover:bg-slate-50"
+              }`}
           >
             <div className="flex items-center gap-2.5">
               <div
-                className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                  paymentOption === "FULL" ? "border-blue-600 bg-blue-600" : "border-slate-300"
-                }`}
+                className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${paymentOption === "FULL" ? "border-blue-600 bg-blue-600" : "border-slate-300"
+                  }`}
               >
                 {paymentOption === "FULL" && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
               </div>
@@ -227,17 +226,15 @@ export function CreditCardRepaymentSheet({
           {/* Option 2: Minimum payment */}
           <div
             onClick={() => setPaymentOption("MINIMUM")}
-            className={`p-3 rounded-[3px] border flex items-center justify-between cursor-pointer transition-all ${
-              paymentOption === "MINIMUM"
-                ? "bg-[#EFF6FF] border-[#3B82F6] ring-1 ring-blue-500/30 shadow-xs"
-                : "bg-white border-[#E2E8F0] hover:bg-slate-50"
-            }`}
+            className={`p-3 rounded-[3px] border flex items-center justify-between cursor-pointer transition-all ${paymentOption === "MINIMUM"
+              ? "bg-[#EFF6FF] border-[#3B82F6] ring-1 ring-blue-500/30 shadow-xs"
+              : "bg-white border-[#E2E8F0] hover:bg-slate-50"
+              }`}
           >
             <div className="flex items-center gap-2.5">
               <div
-                className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                  paymentOption === "MINIMUM" ? "border-blue-600 bg-blue-600" : "border-slate-300"
-                }`}
+                className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${paymentOption === "MINIMUM" ? "border-blue-600 bg-blue-600" : "border-slate-300"
+                  }`}
               >
                 {paymentOption === "MINIMUM" && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
               </div>

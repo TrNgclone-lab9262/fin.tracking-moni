@@ -43,7 +43,7 @@ export function SecurityProvider({ children }: { children: React.ReactNode }) {
   const lockApp = useCallback(() => {
     try {
       sessionStorage.removeItem(SESSION_UNLOCKED_KEY);
-    } catch {}
+    } catch { }
     setIsLocked(true);
   }, []);
 
@@ -93,18 +93,25 @@ export function SecurityProvider({ children }: { children: React.ReactNode }) {
     }
   }, [resetInactivityTimer]);
 
-  // Lắng nghe sự kiện người dùng tương tác để reset Inactivity Timer
+  // Lắng nghe sự kiện người dùng tương tác để reset Inactivity Timer (có throttle 2s để tối ưu hiệu năng)
   useEffect(() => {
     if (!isConfigured || isLocked) return;
 
+    let lastActivityTime = 0;
+    const THROTTLE_INTERVAL_MS = 2000;
+
     const handleUserActivity = () => {
-      resetInactivityTimer();
+      const now = Date.now();
+      if (now - lastActivityTime >= THROTTLE_INTERVAL_MS) {
+        lastActivityTime = now;
+        resetInactivityTimer();
+      }
     };
 
-    window.addEventListener("mousemove", handleUserActivity);
-    window.addEventListener("mousedown", handleUserActivity);
-    window.addEventListener("keydown", handleUserActivity);
-    window.addEventListener("touchstart", handleUserActivity);
+    window.addEventListener("mousemove", handleUserActivity, { passive: true });
+    window.addEventListener("mousedown", handleUserActivity, { passive: true });
+    window.addEventListener("keydown", handleUserActivity, { passive: true });
+    window.addEventListener("touchstart", handleUserActivity, { passive: true });
     window.addEventListener("scroll", handleUserActivity, { passive: true });
 
     resetInactivityTimer();
@@ -145,7 +152,7 @@ export function SecurityProvider({ children }: { children: React.ReactNode }) {
       // Đóng tab hoặc điều hướng rời khỏi
       try {
         sessionStorage.removeItem(SESSION_UNLOCKED_KEY);
-      } catch {}
+      } catch { }
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
@@ -162,7 +169,7 @@ export function SecurityProvider({ children }: { children: React.ReactNode }) {
       const next = !prev;
       try {
         localStorage.setItem(PRIVACY_MODE_KEY, String(next));
-      } catch {}
+      } catch { }
       return next;
     });
   }, []);
@@ -180,7 +187,7 @@ export function SecurityProvider({ children }: { children: React.ReactNode }) {
         setIsLocked(false);
         try {
           sessionStorage.setItem(SESSION_UNLOCKED_KEY, "true");
-        } catch {}
+        } catch { }
         resetInactivityTimer();
         return { success: true };
       } else {
@@ -210,7 +217,7 @@ export function SecurityProvider({ children }: { children: React.ReactNode }) {
     try {
       localStorage.removeItem(PIN_STORAGE_KEY);
       sessionStorage.removeItem(SESSION_UNLOCKED_KEY);
-    } catch {}
+    } catch { }
     if (inactivityTimerRef.current) {
       clearTimeout(inactivityTimerRef.current);
     }
