@@ -358,29 +358,33 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Lắng nghe Supabase Realtime Replication: khi vợ/chồng thêm giao dịch, máy kia tự động cập nhật
+  // 1. Tạo ref lưu trữ hàm syncWithCloud ổn định để không trigger re-subscribe
+  const syncWithCloudRef = React.useRef(syncWithCloud);
+  syncWithCloudRef.current = syncWithCloud;
+
+  // 2. Lắng nghe Supabase Realtime Replication ổn định 1 lần duy nhất (Không nhấp nháy)
   useEffect(() => {
     if (!supabase || !isSupabaseConfigured) return;
 
     const channel = supabase
       .channel("home_moni_realtime")
       .on("postgres_changes", { event: "*", schema: "public", table: "transactions" }, () => {
-        syncWithCloud();
+        syncWithCloudRef.current();
       })
       .on("postgres_changes", { event: "*", schema: "public", table: "accounts" }, () => {
-        syncWithCloud();
+        syncWithCloudRef.current();
       })
       .on("postgres_changes", { event: "*", schema: "public", table: "category_budgets" }, () => {
-        syncWithCloud();
+        syncWithCloudRef.current();
       })
       .on("postgres_changes", { event: "*", schema: "public", table: "savings_goals" }, () => {
-        syncWithCloud();
+        syncWithCloudRef.current();
       })
       .on("postgres_changes", { event: "*", schema: "public", table: "debts" }, () => {
-        syncWithCloud();
+        syncWithCloudRef.current();
       })
       .on("postgres_changes", { event: "*", schema: "public", table: "investments" }, () => {
-        syncWithCloud();
+        syncWithCloudRef.current();
       })
       .subscribe((status) => {
         if (status === "SUBSCRIBED") {
@@ -395,7 +399,7 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
         supabase.removeChannel(channel);
       }
     };
-  }, [syncWithCloud]);
+  }, []); // <-- Chỉ chạy 1 lần khi mount, giữ kết nối Realtime xanh mượt 100%
 
   // Tự động lưu vào LocalStorage V3 để đảm bảo offline
   useEffect(() => {
