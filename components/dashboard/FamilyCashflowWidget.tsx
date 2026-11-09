@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useMemo } from "react";
 import { Users, Heart, Calendar as CalendarIcon } from "lucide-react";

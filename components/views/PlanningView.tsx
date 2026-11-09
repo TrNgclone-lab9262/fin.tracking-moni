@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import {
@@ -19,7 +19,8 @@ import {
   Pencil,
 } from "lucide-react";
 import { useFinance } from "@/context/FinanceContext";
-import { formatVND } from "@/lib/formatters";
+import { formatVND, formatVNDMasked } from "@/lib/formatters";
+import { useSecurity } from "@/context/SecurityContext";
 import { CategoryIcon } from "@/components/common/CategoryIcon";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { SavingsGoal } from "@/types/finance";
@@ -36,6 +37,8 @@ export function PlanningView() {
     depositGoal,
     deleteGoal,
   } = useFinance();
+
+  const { isPrivacyMode } = useSecurity();
 
   const [activeSubTab, setActiveSubTab] = useState<"BUDGET" | "GOALS">("BUDGET");
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
@@ -199,7 +202,7 @@ export function PlanningView() {
                   Tổng ngân sách tháng
                 </span>
                 <span className="text-xl sm:text-2xl font-black text-[#172B4D] mt-1 block">
-                  {formatVND(budgetSummary.totalBudget)}
+                  {formatVNDMasked(budgetSummary.totalBudget, isPrivacyMode)}
                 </span>
               </div>
               <div>
@@ -207,7 +210,7 @@ export function PlanningView() {
                   Đã chi
                 </span>
                 <span className="text-xl sm:text-2xl font-black text-rose-600 mt-1 block">
-                  {formatVND(budgetSummary.totalSpent)}
+                  {formatVNDMasked(budgetSummary.totalSpent, isPrivacyMode)}
                 </span>
               </div>
               <div>
@@ -215,7 +218,7 @@ export function PlanningView() {
                   Còn lại
                 </span>
                 <span className="text-xl sm:text-2xl font-black text-emerald-600 mt-1 block">
-                  {formatVND(budgetSummary.remaining)}
+                  {formatVNDMasked(budgetSummary.remaining, isPrivacyMode)}
                 </span>
               </div>
               <div className="bg-blue-50/70 p-3 sm:p-4 rounded-[3px] border border-blue-100">
@@ -223,7 +226,7 @@ export function PlanningView() {
                   Mỗi ngày còn được tiêu ({budgetSummary.daysRemaining} ngày)
                 </span>
                 <span className="text-lg sm:text-xl font-black text-blue-700 mt-1 block">
-                  {formatVND(budgetSummary.dailyAllowance)}
+                  {formatVNDMasked(budgetSummary.dailyAllowance, isPrivacyMode)}
                 </span>
               </div>
             </div>
@@ -248,7 +251,7 @@ export function PlanningView() {
                     </div>
                     <div className="flex items-center gap-1.5">
                       <span className="text-xs font-semibold text-slate-500">
-                        {formatVND(item.spentAmount)} / {formatVND(item.limitAmount)}
+                        {formatVNDMasked(item.spentAmount, isPrivacyMode)} / {formatVNDMasked(item.limitAmount, isPrivacyMode)}
                       </span>
                       <button
                         onClick={() => handleOpenQuickBudgetEdit(item)}
@@ -329,10 +332,10 @@ export function PlanningView() {
                     <div className="mt-4">
                       <div className="flex justify-between items-baseline mb-1.5 text-xs">
                         <span className="font-black text-[#172B4D]">
-                          {formatVND(g.currentAmount)}
+                          {formatVNDMasked(g.currentAmount, isPrivacyMode)}
                         </span>
                         <span className="text-slate-400 font-semibold">
-                          / {formatVND(g.targetAmount)}
+                          / {formatVNDMasked(g.targetAmount, isPrivacyMode)}
                         </span>
                       </div>
 

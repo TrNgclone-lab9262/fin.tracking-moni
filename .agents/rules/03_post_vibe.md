@@ -4,15 +4,27 @@
 
 ---
 
-## 1. Kiểm Thử Audit Khâu Cuối Bắt Buộc (Triple-Verification Audit)
+## 1. Kiểm Thử Audit Khâu Cuối Bắt Buộc (Triple-Verification & Runtime Crash Prevention Audit)
 
-Mỗi khi kết thúc việc thêm/sửa code, AI Agent **BẮT BUỘC** chạy chuỗi 3 lệnh kiểm thử:
+Mỗi khi kết thúc việc thêm/sửa code, AI Agent **BẮT BUỘC** tuân thủ 2 cấp độ kiểm thử:
 
+### Cấp độ 1: Bộ Ba Lệnh Xác Thực Tĩnh (Static Verification)
 ```powershell
 npx tsc --noEmit
 npm run lint
 npm run build
 ```
+
+### Cấp độ 2: Phòng Chống Lỗi Màn Hình Trắng Triệt Để (Zero White Screen Protocol)
+1. **Kiểm Tra Error Boundary Toàn Cục:**  
+   Toàn bộ ứng dụng tại `app/layout.tsx` phải được bọc trong `<GlobalErrorBoundary>` để khi có lỗi component con thì hiển thị giao diện fallback ấm áp, tuyệt đối không được để trắng màn hình.
+2. **Quy Tắc An Toàn Hydration & Storage:**  
+   - Mọi truy cập vào `localStorage` hoặc `sessionStorage` bắt buộc phải nằm trong khối `try/catch` và chỉ thực thi sau khi đã mount trên client (`isMounted = true`).
+   - Các component có sử dụng Recharts hoặc SVG vẽ động phải đảm bảo cờ `isMounted` để tránh lỗi Hydration Mismatch làm đứt gãy DOM tree.
+3. **Quy Tắc Dữ Liệu Ngày Tháng & Số Tiền:**  
+   - Hàm `formatDateVN(dateStr)` và `formatVND(amount)` phải có giá trị fallback an toàn khi gặp `null`, `undefined` hoặc chuỗi rỗng (`""`), không bao giờ để crash component.
+
+---
 
 ### Quy tắc xử lý kết quả:
 - **Nếu toàn bộ chuỗi lệnh có mã thoát `0` (`Compiled successfully`, 0 TypeScript/ESLint errors):**

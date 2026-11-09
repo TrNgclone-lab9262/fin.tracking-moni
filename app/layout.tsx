@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { FinanceProvider } from "@/context/FinanceContext";
 import { SecurityProvider } from "@/context/SecurityContext";
+import { GlobalErrorBoundary } from "@/components/common/GlobalErrorBoundary";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 
@@ -34,9 +35,11 @@ export default function RootLayout({
   return (
     <html lang="vi" className={cn("font-sans", inter.variable)}>
       <body className="font-sans antialiased">
-        <SecurityProvider>
-          <FinanceProvider>{children}</FinanceProvider>
-        </SecurityProvider>
+        <GlobalErrorBoundary>
+          <SecurityProvider>
+            <FinanceProvider>{children}</FinanceProvider>
+          </SecurityProvider>
+        </GlobalErrorBoundary>
       </body>
     </html>
   );

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useMemo } from "react";
 import {
@@ -15,7 +15,8 @@ import {
 } from "lucide-react";
 import { useFinance } from "@/context/FinanceContext";
 import { DebtItem, InvestmentItem, InvestmentType } from "@/types/finance";
-import { formatVND, formatDateVN } from "@/lib/formatters";
+import { formatVND, formatDateVN, formatVNDMasked } from "@/lib/formatters";
+import { useSecurity } from "@/context/SecurityContext";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 
 export function DebtsInvestView() {
@@ -30,6 +31,8 @@ export function DebtsInvestView() {
     updateInvestment,
     deleteInvestment,
   } = useFinance();
+
+  const { isPrivacyMode } = useSecurity();
 
   // Modals state
   const [isDebtModalOpen, setIsDebtModalOpen] = useState(false);
@@ -266,12 +269,12 @@ export function DebtsInvestView() {
                       <td className="py-3.5 px-4 font-mono text-slate-400">{d.id}</td>
                       <td className="py-3.5 px-4 font-bold text-slate-800">{d.name}</td>
                       <td className="py-3.5 px-4 font-black text-slate-800">
-                        {formatVND(d.totalAmount)}
+                        {formatVNDMasked(d.totalAmount, isPrivacyMode)}
                       </td>
                       <td className="py-3.5 px-4 min-w-[140px]">
                         <div className="space-y-1">
                           <span className="text-[11px] text-slate-500 font-medium block">
-                            {isPaid ? "Còn 0 VND" : `Còn ${formatVND(remaining)}`}
+                            {isPaid ? "Còn 0 VND" : `Còn ${formatVNDMasked(remaining, isPrivacyMode)}`}
                           </span>
                           <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
                             <div
@@ -413,7 +416,7 @@ export function DebtsInvestView() {
                       <td className="py-3.5 px-4 font-bold text-slate-800">{i.name}</td>
                       <td className="py-3.5 px-4 font-medium text-slate-600">{typeLabel}</td>
                       <td className="py-3.5 px-4 font-black text-slate-800">
-                        {formatVND(i.amount)}
+                        {formatVNDMasked(i.amount, isPrivacyMode)}
                       </td>
                       <td className="py-3.5 px-4 text-slate-600 font-medium whitespace-nowrap">
                         {formatDateVN(i.startDate)}

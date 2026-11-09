@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import {
@@ -12,6 +12,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Heart,
+  Database,
 } from "lucide-react";
 import { useFinance, NavTab } from "@/context/FinanceContext";
 
@@ -121,8 +122,9 @@ export function Sidebar() {
       ],
     },
     {
-      title: "Hệ thống",
+      title: "Hệ thống & Dữ liệu",
       items: [
+        { id: "backend", label: "Quản trị Master Data", icon: Database },
         { id: "guide", label: "Cẩm nang tổ ấm", icon: HelpCircle },
         { id: "settings", label: "Cài đặt & Tùy biến", icon: Settings },
       ],

@@ -4,11 +4,13 @@ import React, { useState } from "react";
 import { CreditCardRepaymentSheet } from "@/components/mobile/sheets/CreditCardRepaymentSheet";
 import { CreditCard, ArrowRight, ShieldCheck, Wifi, Sparkles, AlertCircle } from "lucide-react";
 import { useFinance, CreditCardInfo } from "@/context/FinanceContext";
-import { formatVND } from "@/lib/formatters";
+import { formatVNDMasked } from "@/lib/formatters";
+import { useSecurity } from "@/context/SecurityContext";
 
 export function DualCreditCardsWidget() {
   const [repayingCard, setRepayingCard] = useState<CreditCardInfo | null>(null);
   const { husbandCreditCard, wifeCreditCard, setActiveTab } = useFinance();
+  const { isPrivacyMode } = useSecurity();
 
   const getStatusBadge = (percentage: number) => {
     if (percentage >= 90) {
@@ -75,7 +77,7 @@ export function DualCreditCardsWidget() {
               <div className="flex items-center gap-2">
                 <Wifi className="w-4 h-4 text-blue-200 rotate-90" />
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded-[3px] bg-white/10 text-blue-200 border border-white/20">
-                  50.000.000 ₫
+                  {formatVNDMasked(50000000, isPrivacyMode)}
                 </span>
               </div>
             </div>
@@ -95,7 +97,7 @@ export function DualCreditCardsWidget() {
                   Dư Nợ Đang Dùng
                 </span>
                 <span className="text-lg sm:text-2xl font-black text-amber-300 tracking-tight tabular-nums">
-                  {formatVND(husbandCreditCard.usedAmount)}
+                  {formatVNDMasked(husbandCreditCard.usedAmount, isPrivacyMode)}
                 </span>
               </div>
             </div>
@@ -166,7 +168,7 @@ export function DualCreditCardsWidget() {
               <div className="flex items-center gap-2">
                 <Wifi className="w-4 h-4 text-rose-200 rotate-90" />
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded-[3px] bg-white/15 text-rose-100 border border-white/20">
-                  20.000.000 ₫
+                  {formatVNDMasked(20000000, isPrivacyMode)}
                 </span>
               </div>
             </div>
@@ -186,7 +188,7 @@ export function DualCreditCardsWidget() {
                   Dư Nợ Đang Dùng
                 </span>
                 <span className="text-lg sm:text-2xl font-black text-white tracking-tight tabular-nums">
-                  {formatVND(wifeCreditCard.usedAmount)}
+                  {formatVNDMasked(wifeCreditCard.usedAmount, isPrivacyMode)}
                 </span>
               </div>
             </div>

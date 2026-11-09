@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import {
@@ -11,6 +11,7 @@ import {
   Settings,
   X,
   RefreshCw,
+  Database,
 } from "lucide-react";
 import { useFinance, NavTab } from "@/context/FinanceContext";
 
@@ -73,6 +74,11 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
       id: "debts_invest",
       label: "Nợ & Danh Mục Đầu Tư",
       icon: Coins,
+    },
+    {
+      id: "backend",
+      label: "Quản Trị Master Data",
+      icon: Database,
     },
     {
       id: "guide",

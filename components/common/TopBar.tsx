@@ -61,6 +61,7 @@ export function TopBar({
     accounts: "Tài khoản & Thẻ tín dụng",
     planning: "Kế hoạch & Ngân sách tổ ấm",
     debts_invest: "Nợ & Đầu tư gia đình",
+    backend: "Quản trị Master Data (UI Backend)",
     guide: "Cẩm nang tài chính tổ ấm",
     settings: "Cài đặt & Tùy biến",
   };

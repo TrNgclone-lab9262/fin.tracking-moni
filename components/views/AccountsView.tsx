@@ -16,7 +16,8 @@ import {
 } from "lucide-react";
 import { useFinance } from "@/context/FinanceContext";
 import { Account, AccountType, FamilyMember } from "@/types/finance";
-import { formatVND, formatDateVN } from "@/lib/formatters";
+import { formatVND, formatDateVN, formatVNDMasked } from "@/lib/formatters";
+import { useSecurity } from "@/context/SecurityContext";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { CreditCardRepaymentSheet } from "@/components/mobile/sheets/CreditCardRepaymentSheet";
 import { CreditCardInfo } from "@/context/FinanceContext";
@@ -31,6 +32,8 @@ export function AccountsView() {
     getCategoryById,
     activePerspective,
   } = useFinance();
+
+  const { isPrivacyMode } = useSecurity();
 
   const [selectedAccountForDetail, setSelectedAccountForDetail] = useState<Account | null>(null);
   const [isAddAccountModalOpen, setIsAddAccountModalOpen] = useState(false);
@@ -212,26 +215,26 @@ export function AccountsView() {
               <>
                 <div className="flex justify-between text-slate-400">
                   <span>Hạn mức thẻ:</span>
-                  <span className="font-bold text-slate-700">{formatVND(limit)}</span>
+                  <span className="font-bold text-slate-700">{formatVNDMasked(limit, isPrivacyMode)}</span>
                 </div>
                 <div className="flex justify-between items-center text-slate-800">
                   <span className="font-bold text-amber-600">Dư nợ đã dùng:</span>
-                  <span className="text-sm font-black text-amber-600">{formatVND(used)}</span>
+                  <span className="text-sm font-black text-amber-600">{formatVNDMasked(used, isPrivacyMode)}</span>
                 </div>
                 <div className="flex justify-between text-slate-500 font-medium">
                   <span>Còn khả dụng:</span>
-                  <span className="text-emerald-600 font-bold">{formatVND(available)}</span>
+                  <span className="text-emerald-600 font-bold">{formatVNDMasked(available, isPrivacyMode)}</span>
                 </div>
               </>
             ) : (
               <>
                 <div className="flex justify-between text-slate-400">
                   <span>Số dư đầu kỳ:</span>
-                  <span className="font-semibold text-slate-600">{formatVND(acc.initialBalance)}</span>
+                  <span className="font-semibold text-slate-600">{formatVNDMasked(acc.initialBalance, isPrivacyMode)}</span>
                 </div>
                 <div className="flex justify-between items-center text-slate-800">
                   <span className="font-bold">Số dư hiện tại:</span>
-                  <span className="text-sm font-black text-blue-600">{formatVND(acc.currentBalance)}</span>
+                  <span className="text-sm font-black text-blue-600">{formatVNDMasked(acc.currentBalance, isPrivacyMode)}</span>
                 </div>
               </>
             )}
