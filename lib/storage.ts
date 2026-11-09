@@ -21,7 +21,7 @@ import {
 } from "@/constants/mockData";
 import { AppDataBackupSchema } from "./validations";
 
-export const STORAGE_KEY_V3 = "HOME_MONI_DATA_V4";
+export const STORAGE_KEY_V3 = "HOME_MONI_DATA_V5";
 
 export interface StoredAppStateV3 {
   categories: Category[];

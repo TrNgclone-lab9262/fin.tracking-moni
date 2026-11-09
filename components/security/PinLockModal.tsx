@@ -15,7 +15,6 @@ export function PinLockModal({ mode = "UNLOCK", onSuccess, onCancel }: PinLockMo
   const [pin, setPin] = useState<string>("");
   const [confirmPin, setConfirmPin] = useState<string>("");
   const [step, setStep] = useState<"INPUT" | "CONFIRM">("INPUT");
-  const [remember30Days, setRemember30Days] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isShaking, setIsShaking] = useState<boolean>(false);
@@ -90,7 +89,7 @@ export function PinLockModal({ mode = "UNLOCK", onSuccess, onCancel }: PinLockMo
         return;
       }
       setIsSubmitting(true);
-      const res = await unlockWithPin(pin, remember30Days);
+      const res = await unlockWithPin(pin);
       setIsSubmitting(false);
       if (res.success) {
         if (onSuccess) onSuccess();
@@ -209,17 +208,11 @@ export function PinLockModal({ mode = "UNLOCK", onSuccess, onCancel }: PinLockMo
           </button>
         </div>
 
-        {/* Tùy chọn nhớ 30 ngày (Trong chế độ Unlock) */}
+        {/* Thông báo chính sách bảo mật tự động khóa */}
         {!isSetupMode && (
-          <label className="flex items-center gap-2 cursor-pointer mb-5 text-xs text-slate-600 select-none">
-            <input
-              type="checkbox"
-              checked={remember30Days}
-              onChange={(e) => setRemember30Days(e.target.checked)}
-              className="rounded-[3px] text-blue-600 focus:ring-blue-500 w-4 h-4 border-slate-300"
-            />
-            <span>Ghi nhớ thiết bị này trong 30 ngày (Tiện lợi)</span>
-          </label>
+          <p className="text-[11px] text-slate-500 mb-5 text-center">
+            🔒 Tự động khóa sau <strong>5 phút</strong> không hoạt động hoặc khi đóng tab / tắt app.
+          </p>
         )}
 
         {/* Nút hành động Submit */}

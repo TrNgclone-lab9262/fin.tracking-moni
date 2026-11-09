@@ -137,6 +137,40 @@ export const supabaseService = {
   },
 
   /**
+   * Đẩy hàng loạt giao dịch lên Supabase Cloud theo batch (chống nghẽn payload)
+   */
+  async batchUpsertTransactions(txs: Transaction[], batchSize = 100): Promise<boolean> {
+    if (!supabase || !isSupabaseConfigured) return false;
+    try {
+      for (let i = 0; i < txs.length; i += batchSize) {
+        const batch = txs.slice(i, i + batchSize).map(mapTransactionToDb);
+        const { error } = await supabase.from('transactions').upsert(batch, { onConflict: 'id' });
+        if (error) throw error;
+      }
+      return true;
+    } catch (err) {
+      console.error('Failed to batch upsert transactions to Supabase:', err);
+      return false;
+    }
+  },
+
+  /**
+   * Thêm hoặc cập nhật Danh mục
+   */
+  async upsertCategory(category: Category): Promise<boolean> {
+    if (!supabase || !isSupabaseConfigured) return false;
+    try {
+      const dbRow = mapCategoryToDb(category);
+      const { error } = await supabase.from('categories').upsert(dbRow, { onConflict: 'id' });
+      if (error) throw error;
+      return true;
+    } catch (err) {
+      console.error('Failed to upsert category on Supabase:', err);
+      return false;
+    }
+  },
+
+  /**
    * Xóa giao dịch
    */
   async deleteTransaction(id: string): Promise<boolean> {

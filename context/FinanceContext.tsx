@@ -53,6 +53,7 @@ export type NavTab =
   | "accounts"
   | "planning"
   | "debts_invest"
+  | "backend"
   | "guide"
   | "settings";
 
@@ -115,6 +116,7 @@ interface FinanceContextType {
   isSyncing: boolean;
   lastSyncedAt: Date | null;
   syncWithCloud: () => Promise<void>;
+  pushLocalToCloud: () => Promise<{ success: boolean; count: number; error?: string }>;
 
   // Góc nhìn thành viên (Cả nhà / Chồng / Vợ)
   activePerspective: PerspectiveMode;
@@ -147,6 +149,11 @@ interface FinanceContextType {
   addTransaction: (data: TransactionInput) => Transaction;
   updateTransaction: (id: string, data: Partial<TransactionInput>) => void;
   deleteTransaction: (id: string) => void;
+
+  // Quản lý Danh mục (Categories) cho Master Data Backend
+  addCategory: (cat: Omit<Category, "id">) => void;
+  updateCategory: (id: string, cat: Partial<Category>) => void;
+  deleteCategory: (id: string) => void;
 
   // Quản lý Tài khoản (Ví)
   addAccount: (acc: Omit<Account, "id" | "currentBalance">) => void;
@@ -214,11 +221,58 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
 
   // Bộ lọc
-  const [selectedMonth, setSelectedMonth] = useState<string>("2026-10");
+  const [selectedMonth, setSelectedMonth] = useState<string>("ALL");
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
   const [selectedType, setSelectedType] = useState<"ALL" | TransactionType>("ALL");
   const [selectedAccount, setSelectedAccount] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // Hàm đẩy dữ liệu Local (320+ giao dịch) lên Supabase Cloud
+  const pushLocalToCloud = useCallback(async (): Promise<{ success: boolean; count: number; error?: string }> => {
+    if (!isSupabaseConfigured) {
+      return { success: false, count: 0, error: "Chưa cấu hình kết nối Supabase Cloud" };
+    }
+    setIsSyncing(true);
+    try {
+      // 1. Đồng bộ các bảng cấu hình trước
+      if (categories.length > 0) {
+        categories.forEach((c) => supabaseService.upsertCategory(c));
+      }
+      if (accounts.length > 0) {
+        await supabaseService.updateAccounts(accounts);
+      }
+      if (budgets.length > 0) {
+        budgets.forEach((b) => supabaseService.upsertBudget(b));
+      }
+      if (goals.length > 0) {
+        goals.forEach((g) => supabaseService.upsertGoal(g));
+      }
+      if (debts.length > 0) {
+        debts.forEach((d) => supabaseService.upsertDebt(d));
+      }
+      if (investments.length > 0) {
+        investments.forEach((i) => supabaseService.upsertInvestment(i));
+      }
+      if (settings) {
+        await supabaseService.updateSettings(settings);
+      }
+
+      // 2. Batch upsert toàn bộ transactions (320+ records)
+      const success = await supabaseService.batchUpsertTransactions(transactions);
+      if (success) {
+        setIsCloudConnected(true);
+        setLastSyncedAt(new Date());
+        return { success: true, count: transactions.length };
+      } else {
+        return { success: false, count: 0, error: "Đẩy giao dịch lên Cloud thất bại" };
+      }
+    } catch (err: any) {
+      console.error("pushLocalToCloud error:", err);
+      return { success: false, count: 0, error: err?.message || "Lỗi khi đẩy lên Cloud" };
+    } finally {
+      setIsSyncing(false);
+    }
+  }, [categories, accounts, budgets, goals, debts, investments, settings, transactions]);
 
   // Hàm đồng bộ dữ liệu từ Supabase Cloud về Local State
   const syncWithCloud = useCallback(async () => {
@@ -234,7 +288,19 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
         setIsCloudConnected(true);
         setLastSyncedAt(new Date());
 
-        // Nếu trên Cloud đã có dữ liệu, hợp nhất vào State
+        // KIỂM TRA BẢO VỆ: Nếu Local đang có 320+ giao dịch thực tế mà Cloud chỉ có dữ liệu mẫu cũ (< 50 dòng)
+        // thì KHÔNG ghi đè Local bằng Cloud, mà ngược lại tự động đẩy Local lên Cloud để đưa cả 2 về trạng thái chuẩn!
+        const currentLocal = loadStoredDataV3();
+        if (currentLocal.transactions.length >= 300 && cloudData.transactions.length < 50) {
+          console.warn(
+            `[Cloud Sync Guard] Phát hiện Local có ${currentLocal.transactions.length} giao dịch thực tế nhưng Cloud chỉ có ${cloudData.transactions.length} dòng cũ. Tự động đồng bộ Local lên Cloud...`
+          );
+          await supabaseService.batchUpsertTransactions(currentLocal.transactions);
+          await supabaseService.updateAccounts(currentLocal.accounts);
+          return;
+        }
+
+        // Nếu trên Cloud đã có dữ liệu hợp lệ và đầy đủ, hợp nhất vào State
         if (cloudData.accounts.length > 0 || cloudData.transactions.length > 0) {
           if (cloudData.categories.length > 0) setCategories(cloudData.categories);
           if (cloudData.budgets.length > 0) setBudgets(cloudData.budgets);
@@ -465,6 +531,42 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     },
     []
   );
+
+  // Quản lý Danh mục (Categories) cho UI Backend
+  const addCategory = useCallback((cat: Omit<Category, "id">) => {
+    const newCat: Category = {
+      ...cat,
+      id: `cat_${Date.now()}`,
+    };
+    setCategories((prev) => {
+      const next = [...prev, newCat];
+      if (isSupabaseConfigured) {
+        supabaseService.upsertCategory(newCat);
+      }
+      return next;
+    });
+  }, []);
+
+  const updateCategory = useCallback((id: string, cat: Partial<Category>) => {
+    setCategories((prev) => {
+      let target: Category | undefined;
+      const next = prev.map((c) => {
+        if (c.id === id) {
+          target = { ...c, ...cat };
+          return target;
+        }
+        return c;
+      });
+      if (isSupabaseConfigured && target) {
+        supabaseService.upsertCategory(target);
+      }
+      return next;
+    });
+  }, []);
+
+  const deleteCategory = useCallback((id: string) => {
+    setCategories((prev) => prev.filter((c) => c.id !== id));
+  }, []);
 
   // Quản lý Tài khoản (Ví)
   const addAccount = useCallback((acc: Omit<Account, "id" | "currentBalance">) => {
@@ -989,9 +1091,12 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     return stats.sort((a, b) => b.totalAmount - a.totalAmount);
   }, [transactions, selectedMonth, activePerspective, getCategoryById]);
 
-  // Xu hướng thu chi
+  // Xu hướng thu chi (Hiển thị 6-12 tháng gần nhất từ dữ liệu thực tế)
   const monthlyTrendData = useMemo<MonthlyTrendItem[]>(() => {
-    const months = ["2026-05", "2026-06", "2026-07", "2026-08", "2026-09", "2026-10"];
+    // Trích xuất các tháng thực tế hoặc mặc định 6 tháng
+    const months = availableMonths.length > 0
+      ? availableMonths.slice(-6)
+      : ["2026-05", "2026-06", "2026-07", "2026-08", "2026-09", "2026-10"];
     const map = new Map<string, { income: number; expense: number }>();
 
     months.forEach((m) => map.set(m, { income: 0, expense: 0 }));
@@ -1010,15 +1115,17 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
 
     return months.map((m) => {
       const item = map.get(m)!;
-      const monthNum = parseInt(m.split("-")[1], 10);
+      const parts = m.split("-");
+      const monthNum = parseInt(parts[1], 10);
+      const yearStr = parts[0] ? `'${parts[0].slice(2)}` : "";
       return {
         month: m,
-        label: `Tháng ${monthNum}`,
+        label: `T${monthNum} ${yearStr}`,
         income: item.income,
         expense: item.expense,
       };
     });
-  }, [transactions, activePerspective]);
+  }, [availableMonths, transactions, activePerspective]);
 
   // Thông báo
   const notifications = useMemo<AppNotification[]>(() => {
@@ -1063,6 +1170,7 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     isSyncing,
     lastSyncedAt,
     syncWithCloud,
+    pushLocalToCloud,
     activePerspective,
     setActivePerspective,
     categories,
@@ -1087,6 +1195,9 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     addTransaction,
     updateTransaction,
     deleteTransaction,
+    addCategory,
+    updateCategory,
+    deleteCategory,
     addAccount,
     updateAccount,
     deleteAccount,

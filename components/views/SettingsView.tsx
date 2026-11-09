@@ -13,6 +13,8 @@ import {
   Eye,
   EyeOff,
   Trash2,
+  UploadCloud,
+  CheckCircle2,
 } from "lucide-react";
 import { useFinance } from "@/context/FinanceContext";
 import { useSecurity } from "@/context/SecurityContext";
@@ -34,6 +36,8 @@ export function SettingsView({
     isSyncing,
     lastSyncedAt,
     syncWithCloud,
+    pushLocalToCloud,
+    transactions,
   } = useFinance();
 
   const {
@@ -45,6 +49,17 @@ export function SettingsView({
   } = useSecurity();
 
   const [isPinModalOpen, setIsPinModalOpen] = useState(false);
+  const [pushStatusMessage, setPushStatusMessage] = useState<string | null>(null);
+
+  const handlePushToCloud = async () => {
+    setPushStatusMessage(null);
+    const res = await pushLocalToCloud();
+    if (res.success) {
+      setPushStatusMessage(`Đã đồng bộ thành công ${res.count} giao dịch thực tế lên Supabase Cloud!`);
+    } else {
+      setPushStatusMessage(`Lỗi đồng bộ: ${res.error || "Không rõ nguyên nhân"}`);
+    }
+  };
 
   return (
     <div className="max-w-3xl mx-auto space-y-5 animate-in fade-in duration-200">
@@ -89,7 +104,7 @@ export function SettingsView({
             </div>
             <p className="text-[11px] text-slate-500">
               {isConfigured
-                ? "Mã PIN đã được băm SHA-256 an toàn. Hỗ trợ nhớ thiết bị trong 30 ngày."
+                ? "Mã PIN đã băm SHA-256. Tự động khóa sau 5 phút hoặc khi đóng webapp/tắt tab."
                 : "Chưa thiết lập mã PIN. Bất kỳ ai mở link đều có thể xem dữ liệu."}
             </p>
             <div className="pt-1 flex gap-2">
@@ -203,12 +218,34 @@ export function SettingsView({
               type="button"
               onClick={() => syncWithCloud()}
               disabled={isSyncing}
-              className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white gap-2 font-bold text-xs h-10"
+              variant="outline"
+              className="flex-1 border-slate-300 text-slate-700 hover:bg-slate-100 gap-2 font-bold text-xs h-10"
             >
               <RefreshCw className={`w-4 h-4 ${isSyncing ? "animate-spin" : ""}`} />
-              <span>{isSyncing ? "Đang đồng bộ dữ liệu..." : "Đồng bộ thủ công ngay"}</span>
+              <span>{isSyncing ? "Đang đồng bộ..." : "Kéo dữ liệu từ Cloud về"}</span>
+            </Button>
+
+            <Button
+              type="button"
+              onClick={handlePushToCloud}
+              disabled={isSyncing}
+              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white gap-2 font-bold text-xs h-10 shadow-xs"
+            >
+              <UploadCloud className={`w-4 h-4 ${isSyncing ? "animate-bounce" : ""}`} />
+              <span>Nạp & Đẩy {transactions.length} giao dịch lên Cloud</span>
             </Button>
           </div>
+
+          {pushStatusMessage && (
+            <div className={`p-3 rounded-[3px] text-xs font-semibold flex items-center gap-2 ${
+              pushStatusMessage.startsWith("Đã đồng bộ")
+                ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                : "bg-rose-50 text-rose-800 border border-rose-200"
+            }`}>
+              <CheckCircle2 className="w-4 h-4 shrink-0" />
+              <span>{pushStatusMessage}</span>
+            </div>
+          )}
 
           <p className="text-[11px] text-slate-500 leading-relaxed">
             ⚡ <strong>Cơ chế Realtime Replication:</strong> Khi Anh Chuột hoặc Bé Mèo nhập giao dịch trên điện thoại,
@@ -228,7 +265,7 @@ export function SettingsView({
               Quản lý Dữ liệu LocalStorage & Sao lưu
             </h3>
             <p className="text-[11px] text-slate-500 font-medium">
-              Khóa lưu trữ active: <code className="font-mono text-blue-600">HOME_MONI_DATA_V4</code>
+              Khóa lưu trữ active: <code className="font-mono text-blue-600">HOME_MONI_DATA_V5</code>
             </p>
           </div>
         </div>

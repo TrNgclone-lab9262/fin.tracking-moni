@@ -1,19 +1,19 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 
 const PIN_STORAGE_KEY = "HOME_MONI_SECURITY_PIN_V1";
-const TRUSTED_TOKEN_KEY = "HOME_MONI_TRUSTED_DEVICE_TOKEN_V1";
+const SESSION_UNLOCKED_KEY = "HOME_MONI_SESSION_UNLOCKED_V2";
 const PRIVACY_MODE_KEY = "HOME_MONI_PRIVACY_MODE_V1";
-const TOKEN_MAX_AGE_DAYS = 30;
+const INACTIVITY_TIMEOUT_MS = 5 * 60 * 1000; // 5 phút
 
 interface SecurityContextType {
   isConfigured: boolean; // Đã cài PIN chưa
   isLocked: boolean; // Đang bị khóa cần nhập PIN hay đã unlock
-  isPrivacyMode: boolean; // Chế độ che số tiền
+  isPrivacyMode: boolean; // Chế độ che số tiền toàn diện
   isMounted: boolean; // Trạng thái đã hydrate xong trên client
   togglePrivacyMode: () => void;
-  unlockWithPin: (pin: string, remember30Days: boolean) => Promise<{ success: boolean; message?: string }>;
+  unlockWithPin: (pin: string) => Promise<{ success: boolean; message?: string }>;
   setupNewPin: (pin: string) => Promise<boolean>;
   lockApp: () => void;
   removePin: () => void;
@@ -36,7 +36,32 @@ export function SecurityProvider({ children }: { children: React.ReactNode }) {
   const [isPrivacyMode, setIsPrivacyMode] = useState<boolean>(false);
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
-  // Khởi tạo kiểm tra PIN & Trusted Token khi tải trang (chỉ chạy trên Client)
+  const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const backgroundTimestampRef = useRef<number | null>(null);
+
+  // Hàm khóa ứng dụng ngay lập tức
+  const lockApp = useCallback(() => {
+    try {
+      sessionStorage.removeItem(SESSION_UNLOCKED_KEY);
+    } catch {}
+    setIsLocked(true);
+  }, []);
+
+  // Khởi động lại bộ đếm 5 phút không hoạt động
+  const resetInactivityTimer = useCallback(() => {
+    if (inactivityTimerRef.current) {
+      clearTimeout(inactivityTimerRef.current);
+    }
+    // Chỉ kích hoạt đếm giờ nếu đã cấu hình PIN và hiện đang mở khóa
+    const storedPinHash = typeof window !== "undefined" ? localStorage.getItem(PIN_STORAGE_KEY) : null;
+    if (storedPinHash) {
+      inactivityTimerRef.current = setTimeout(() => {
+        lockApp();
+      }, INACTIVITY_TIMEOUT_MS);
+    }
+  }, [lockApp]);
+
+  // Khởi tạo kiểm tra PIN & Session khi tải trang (chỉ chạy trên Client)
   useEffect(() => {
     try {
       const storedPinHash = localStorage.getItem(PIN_STORAGE_KEY);
@@ -47,30 +72,16 @@ export function SecurityProvider({ children }: { children: React.ReactNode }) {
       }
 
       if (!storedPinHash) {
-        // Chưa từng thiết lập mã PIN => Vào trực tiếp
+        // Chưa từng thiết lập mã PIN => Cho vào trực tiếp
         setIsConfigured(false);
         setIsLocked(false);
       } else {
         setIsConfigured(true);
-        // Đã có mã PIN, kiểm tra Trusted Device Token 30 ngày
-        const rawToken = localStorage.getItem(TRUSTED_TOKEN_KEY);
-        if (rawToken) {
-          try {
-            const tokenData = JSON.parse(rawToken);
-            const now = Date.now();
-            const tokenAgeDays = (now - tokenData.timestamp) / (1000 * 60 * 60 * 24);
-
-            if (tokenData.hash === storedPinHash && tokenAgeDays < TOKEN_MAX_AGE_DAYS) {
-              // Thiết bị tin cậy hợp lệ còn trong hạn 30 ngày => Mở khóa tức thì
-              setIsLocked(false);
-            } else {
-              // Hết hạn => Khóa
-              localStorage.removeItem(TRUSTED_TOKEN_KEY);
-              setIsLocked(true);
-            }
-          } catch {
-            setIsLocked(true);
-          }
+        // Kiểm tra sessionStorage (mất đi khi tắt tab / đóng app)
+        const sessionUnlocked = sessionStorage.getItem(SESSION_UNLOCKED_KEY);
+        if (sessionUnlocked === "true") {
+          setIsLocked(false);
+          resetInactivityTimer();
         } else {
           setIsLocked(true);
         }
@@ -80,7 +91,71 @@ export function SecurityProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsMounted(true);
     }
-  }, []);
+  }, [resetInactivityTimer]);
+
+  // Lắng nghe sự kiện người dùng tương tác để reset Inactivity Timer
+  useEffect(() => {
+    if (!isConfigured || isLocked) return;
+
+    const handleUserActivity = () => {
+      resetInactivityTimer();
+    };
+
+    window.addEventListener("mousemove", handleUserActivity);
+    window.addEventListener("mousedown", handleUserActivity);
+    window.addEventListener("keydown", handleUserActivity);
+    window.addEventListener("touchstart", handleUserActivity);
+    window.addEventListener("scroll", handleUserActivity, { passive: true });
+
+    resetInactivityTimer();
+
+    return () => {
+      window.removeEventListener("mousemove", handleUserActivity);
+      window.removeEventListener("mousedown", handleUserActivity);
+      window.removeEventListener("keydown", handleUserActivity);
+      window.removeEventListener("touchstart", handleUserActivity);
+      window.removeEventListener("scroll", handleUserActivity);
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current);
+      }
+    };
+  }, [isConfigured, isLocked, resetInactivityTimer]);
+
+  // Lắng nghe Page Visibility API (Chuyển tab, tắt màn hình, đóng app)
+  useEffect(() => {
+    if (!isConfigured) return;
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        // App rơi vào nền (ẩn tab hoặc tắt màn hình)
+        backgroundTimestampRef.current = Date.now();
+      } else {
+        // App hiển thị lại: Kiểm tra thời gian đã trôi qua
+        if (backgroundTimestampRef.current) {
+          const elapsed = Date.now() - backgroundTimestampRef.current;
+          if (elapsed >= INACTIVITY_TIMEOUT_MS) {
+            lockApp();
+          }
+          backgroundTimestampRef.current = null;
+        }
+      }
+    };
+
+    const handlePageHide = () => {
+      // Đóng tab hoặc điều hướng rời khỏi
+      try {
+        sessionStorage.removeItem(SESSION_UNLOCKED_KEY);
+      } catch {}
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("pagehide", handlePageHide);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("pagehide", handlePageHide);
+    };
+  }, [isConfigured, lockApp]);
 
   const togglePrivacyMode = useCallback(() => {
     setIsPrivacyMode((prev) => {
@@ -92,7 +167,7 @@ export function SecurityProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
-  const unlockWithPin = useCallback(async (pin: string, remember30Days: boolean): Promise<{ success: boolean; message?: string }> => {
+  const unlockWithPin = useCallback(async (pin: string): Promise<{ success: boolean; message?: string }> => {
     try {
       const storedPinHash = localStorage.getItem(PIN_STORAGE_KEY);
       if (!storedPinHash) {
@@ -103,15 +178,10 @@ export function SecurityProvider({ children }: { children: React.ReactNode }) {
       const inputHash = await hashPin(pin);
       if (inputHash === storedPinHash) {
         setIsLocked(false);
-        if (remember30Days) {
-          const tokenData = {
-            hash: storedPinHash,
-            timestamp: Date.now(),
-          };
-          localStorage.setItem(TRUSTED_TOKEN_KEY, JSON.stringify(tokenData));
-        } else {
-          localStorage.removeItem(TRUSTED_TOKEN_KEY);
-        }
+        try {
+          sessionStorage.setItem(SESSION_UNLOCKED_KEY, "true");
+        } catch {}
+        resetInactivityTimer();
         return { success: true };
       } else {
         return { success: false, message: "Mã PIN không chính xác, vui lòng thử lại!" };
@@ -119,38 +189,31 @@ export function SecurityProvider({ children }: { children: React.ReactNode }) {
     } catch {
       return { success: false, message: "Đã xảy ra lỗi khi xác thực mã PIN" };
     }
-  }, []);
+  }, [resetInactivityTimer]);
 
   const setupNewPin = useCallback(async (pin: string): Promise<boolean> => {
     try {
       if (pin.length < 4 || pin.length > 6) return false;
       const hashed = await hashPin(pin);
       localStorage.setItem(PIN_STORAGE_KEY, hashed);
+      sessionStorage.setItem(SESSION_UNLOCKED_KEY, "true");
       setIsConfigured(true);
       setIsLocked(false);
-      // Mặc định tạo token tin cậy 30 ngày cho thiết bị đang cài đặt
-      localStorage.setItem(
-        TRUSTED_TOKEN_KEY,
-        JSON.stringify({ hash: hashed, timestamp: Date.now() })
-      );
+      resetInactivityTimer();
       return true;
     } catch {
       return false;
     }
-  }, []);
-
-  const lockApp = useCallback(() => {
-    try {
-      localStorage.removeItem(TRUSTED_TOKEN_KEY);
-    } catch {}
-    setIsLocked(true);
-  }, []);
+  }, [resetInactivityTimer]);
 
   const removePin = useCallback(() => {
     try {
       localStorage.removeItem(PIN_STORAGE_KEY);
-      localStorage.removeItem(TRUSTED_TOKEN_KEY);
+      sessionStorage.removeItem(SESSION_UNLOCKED_KEY);
     } catch {}
+    if (inactivityTimerRef.current) {
+      clearTimeout(inactivityTimerRef.current);
+    }
     setIsConfigured(false);
     setIsLocked(false);
   }, []);
@@ -181,4 +244,3 @@ export function useSecurity() {
   }
   return context;
 }
-

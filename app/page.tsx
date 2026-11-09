@@ -15,6 +15,7 @@ import { PlanningView } from "@/components/views/PlanningView";
 import { DebtsInvestView } from "@/components/views/DebtsInvestView";
 import { GuideView } from "@/components/views/GuideView";
 import { SettingsView } from "@/components/views/SettingsView";
+import { MasterDataBackendView } from "@/components/views/MasterDataBackendView";
 
 // 2. Mobile Shell Views (Chuẩn Vàng Figma 1:1 - Cô đọng, Bento, Thumb-zone)
 import { MobileHeader } from "@/components/mobile/MobileHeader";
@@ -77,6 +78,8 @@ export default function HomePage() {
         return <PlanningView />;
       case "debts_invest":
         return <DebtsInvestView />;
+      case "backend":
+        return <MasterDataBackendView />;
       case "guide":
         return <GuideView />;
       case "settings":
@@ -108,6 +111,8 @@ export default function HomePage() {
         return <MobilePlanningView />;
       case "debts_invest":
         return <DebtsInvestView />;
+      case "backend":
+        return <MasterDataBackendView />;
       case "guide":
         return <GuideView />;
       case "settings":
