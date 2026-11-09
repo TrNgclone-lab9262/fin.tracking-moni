@@ -358,39 +358,30 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // 1. Tạo ref lưu trữ hàm syncWithCloud ổn định để không trigger re-subscribe
+  // 1. Tạo re~f lưu trữ hàm syncWithCloud ổn định để không trigger re-subscribe
   const syncWithCloudRef = React.useRef(syncWithCloud);
   syncWithCloudRef.current = syncWithCloud;
 
-  // 2. Lắng nghe Supabase Realtime Replication ổn định 1 lần duy nhất (Không nhấp nháy)
+  // 2. Lắng nghe Supabase Realtime Replication ổn định (Chỉ lắng nghe transactions & accounts)
   useEffect(() => {
     if (!supabase || !isSupabaseConfigured) return;
 
     const channel = supabase
-      .channel("home_moni_realtime")
+      .channel("home_moni_realtime_stable")
       .on("postgres_changes", { event: "*", schema: "public", table: "transactions" }, () => {
         syncWithCloudRef.current();
       })
       .on("postgres_changes", { event: "*", schema: "public", table: "accounts" }, () => {
         syncWithCloudRef.current();
       })
-      .on("postgres_changes", { event: "*", schema: "public", table: "category_budgets" }, () => {
-        syncWithCloudRef.current();
-      })
-      .on("postgres_changes", { event: "*", schema: "public", table: "savings_goals" }, () => {
-        syncWithCloudRef.current();
-      })
-      .on("postgres_changes", { event: "*", schema: "public", table: "debts" }, () => {
-        syncWithCloudRef.current();
-      })
-      .on("postgres_changes", { event: "*", schema: "public", table: "investments" }, () => {
-        syncWithCloudRef.current();
-      })
-      .subscribe((status) => {
+      .subscribe((status, err) => {
         if (status === "SUBSCRIBED") {
           setIsCloudConnected(true);
-        } else if (status === "CLOSED" || status === "CHANNEL_ERROR") {
-          setIsCloudConnected(false);
+        } else if (status === "CHANNEL_ERROR") {
+          console.warn("[Supabase Realtime] Lỗi kênh Realtime, duy trì trạng thái Local-first:", err);
+          // KHÔNG gán false đột ngột để tránh giật nháy UI do retry loop của socket
+        } else if (status === "CLOSED") {
+          // Chỉ ngắt khi kênh thực sự bị đóng chủ động
         }
       });
 
@@ -399,7 +390,7 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
         supabase.removeChannel(channel);
       }
     };
-  }, []); // <-- Chỉ chạy 1 lần khi mount, giữ kết nối Realtime xanh mượt 100%
+  }, []);
 
   // Tự động lưu vào LocalStorage V3 để đảm bảo offline
   useEffect(() => {
